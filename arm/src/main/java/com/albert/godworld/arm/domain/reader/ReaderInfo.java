@@ -11,6 +11,7 @@ public class ReaderInfo {
     private Long userId;
     private String name;
     private Boolean locked;
+    private Boolean notWord;
     private String phone;
     private String email;
     private String moto;

@@ -8,7 +8,7 @@ public class ReaderShelfBook {
 
     @TableId
     private Long id;
-    private Long userId;
+    private Long readerId;
     private Long bookId;
     private Integer order;
 }

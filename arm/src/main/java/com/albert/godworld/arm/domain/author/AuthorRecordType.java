@@ -6,6 +6,7 @@ public enum AuthorRecordType {
     EDIT_BOOK(2,"edit book"),
     PUBLISH_BOOK(3,"publish book"),
     UN_PUBLISH_BOOK(4,"un_publish book"),
+    REMOVE_BOOK(16,"remove book"),
 
     PUBLISH_PART(5,"publish part"),
     PUBLISH_VOLUME(6,"publish volume"),
@@ -20,6 +21,8 @@ public enum AuthorRecordType {
     LIKE_COMMENT(14,"like comment"),
     UN_LIKE_COMMENT(15,"un like comment"),
 
+    PUBLISH_RESOURCE(17,"publish resource"),
+    UN_PUBLISH_RESOURCE(18,"un_publish resource"),
 
     ;
 
