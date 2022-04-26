@@ -11,7 +11,7 @@ public class SocialRecord {
     @TableId
     private Long id;
     private Long socialId;
-    private SocialRecordType type;
+    private SocialRequestType type;
     private String content;
     private Date time;
 }

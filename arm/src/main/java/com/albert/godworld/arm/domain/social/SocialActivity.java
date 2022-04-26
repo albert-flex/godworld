@@ -11,9 +11,8 @@ public class SocialActivity {
     @TableId
     private Long id;
     private Long socialId;
-    private Long hockMemberId;
-    private Long honerMemberId;
-    private Long contactMemberId;
+    private Long honerMemberId;//主办
+    private Long contactMemberId;//联系人
 
     private String name;
     private String description;
