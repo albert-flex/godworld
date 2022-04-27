@@ -1,6 +1,7 @@
 package com.albert.godworld.arm.service.author;
 
 import com.albert.godworld.arm.domain.author.AuthorInfo;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 public interface AuthorService extends IService<AuthorInfo> {
@@ -14,6 +15,8 @@ public interface AuthorService extends IService<AuthorInfo> {
 
     //接触用户与作者的绑定
     boolean unbind(Long authorId);
+
+    Page<AuthorInfo> pageOf(Page<AuthorInfo> page,String name);
 
     //根据用户Id获取作者信息
     AuthorInfo findAuthorByUserId(Long userId);

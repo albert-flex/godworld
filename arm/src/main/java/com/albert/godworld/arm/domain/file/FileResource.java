@@ -1,16 +1,15 @@
-package com.albert.godworld.arm.domain.user;
+package com.albert.godworld.arm.domain.file;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
-public class Group {
+public class FileResource {
 
     @TableId
     private Long id;
+    private String format;
+
+    private String lib;
     private String name;
-    private String description;
-    
 }

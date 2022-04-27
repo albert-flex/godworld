@@ -4,6 +4,7 @@ import com.albert.godworld.arm.domain.author.AuthorInfo;
 import com.albert.godworld.arm.mapper.author.AuthorInfoMapper;
 import com.albert.godworld.arm.service.author.AuthorService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -60,6 +61,14 @@ public class AuthorServiceSPI extends ServiceImpl<AuthorInfoMapper,AuthorInfo>
         info.setUserId(0L);
         info.setLocked(true);
         return super.updateById(info);
+    }
+
+    @Override
+    public Page<AuthorInfo> pageOf(Page<AuthorInfo> page, String name) {
+        QueryWrapper<AuthorInfo> queryWrapper=new QueryWrapper<>();
+        queryWrapper.like("name",name);
+
+        return super.page(page,queryWrapper);
     }
 
     @Override

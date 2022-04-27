@@ -5,6 +5,8 @@ import com.albert.godworld.arm.domain.book.BookInfo;
 import com.albert.godworld.arm.mapper.book.BookInfoMapper;
 import com.albert.godworld.arm.service.author.AuthorRecordService;
 import com.albert.godworld.arm.service.book.BookInfoService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +41,13 @@ public class BookInfoServiceSPI extends ServiceImpl<BookInfoMapper, BookInfo>
 
         authorRecordService.putRecord(bookInfo.getAuthorId(), AuthorRecordType.PUBLISH_BOOK, bookInfo.getId());
         return bookInfo;
+    }
+
+    @Override
+    public Page<BookInfo> pageOf(Page<BookInfo> page, Long authorId) {
+        QueryWrapper<BookInfo> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("author_id",authorId);
+        return super.page(page,queryWrapper);
     }
 
     @Override

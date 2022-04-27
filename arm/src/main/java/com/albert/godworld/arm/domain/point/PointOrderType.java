@@ -3,6 +3,7 @@ package com.albert.godworld.arm.domain.point;
 public enum PointOrderType {
 
     ACTIVITY_GET(1,"get point from activity"),
+
     BUY(2,"out point to buy something"),
     SELL(3,"get point from sell something"),
     TRANSFER_OUT(4,"out point to others"),
