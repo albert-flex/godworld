@@ -67,6 +67,11 @@ public class UserController {
         return userService.pageOf(page,name);
     }
 
+    @GetMapping("/page")
+    public Page<User> pageOfAll(Page<User> page){
+        return userService.page(page);
+    }
+
     /**
      * 根据id删除用户
      * return true 如果删除成功，否则返回false

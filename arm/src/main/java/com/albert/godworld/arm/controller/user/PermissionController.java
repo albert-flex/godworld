@@ -1,7 +1,9 @@
 package com.albert.godworld.arm.controller.user;
 
 import com.albert.godworld.arm.domain.user.Permission;
+import com.albert.godworld.arm.domain.user.User;
 import com.albert.godworld.arm.service.user.PermissionService;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +37,11 @@ public class PermissionController {
     @PutMapping("/add/{groupId}/{permId}")
     public Boolean addToUser(@PathVariable("groupId") Long groupId,@PathVariable("permId") Long permId){
         return permissionService.addToGroup(groupId,permId);
+    }
+
+    @GetMapping("/page")
+    public Page<Permission> pageOfAll(Page<Permission> page){
+        return permissionService.page(page);
     }
 
     @PutMapping("/remove/{groupId}/{permId}")

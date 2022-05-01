@@ -1,7 +1,9 @@
 package com.albert.godworld.arm.controller.user;
 
 import com.albert.godworld.arm.domain.user.UGroup;
+import com.albert.godworld.arm.domain.user.User;
 import com.albert.godworld.arm.service.user.UGroupService;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,6 +49,11 @@ public class GroupController {
     @PutMapping("/remove/{groupId}/{userId}")
     public Boolean removeFromUser(@PathVariable("userId") Long userId,@PathVariable("groupId") Long groupId){
         return uGroupService.removeFromUser(userId,groupId);
+    }
+
+    @GetMapping("/page")
+    public Page<UGroup> pageOfAll(Page<UGroup> page){
+        return uGroupService.page(page);
     }
 
     @DeleteMapping("/{id}")
