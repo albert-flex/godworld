@@ -17,7 +17,7 @@ public class BookCommentController {
         this.bookCommentService = bookCommentService;
     }
 
-    @GetMapping("/id/{id{")
+    @GetMapping("/id/{id}")
     public BookComment bookComment(@PathVariable("id") Long id){
         return bookCommentService.getById(id);
     }

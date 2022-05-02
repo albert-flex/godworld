@@ -36,7 +36,7 @@ public class BookInfoServiceSPI extends ServiceImpl<BookInfoMapper, BookInfo>
     @Override
     public Page<BookInfo> queryByName(Page<BookInfo> page, String bookName) {
         LambdaQueryWrapper<BookInfo> queryWrapper=new LambdaQueryWrapper<>();
-        queryWrapper.like(BookInfo::getTitle,bookName);
+        queryWrapper.like(BookInfo::getName,bookName);
         return super.page(page,queryWrapper);
     }
 }

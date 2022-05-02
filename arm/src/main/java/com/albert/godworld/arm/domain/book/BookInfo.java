@@ -9,7 +9,7 @@ public class BookInfo {
 
     private Long id;
     private String authorName;
-    private String title;
+    private String name;
     private String boardName;
     private Date createTime;
     private Date updateTime;

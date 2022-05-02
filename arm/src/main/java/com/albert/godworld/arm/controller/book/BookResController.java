@@ -1,6 +1,5 @@
 package com.albert.godworld.arm.controller.book;
 
-import com.albert.godworld.arm.domain.book.BookInfo;
 import com.albert.godworld.arm.domain.book.BookRes;
 import com.albert.godworld.arm.service.book.BookResService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
