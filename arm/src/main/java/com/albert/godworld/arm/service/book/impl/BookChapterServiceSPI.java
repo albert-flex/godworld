@@ -20,6 +20,13 @@ public class BookChapterServiceSPI extends ServiceImpl<BookChapterMapper, BookCh
     }
 
     @Override
+    public long countChapter(Long bookId) {
+        LambdaQueryWrapper<BookChapter> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.eq(BookChapter::getBookId,bookId);
+        return super.count(queryWrapper);
+    }
+
+    @Override
     public BookChapter newestChapter(Long bookId) {
         LambdaQueryWrapper<BookChapter> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.eq(BookChapter::getBookId,bookId);

@@ -91,7 +91,7 @@ drop table if exists book_comment;
 create table book_comment(
     id bigint not null auto_increment,
     book_id bigint not null,
-    reader_name varchar(30) not null,
+    user_id bigint not null,
     content varchar(1024) not null default "无内容",
     create_time datetime not null default now(),
     primary key(id)
@@ -104,6 +104,15 @@ create table book_res(
     create_time datetime not null,
     title varchar(30) not null,
     res_id bigint not null,
+    primary key(id)
+);
+
+drop table if exists book_shelf_book;
+create table book_shelf_book(
+    id bigint not null auto_increment,
+    user_id bigint not null,
+    book_id bigint not null,
+    add_time datetime not null default now(),
     primary key(id)
 );
 
@@ -121,3 +130,16 @@ create table author_info(
     primary key(id)
 );
 
+
+/**
+ * File Resource
+ */
+drop table if exists file_resource;
+create table file_resource(
+    id bigint not null auto_increment,
+    name varchar(256) not null,
+    format varchar(30) not null,
+    lib varchar(256) not null,
+    own_id bigint not null,
+    primary key(id)
+);

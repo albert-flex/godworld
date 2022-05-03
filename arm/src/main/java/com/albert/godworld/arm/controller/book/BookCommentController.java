@@ -17,30 +17,20 @@ public class BookCommentController {
         this.bookCommentService = bookCommentService;
     }
 
-    @GetMapping("/id/{id}")
-    public BookComment bookComment(@PathVariable("id") Long id){
-        return bookCommentService.getById(id);
-    }
-
     @GetMapping("/page/book/{bookId}")
     public Page<BookComment> pageOfBook(@PathVariable("bookId") Long bookId, Page<BookComment> page){
         return bookCommentService.pageOf(page,bookId);
     }
 
-    @GetMapping("/page/reader/{readerName}")
-    public Page<BookComment> pageOfReader(@PathVariable("readerName") String readerName,Page<BookComment> page){
-        return bookCommentService.pageOfReader(page,readerName);
+    @GetMapping("/page/user/{userId}")
+    public Page<BookComment> pageOfReader(@PathVariable("userId") Long userId,Page<BookComment> page){
+        return bookCommentService.pageOfReader(page,userId);
     }
 
     @PostMapping
     public BookComment create(@RequestBody BookComment bookComment){
         bookCommentService.save(bookComment);
         return bookComment;
-    }
-
-    @PutMapping
-    public Boolean update(@RequestBody BookComment bookComment){
-        return bookCommentService.updateById(bookComment);
     }
 
     @DeleteMapping("/{id}")

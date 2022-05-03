@@ -21,9 +21,9 @@ implements BookCommentService {
     }
 
     @Override
-    public Page<BookComment> pageOfReader(Page<BookComment> page, String readerName) {
+    public Page<BookComment> pageOfReader(Page<BookComment> page, Long userId) {
         LambdaQueryWrapper<BookComment> queryWrapper=new LambdaQueryWrapper<>();
-        queryWrapper.eq(BookComment::getReaderName,readerName);
+        queryWrapper.eq(BookComment::getUserId,userId);
         queryWrapper.orderByDesc(BookComment::getCreateTime);
         return super.page(page,queryWrapper);
     }

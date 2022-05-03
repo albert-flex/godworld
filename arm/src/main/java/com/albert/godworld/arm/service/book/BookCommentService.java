@@ -8,5 +8,5 @@ public interface BookCommentService extends IService<BookComment> {
 
     Page<BookComment> pageOf(Page<BookComment> page, Long bookId);
 
-    Page<BookComment> pageOfReader(Page<BookComment> page, String readerName);
+    Page<BookComment> pageOfReader(Page<BookComment> page, Long userId);
 }

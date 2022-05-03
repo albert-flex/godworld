@@ -5,11 +5,10 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class BookComment {
+public class BookShelfBook {
 
     private Long id;
-    private Long bookId;
     private Long userId;
-    private String content;
-    private Date createTime;
+    private Long bookId;
+    private Date addTime;
 }
