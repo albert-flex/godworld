@@ -15,7 +15,7 @@ insert into u_group(id,name,description) values
 (3,"Author","作者");
 
 delete from user;
-insert into user(id,user_name) values
+insert into user(id,username) values
 (1,"A1"),
 (2,"A2"),
 (3,"A3");

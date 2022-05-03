@@ -1,4 +1,4 @@
-package com.albert.godworld.arm.authorize.domain;
+package com.albert.godworld.arm.resource.domain.user;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -19,6 +19,7 @@ public class User implements UserDetails {
     private String password;
     private Boolean enabled;
     private Boolean login;
+
     private Date createTime;
     private Date lastLoginTime;
 

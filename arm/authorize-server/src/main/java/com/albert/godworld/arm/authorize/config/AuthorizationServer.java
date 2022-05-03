@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.code.InMemoryAuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
+import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 
@@ -68,6 +69,10 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
                 .authorizationCodeServices(authorizationCodeServices)
                 .tokenServices(tokenServices())
                 .allowedTokenEndpointRequestMethods(HttpMethod.POST);
+
+        DefaultAccessTokenConverter accessTokenConverter=new DefaultAccessTokenConverter();
+        accessTokenConverter.setUserTokenConverter(new MyUserAuthenticationConvert());
+        endpoints.accessTokenConverter(accessTokenConverter);
     }
 
     @Override

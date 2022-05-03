@@ -4,7 +4,7 @@
 drop table if exists user;
 create table user (
     id bigint not null auto_increment,
-    user_name varchar(30) not null unique,
+    username varchar(30) not null unique,
     password varchar(512) not null default '$2a$10$RMuFXGQ5AtH4wOvkUqyvuecpqUSeoxZYqilXzbz50dceRsga.WYiq',
     enabled boolean not null default true,
     login boolean not null default false,
