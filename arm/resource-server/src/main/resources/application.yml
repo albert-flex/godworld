@@ -1,0 +1,30 @@
+server:
+  port: 9002
+
+app:
+  file-resource:
+    prefix: file
+
+spring:
+  application:
+    name: arm
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    schema: classpath:database/schema.sql
+    data: classpath:database/data.sql
+    url: jdbc:mysql://localhost:3306/arm?useSSL=true&userUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+    username: root
+    password: moeyui0624
+    initialization-mode: ALWAYS
+
+  servlet:
+    multipart:
+      max-request-size: 20MB
+      max-file-size: 20MB
+logging:
+  level:
+    com.albert.godword.arm.mapper: trace
+    org.springframework.security: debug
+  file:
+    path: .cata_log
