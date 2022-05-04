@@ -6,9 +6,13 @@ import com.albert.godworld.arm.resource.service.author.AuthorService;
 import com.albert.godworld.arm.resource.util.PrincipalConvert;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.expression.SecurityExpressionRoot;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
+import sun.security.util.SecurityConstants;
 
+import javax.annotation.security.PermitAll;
 import java.security.Principal;
 import java.util.Map;
 
@@ -53,6 +57,7 @@ public class AuthorController {
     }
 
     @GetMapping("/id/{id}")
+    @PreAuthorize("hasAuthority('ViewBook')")
     public AuthorInfo getById(@PathVariable("id") Long id){
         return authorService.getById(id);
     }
