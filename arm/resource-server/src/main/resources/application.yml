@@ -9,16 +9,34 @@ spring:
   application:
     name: arm
 
+  mail:
+    properties:
+      mail:
+        smtp.auth: false
+        debug: false
+        mime:
+          splitlongparameters: false
+    protocol: smtp
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    test-connection: false
+    default-encoding: UTF-8
+    # MAIL_HOST,MAIL_PORT,MAIL_USERNAME,MAIL_PASSWORD 为自己的邮箱配置,
+    # PASSWORD为邮箱开放STMP时给予的密码,USERNAME为邮箱全地址，比如albert@mail.com
+
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     schema: classpath:database/schema.sql
     sql-script-encoding: utf-8
     data: classpath:database/data.sql
-    url: jdbc:mysql://localhost:3306/arm?useSSL=true&userUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
-    username: root
-    password: moeyui0624
+    url: jdbc:mysql://${DB_HOST}/arm?useSSL=true&userUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     initialization-mode: ALWAYS
-
+    # DB_HOST,DB_USERNAME,DB_PASSWORD 为自行安装mysql后，在系统环境里写的环境变量或启动时的参数
   servlet:
     multipart:
       max-request-size: 20MB

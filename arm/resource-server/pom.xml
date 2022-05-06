@@ -40,6 +40,11 @@
             <artifactId>spring-security-oauth2</artifactId>
             <version>${oauth2.version}</version>
         </dependency>
+        <!-- Email -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
         <!-- mybatis & database & model -->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>

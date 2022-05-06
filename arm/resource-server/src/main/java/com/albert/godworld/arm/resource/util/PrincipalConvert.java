@@ -2,7 +2,6 @@ package com.albert.godworld.arm.resource.util;
 
 import com.albert.godworld.arm.resource.domain.user.Permission;
 import com.albert.godworld.arm.resource.domain.user.User;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Component;
 
