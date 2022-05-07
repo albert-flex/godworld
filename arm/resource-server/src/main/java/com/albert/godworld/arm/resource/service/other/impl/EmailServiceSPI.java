@@ -1,8 +1,9 @@
-package com.albert.godworld.arm.resource.service.email.impl;
+package com.albert.godworld.arm.resource.service.other.impl;
 
-import com.albert.godworld.arm.resource.service.email.EmailService;
+import com.albert.godworld.arm.resource.service.other.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -25,17 +26,23 @@ public class EmailServiceSPI implements EmailService {
     }
 
     @Override
-    public void sendSimpleMail(String to, String subject, String text) {
+    public boolean sendSimpleMail(String to, String subject, String text) {
         SimpleMailMessage message=new SimpleMailMessage();
         message.setFrom(from);
         message.setText(text);
         message.setSubject(subject);
         message.setTo(to);
-        javaMailSender.send(message);
+        try{
+            javaMailSender.send(message);
+            return true;
+        }catch (MailException e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
-    public void sendMimeMail(String to, String subject, String text) {
+    public boolean sendMimeMail(String to, String subject, String text) {
         MimeMessage message=javaMailSender.createMimeMessage();
         try{
             MimeMessageHelper helper=new MimeMessageHelper(message,true);
@@ -44,8 +51,10 @@ public class EmailServiceSPI implements EmailService {
             helper.setText(text,true);
             helper.setSubject(subject);
             javaMailSender.send(message);
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
+            return true;
+        } catch (MessagingException | MailException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }

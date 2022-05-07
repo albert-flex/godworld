@@ -37,6 +37,20 @@ spring:
     password: ${DB_PASSWORD}
     initialization-mode: ALWAYS
     # DB_HOST,DB_USERNAME,DB_PASSWORD 为自行安装mysql后，在系统环境里写的环境变量或启动时的参数
+
+  redis:
+    database: 0
+    host: localhost
+    port: 6379
+    password: moeyui0624
+    timeout: 6000
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1
+        mmax-idle: 8
+        min-idle: 0
+
   servlet:
     multipart:
       max-request-size: 20MB
