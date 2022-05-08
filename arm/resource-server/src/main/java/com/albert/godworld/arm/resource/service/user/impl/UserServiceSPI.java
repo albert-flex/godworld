@@ -41,6 +41,13 @@ public class UserServiceSPI extends ServiceImpl<UserMapper, User>
     }
 
     @Override
+    public boolean checkEmailAvail(String email) {
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(User::getEmail, email);
+        return super.getOne(queryWrapper) == null;
+    }
+
+    @Override
     public User getByName(String name) {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(User::getUsername, name);
@@ -49,12 +56,12 @@ public class UserServiceSPI extends ServiceImpl<UserMapper, User>
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user=getByName(username);
-        if(user==null){
+        User user = getByName(username);
+        if (user == null) {
             throw new UsernameNotFoundException(username);
         }
 
-        List<Permission> permissions=permissionService.listOfUser(user.getId());
+        List<Permission> permissions = permissionService.listOfUser(user.getId());
         user.setAllPermission(permissions);
         return user;
     }

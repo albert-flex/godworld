@@ -15,10 +15,10 @@ insert into u_group(id,name,description) values
 (3,"Author","作者");
 
 delete from user;
-insert into user(id,username) values
-(1,"A1"),
-(2,"A2"),
-(3,"A3");
+insert into user(id,username,email) values
+(1,"A1","A1@godworld.com"),
+(2,"A2","A2@godworld.com"),
+(3,"A3","A3@godworld.com");
 
 delete from group_permission;
 insert into group_permission(id,group_id,permission_id) values
@@ -58,13 +58,13 @@ insert book_board(id,name) values
 (8,"散文");
 
  delete from book_info;
- insert book_info(id,author_name,name,board_name) values
- (1,"夏文纯一","樱花变奏曲","校园"),
- (2,"夏文纯一","谋杀者Z","校园"),
- (3,"夏文纯一","被封印的魔力","奇幻"),
- (4,"夏文纯一","无界法魂","玄幻"),
- (5,"夏文纯一","康德莱特街39号","校园"),
- (6,"阿尔伯特","Spring EE的开发方式","随笔");
+ insert book_info(id,author_name,name,board_id) values
+ (1,"夏文纯一","樱花变奏曲",3),
+ (2,"夏文纯一","谋杀者Z",3),
+ (3,"夏文纯一","被封印的魔力",4),
+ (4,"夏文纯一","无界法魂",9),
+ (5,"夏文纯一","康德莱特街39号",3),
+ (6,"阿尔伯特","Spring EE的开发方式",7);
 
 
 /**

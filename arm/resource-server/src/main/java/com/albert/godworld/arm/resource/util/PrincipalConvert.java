@@ -58,8 +58,9 @@ public class PrincipalConvert {
                 }
             }
         }
-        user.setEnabled(Boolean.parseBoolean(b.get("enabled") + ""));
+        user.setLocked(Boolean.parseBoolean(b.get("lock") + ""));
         user.setLogin(Boolean.parseBoolean(b.get("login")+""));
+        user.setEmail((String) b.get("email"));
         user.setAllPermission((List<Permission>) b.get("allPermission"));
         return user;
     }

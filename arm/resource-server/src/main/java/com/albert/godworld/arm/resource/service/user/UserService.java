@@ -11,6 +11,8 @@ public interface UserService extends IService<User>, UserDetailsService {
 
     boolean checkNameAvail(String name);
 
+    boolean checkEmailAvail(String email);
+
     User getByName(String name);
 }
 

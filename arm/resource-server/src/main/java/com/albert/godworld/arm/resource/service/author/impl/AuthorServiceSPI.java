@@ -13,6 +13,11 @@ public class AuthorServiceSPI extends ServiceImpl<AuthorMapper, AuthorInfo>
     implements AuthorService {
 
     @Override
+    public Long getAuthorIdByUserId(Long userId) {
+        return baseMapper.getAuthorIdByUserId(userId);
+    }
+
+    @Override
     public Page<AuthorInfo> queryByName(Page<AuthorInfo> page, String name) {
         LambdaQueryWrapper<AuthorInfo> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.like(AuthorInfo::getName,name);

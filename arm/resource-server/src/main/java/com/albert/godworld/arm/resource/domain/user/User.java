@@ -17,7 +17,8 @@ public class User implements UserDetails {
     private Long id;
     private String username;
     private String password;
-    private Boolean enabled;
+    private String email;
+    private Boolean locked;
     private Boolean login;
 
     private Date createTime;
@@ -53,6 +54,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return enabled;
+        return !locked;
     }
 }

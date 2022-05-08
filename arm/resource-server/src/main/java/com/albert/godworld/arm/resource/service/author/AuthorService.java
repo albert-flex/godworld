@@ -7,5 +7,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 public interface AuthorService extends IService<AuthorInfo> {
 
+    Long getAuthorIdByUserId(Long userId);
     Page<AuthorInfo> queryByName(Page<AuthorInfo> page,String name);
 }

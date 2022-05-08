@@ -3,19 +3,25 @@ package com.albert.godworld.arm.resource.controller.book;
 
 import com.albert.godworld.arm.resource.domain.book.BookInfo;
 import com.albert.godworld.arm.resource.service.book.BookInfoService;
+import com.albert.godworld.arm.resource.service.book.BookRankService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/book")
 public class BookInfoController {
 
     private final BookInfoService bookInfoService;
+    private final BookRankService bookRankService;
 
     @Autowired
-    public BookInfoController(BookInfoService bookInfoService) {
+    public BookInfoController(BookInfoService bookInfoService, BookRankService bookRankService) {
         this.bookInfoService = bookInfoService;
+        this.bookRankService = bookRankService;
     }
 
     @PostMapping
@@ -32,6 +38,16 @@ public class BookInfoController {
     @GetMapping("/page/newest")
     public Page<BookInfo> pageOfNewes(Page<BookInfo> page){
         return bookInfoService.pageOfUpdate(page);
+    }
+
+    @GetMapping("/rank")
+    public List<BookInfo> rank(){
+        return bookRankService.getRankList();
+    }
+
+    @GetMapping("/rank/all")
+    public Map<String,List<BookInfo>> rankAllBoards(){
+        return bookRankService.getAllRankListOfBoard();
     }
 
     @GetMapping("/page/author/{authorName}")
