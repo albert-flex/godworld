@@ -39,6 +39,7 @@
 <script setup>
 import { reactive } from "@vue/runtime-core";
 import { useRouter } from "vue-router";
+import { loginAPI } from "../../api/user.js";
 
 const router = useRouter();
 
@@ -48,6 +49,12 @@ const formData = reactive({
 });
 
 function login() {
+  if(formData.userName!=''&&formData.password!=''){
+    loginAPI(formData.userName,formData.password,(data)=>{
+      console.log(data.userName);
+    });
+  }
+
   alert("登录:" + formData.userName + " / " + formData.password);
 }
 

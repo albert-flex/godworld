@@ -1,9 +1,6 @@
 package com.albert.godworld.arm.resource.controller.user;
 
-import com.albert.godworld.arm.resource.dto.RV;
-import com.albert.godworld.arm.resource.dto.RVError;
-import com.albert.godworld.arm.resource.dto.RegisterRequire;
-import com.albert.godworld.arm.resource.dto.UserResponse;
+import com.albert.godworld.arm.resource.dto.*;
 import com.albert.godworld.arm.resource.domain.social.SocialInfo;
 import com.albert.godworld.arm.resource.domain.user.User;
 import com.albert.godworld.arm.resource.service.author.AuthorService;
@@ -119,7 +116,7 @@ public class UserController {
 
         UserResponse response = new UserResponse();
         User user = convert.convert(principal);
-        response.setUserId(user.getId());
+        response.setUserId(user.getId()+"");
         response.setUserName(user.getUsername());
         response.setEmail(user.getEmail());
         Long authorId = authorService.getAuthorIdByUserId(user.getId());
@@ -134,7 +131,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public RV<User> register(@RequestBody RegisterRequire require) {
+    public RV<UserDTO> register(@RequestBody RegisterRequire require) {
 
         //检查用户名唯一性
         if(!userService.checkNameAvail(require.getUserName())){
@@ -157,6 +154,7 @@ public class UserController {
             return RVError.USER_INSERT_ERROR.to();
         }
 
-        return RV.success(user);
+        UserDTO userDTO=UserDTO.create(user);
+        return RV.success(userDTO);
     }
 }

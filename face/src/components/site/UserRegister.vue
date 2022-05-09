@@ -6,7 +6,6 @@
         :model="formData"
         :label-col="labelCol"
         :wrapper-col="wrapperCol"
-        @finish="register"
       >
         <a-form-item
           label="用户名"
@@ -24,7 +23,12 @@
         >
           <a-input v-model:value="formData.email" />
         </a-form-item>
-          <a-button type="primary" style="margin: 20px;margin-top:0px;">获取验证码</a-button>
+        <a-button
+          type="primary"
+          style="margin: 20px; margin-top: 0px"
+          @click="sendCaptcha"
+          >获取验证码</a-button
+        >
         <a-form-item
           name="Email Captcha"
           label="验证码"
@@ -44,6 +48,7 @@
             type="primary"
             html-type="submit"
             style="margin-right: 10px"
+            @click="register"
           >
             注册
           </a-button>
@@ -57,6 +62,7 @@
 <script setup>
 import { reactive } from "@vue/reactivity";
 import { useRouter } from "vue-router";
+import { sendCaptchaAPI, registerAPI } from "../../api/user.js";
 
 const layout = {
   labelCol: {
@@ -81,19 +87,21 @@ function toLogin() {
 }
 
 function sendCaptcha() {
-  alert("send captcha!");
+  if (formData.email == null || formData.email == "") {
+    return;
+  }
+  sendCaptchaAPI(formData.email, (data) => {
+    alert("已发送验证码到邮箱：" + formData.email);
+  });
 }
 
 function register() {
-  alert(
-    "register:" +
-      formData.userName +
-      "/" +
-      formData.password +
-      "/" +
-      formData.email +
-      "/" +
-      formData.captcha
-  );
+  registerAPI(formData, (data) => {
+    if (data.success) {
+      console.log(data.obj.userId);
+    } else {
+      alert(data.error);
+    }
+  });
 }
 </script>

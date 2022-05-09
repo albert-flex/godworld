@@ -9,15 +9,22 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.RemoteTokenServices;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
-    private static final String RESOURCE_ID= "r1";
+    private static final String RESOURCE_ID = "r1";
 
     @Bean
-    public ResourceServerTokenServices resourceServerTokenServices(){
+    public ResourceServerTokenServices resourceServerTokenServices() {
         RemoteTokenServices remoteTokenServices = new RemoteTokenServices();
         remoteTokenServices.setCheckTokenEndpointUrl("http://localhost:9001/oauth/check_token");
         remoteTokenServices.setClientId("c1");
@@ -40,6 +47,20 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/**").permitAll()
                 .and()
                 .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER);
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER)
+                .and()
+                .cors().configurationSource(corsConfigurationSource());
+    }
+
+    CorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.setAllowedOriginPatterns(Collections.singletonList("*"));
+        corsConfiguration.setAllowedMethods(Collections.singletonList("*"));
+        corsConfiguration.setAllowedHeaders(Collections.singletonList("*"));
+        corsConfiguration.setMaxAge(Duration.ofHours(2));
+        source.registerCorsConfiguration("/**", corsConfiguration);
+        return source;
     }
 }
