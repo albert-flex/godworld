@@ -49,18 +49,6 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER)
                 .and()
-                .cors().configurationSource(corsConfigurationSource());
-    }
-
-    CorsConfigurationSource corsConfigurationSource() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowCredentials(true);
-        corsConfiguration.setAllowedOriginPatterns(Collections.singletonList("*"));
-        corsConfiguration.setAllowedMethods(Collections.singletonList("*"));
-        corsConfiguration.setAllowedHeaders(Collections.singletonList("*"));
-        corsConfiguration.setMaxAge(Duration.ofHours(2));
-        source.registerCorsConfiguration("/**", corsConfiguration);
-        return source;
+                .cors();
     }
 }
