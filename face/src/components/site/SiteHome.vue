@@ -37,11 +37,11 @@
 <script setup>
 import BookPreview from "../book/BookPreview.vue";
 const hotList = [
-  { title: "世界在我之上", board: "恋爱", update: "第三章" },
-  { title: "主人是鬼", board: "恋爱", update: "第三卷" },
-  { title: "梦想的世界", board: "校园", update: "第三章" },
-  { title: "我没有性癖", board: "搞笑", update: "第六卷第三章" },
-  { title: "吃饱了撑的", board: "古典", update: "第二章" },
+  { id: "1", title: "世界在我之上", board: "恋爱", update: "第三章" },
+  { id: "2", title: "主人是鬼", board: "恋爱", update: "第三卷" },
+  { id: "3", title: "梦想的世界", board: "校园", update: "第三章" },
+  { id: "4", title: "我没有性癖", board: "搞笑", update: "第六卷第三章" },
+  { id: "5", title: "吃饱了撑的", board: "古典", update: "第二章" },
 ];
 const newest = {
   title: "吃饱了撑的",

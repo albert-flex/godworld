@@ -1,12 +1,14 @@
 <template>
-  <a-layout style="padding: auto; width: 30%">
-    <a-layout-content>
+  <a-layout style="padding: auto;" class="background">
+    <a-layout-content style="align-self: flex-end;">
       <a-form
         :model="formData"
         :label-col="labelCol"
         :wrapper-col="wrapperCol"
         @finish="login"
+        class="form-body"
       >
+        <h1>登录页</h1>
         <a-form-item
           label="用户名"
           name="userName"
@@ -38,30 +40,54 @@
 
 <script setup>
 import { reactive } from "@vue/runtime-core";
+import { loginAPI, userInfoAPI } from "../../api/user.js";
+import { loginData, userData } from "../../state/user";
 import { useRouter } from "vue-router";
-import { loginAPI } from "../../api/user.js";
 
-const router = useRouter();
+const loginInfo = loginData();
 
 const formData = reactive({
   userName: "",
   password: "",
 });
 
-function login() {
-  if(formData.userName!=''&&formData.password!=''){
-    loginAPI(formData.userName,formData.password,(data)=>{
-      console.log(data.userName);
-    });
-  }
+const router = useRouter();
 
-  alert("登录:" + formData.userName + " / " + formData.password);
+function toRegister(){
+  router.push({name:"register"});
 }
 
-function toRegister() {
-  router.push({ name: "register" });
+function login() {
+  if (formData.userName != "" && formData.password != "") {
+    loginAPI(formData.userName, formData.password, (data) => {
+      const userD = userData();
+      loginInfo.set(data.access_token);
+      userInfoAPI((data2) => {
+        userD.refresh(data2);
+        console.log(userD.userName);
+        router.push({name: "site"});
+      });
+    });
+  }
 }
 </script>
 
 <style scoped>
+.form-body{
+  width: 400px;
+  height: 400px;
+  padding: 20px;
+  padding-left: auto;
+  padding-right: auto;
+  margin: 50px;
+  border:2px solid black;
+  border-radius: 10px 10px;
+  background-color: #dddd;
+}
+
+.background{
+  margin-top: 40px;
+  background-image: url(./back2.png);
+  background-size: cover;
+}
 </style>

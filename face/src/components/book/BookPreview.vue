@@ -1,5 +1,5 @@
 <template>
-  <div class="box">
+  <div class="box" :id="bookInfo.id">
     <p>{{ bookInfo.title }} - {{ bookInfo.update }}</p>
   </div>
 </template>
@@ -7,6 +7,7 @@
 <script setup>
 defineProps({
   bookInfo: {
+    id: String,
     title: String,
     update: String,
     board: String,

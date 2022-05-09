@@ -1,5 +1,5 @@
 
-import BookHome from "../components/site/BookHome.vue";
+import SiteHome from "../components/site/SiteHome.vue";
 import UserLogin from "../components/site/UserLogin.vue";
 import UserRegister from "../components/site/UserRegister.vue";
 import { createRouter } from "vue-router";
@@ -9,7 +9,7 @@ const routes = [
     {
         path: "/",
         name: "site",
-        component: BookHome,
+        component: SiteHome,
     },
     {
         path: "/login",
@@ -20,11 +20,6 @@ const routes = [
         path:"/register",
         name: "register",
         component: UserRegister,
-    },
-    {
-        path: "/book",
-        name: "book",
-        component: BookHome,
     },
 ];
 

@@ -1,12 +1,14 @@
 <template>
-  <a-layout style="padding: auto; width: 30%">
-    <a-layout-content>
+  <a-layout style="padding: auto;" class="background">
+    <a-layout-content style="align-self: flex-end;" >
       <a-form
         v-bind="layout"
         :model="formData"
         :label-col="labelCol"
         :wrapper-col="wrapperCol"
+        class="form-body"
       >
+        <h1>注册页</h1>
         <a-form-item
           label="用户名"
           name="userName"
@@ -64,6 +66,8 @@ import { reactive } from "@vue/reactivity";
 import { useRouter } from "vue-router";
 import { sendCaptchaAPI, registerAPI } from "../../api/user.js";
 
+const router = useRouter();
+
 const layout = {
   labelCol: {
     span: 8,
@@ -73,7 +77,9 @@ const layout = {
   },
 };
 
-const router = useRouter();
+function toLogin() {
+  router.push({ name: "login" });
+}
 
 const formData = reactive({
   userName: "",
@@ -81,10 +87,6 @@ const formData = reactive({
   email: "",
   captcha: "",
 });
-
-function toLogin() {
-  router.push({ name: "login" });
-}
 
 function sendCaptcha() {
   if (formData.email == null || formData.email == "") {
@@ -98,10 +100,31 @@ function sendCaptcha() {
 function register() {
   registerAPI(formData, (data) => {
     if (data.success) {
-      console.log(data.obj.userId);
+      alert("注册成功");
+      toLogin();
     } else {
       alert(data.error);
     }
   });
 }
 </script>
+
+<style scoped>
+.form-body{
+  width: 400px;
+  height: 400px;
+  padding: 20px;
+  padding-left: auto;
+  padding-right: auto;
+  margin: 50px;
+  border:2px solid black;
+  border-radius: 10px 10px;
+  background-color: #dddd;
+}
+
+.background{
+  margin-top: 40px;
+  background-image: url(./back.png);
+  background-size: cover;
+}
+</style>
