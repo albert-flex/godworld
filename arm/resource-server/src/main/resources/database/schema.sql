@@ -145,3 +145,61 @@ create table file_resource(
     own_id bigint not null,
     primary key(id)
 );
+
+/**
+ * Social
+ */
+drop table if exists social_info;
+create table social_info(
+    id bigint not null auto_increment,
+    name varchar(30) not null unique,
+    master_id bigint not null,
+    moto varchar(256) not null default 'moto',
+    create_time datetime not null default now(),
+    primary key(id)
+);
+
+drop table if exists social_member;
+create table social_member(
+    id bigint not null auto_increment,
+    social_id bigint not null,
+    author_id bigint not null,
+    member_name varchar(30) not null,
+    type varchar(30) not null,
+    in_time datetime not null default now(),
+    primary key(id)
+);
+
+drop table if exists social_announce;
+create table social_announce(
+    id bigint not null auto_increment,
+    social_id bigint not null,
+    publish_author_id bigint not null,
+    title varchar(30) not null,
+    content text not null,
+    publish_time datetime not null default now(),
+    update_time datetime not null default now(),
+    primary key(id)
+);
+
+drop table if exists social_activity;
+create table social_activity(
+    id bigint not null auto_increment,
+    social_id bigint not null,
+    honer_author_id bigint not null,
+    name varchar(30) not null,
+    description varchar(256) not null,
+    start_time datetime not null,
+    end_time datetime not null,
+    act_on boolean not null default false,
+    primary key(id)
+);
+
+drop table if exists social_activity_book;
+create table social_activity_book(
+    id bigint not null auto_increment,
+    social_id bigint not null,
+    activity_id bigint not null,
+    book_id bigint not null,
+    primary key(id)
+);
