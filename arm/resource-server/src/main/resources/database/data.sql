@@ -40,6 +40,14 @@ insert into user_group(id,user_id,group_id) values
 (4,2,2),
 (5,3,3);
 
+/**
+ * Author
+ */
+delete from author_info;
+insert author_info(id,name,user_id,email,moto) values
+(1,"夏文纯一",1,"natsufumij@yeah.net","恭喜你，尤克，从今后你就是A级冒险者了"),
+(2,"阿尔伯特",2,"albert_flex@yeah.net","恭喜你，尤克，从今后你就是A级冒险者了");
+
 
 /**
  * Book
@@ -58,19 +66,12 @@ insert book_board(id,name) values
 (8,"散文");
 
  delete from book_info;
- insert book_info(id,author_name,name,board_id) values
- (1,"夏文纯一","樱花变奏曲",3),
- (2,"夏文纯一","谋杀者Z",3),
- (3,"夏文纯一","被封印的魔力",4),
- (4,"夏文纯一","无界法魂",9),
- (5,"夏文纯一","康德莱特街39号",3),
- (6,"阿尔伯特","Spring EE的开发方式",7);
+ insert book_info(id,author_id,name,board_id) values
+ (1,1,"樱花变奏曲",3),
+ (2,1,"谋杀者Z",3),
+ (3,1,"被封印的魔力",4),
+ (4,1,"无界法魂",9),
+ (5,1,"康德莱特街39号",3),
+ (6,2,"Spring EE的开发方式",7);
 
 
-/**
- * Author
- */
-delete from author_info;
-insert author_info(id,name,user_id,email,moto) values
-(1,"夏文纯一",1,"natsufumij@yeah.net","恭喜你，尤克，从今后你就是A级冒险者了"),
-(2,"阿尔伯特",2,"albert_flex@yeah.net","恭喜你，尤克，从今后你就是A级冒险者了");

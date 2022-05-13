@@ -30,7 +30,7 @@ public class BookChapterController {
 
     @GetMapping("/page/cata/{cataId}")
     public Page<BookChapter> chapterOfCata(@PathVariable("cataId")Long cataId,Page<BookChapter> page){
-        return bookChapterService.chapterOfCata(page,cataId);
+        return bookChapterService.chapterOfVolume(page,cataId);
     }
 
     @GetMapping("/newest/{bookId}")

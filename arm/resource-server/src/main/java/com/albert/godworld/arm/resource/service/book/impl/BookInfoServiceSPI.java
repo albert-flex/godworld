@@ -1,23 +1,37 @@
 package com.albert.godworld.arm.resource.service.book.impl;
 
+import com.albert.godworld.arm.resource.domain.author.AuthorInfo;
 import com.albert.godworld.arm.resource.domain.book.BookInfo;
+import com.albert.godworld.arm.resource.domain.user.User;
 import com.albert.godworld.arm.resource.mapper.book.BookInfoMapper;
+import com.albert.godworld.arm.resource.service.author.AuthorService;
 import com.albert.godworld.arm.resource.service.book.BookInfoService;
+import com.albert.godworld.arm.resource.service.user.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class BookInfoServiceSPI extends ServiceImpl<BookInfoMapper, BookInfo>
     implements BookInfoService {
 
+    private final AuthorService authorService;
+
     @Override
     public Page<BookInfo> pageOfAuthor(Page<BookInfo> page, String authorName) {
+        LambdaQueryWrapper<AuthorInfo> authQ=new LambdaQueryWrapper<>();
+        authQ.eq(AuthorInfo::getName,authorName);
+        AuthorInfo authorInfo=authorService.getOne(authQ);
+        if(authorInfo==null)return page;
+
         LambdaQueryWrapper<BookInfo> queryWrapper=new LambdaQueryWrapper<>();
-        queryWrapper.eq(BookInfo::getAuthorName,authorName);
+        queryWrapper.eq(BookInfo::getAuthorId,authorInfo.getId());
         return super.page(page,queryWrapper);
     }
 

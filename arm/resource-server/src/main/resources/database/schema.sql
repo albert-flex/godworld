@@ -60,7 +60,7 @@ create table book_board(
 drop table if exists book_info;
 create table book_info(
     id bigint not null auto_increment,
-    author_name varchar(30) not null,
+    author_id bigint not null,
     name varchar(30) not null,
     point bigint not null default 0,
     board_id bigint not null,

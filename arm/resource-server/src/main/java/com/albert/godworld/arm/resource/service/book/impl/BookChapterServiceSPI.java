@@ -13,9 +13,9 @@ public class BookChapterServiceSPI extends ServiceImpl<BookChapterMapper, BookCh
     implements BookChapterService {
 
     @Override
-    public Page<BookChapter> chapterOfCata(Page<BookChapter> page, Long cataId) {
+    public Page<BookChapter> chapterOfVolume(Page<BookChapter> page, Long volumeId) {
         LambdaQueryWrapper<BookChapter> queryWrapper=new LambdaQueryWrapper<>();
-        queryWrapper.eq(BookChapter::getCataId,cataId);
+        queryWrapper.eq(BookChapter::getVolumeId, volumeId);
         return super.page(page,queryWrapper);
     }
 

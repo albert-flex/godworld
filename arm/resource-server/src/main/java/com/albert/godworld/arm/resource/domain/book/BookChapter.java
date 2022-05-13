@@ -9,7 +9,7 @@ public class BookChapter {
 
     private Long id;
     private Long bookId;
-    private Long cataId;
+    private Long volumeId;
     private String title;
     private String content;
     private Date createTime;
