@@ -168,15 +168,11 @@ const newChapter=ref({
 
 function splitContent(){
   let words=[];
-  for(let cn/ )
-
-}n/ 
-b2
-}n/ b2
+}
 const books = [];
-consb2t books = [];
+const books = [];
 const pagi = {};
-consb2t pagi = {};
+const pagi = {};
 for (let i = 0; i != 10; ++i) {
   books.push({
     id: "101",
