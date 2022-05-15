@@ -2,10 +2,10 @@
   <main>
     <a-form :label-col="labelCol" :label-wrap="wrapperCol" :model="formData" class="newAuthor">
       <h2 style="text-align: center">注册作者信息</h2>
-      <a-form-item label="笔名">
+      <a-form-item label="社团名字">
         <a-input
           v-model:value="formData.userName"
-          placeholder="笔名"
+          placeholder="名字"
           allow-clear
         >
           <template #prefix>
@@ -19,12 +19,6 @@
       </a-form-item>
       <a-form-item label="验证码">
         <a-input v-model:value="formData.captcha" allow-clear></a-input>
-      </a-form-item>
-      <a-form-item label="密码">
-        <a-input-password
-          v-model:value="formData.password"
-          placeholder="input password"
-        />
       </a-form-item>
       <a-form-item :wrapper-col="{ span: 14, offset: 10 }">
         <a-button type="primary">注册</a-button>
@@ -42,7 +36,7 @@ const wrapperCol = { span: 10 };
 const formData = ref({
   userName: "",
   email:"",
-  captcha:"",
+  captcha:""
 });
 </script>
 

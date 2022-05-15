@@ -7,6 +7,9 @@ import AuthorHome from "../views/author/AuthorHome.vue";
 import AuthorPage from "../views/author/AuthorPage.vue";
 import AuthorNew from "../views/author/AuthorNew.vue";
 import SocialHome from "../views/social/SocialHome.vue";
+import SocialPage from "../views/social/SocialPage.vue";
+import SocialNew from "../views/social/SocialNew.vue";
+import AuthorStation from "../views/work/AuthorStation.vue";
 
 const routes = [
     {
@@ -43,6 +46,21 @@ const routes = [
         path:"/social",
         name:"socialHome",
         component: SocialHome,
+    },
+    {
+        path:"/social/new",
+        name:"socialNew",
+        component: SocialNew
+    },
+    {
+        path: "/social/:id",
+        name: "socialPage",
+        component: SocialPage,
+    },
+    {
+        path:"/work/author",
+        name:"authorStation",
+        component:AuthorStation
     }
 ];
 
