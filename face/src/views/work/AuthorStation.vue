@@ -7,10 +7,11 @@
           :src="'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png?${random}'"
           fallback="data:image/png;base64,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"
         />
-        <div>
+        <div class="info">
           <h2>作者: 夏文纯一</h2>
           <h2>创建时间: 2022年5月21日</h2>
           <h2>代表作: 《谋杀者Z》</h2>
+          <h2>官方邮箱: natsufumij@yeah.net</h2>
         </div>
       </div>
       <div>
@@ -78,11 +79,11 @@
         </a-form-item>
       </a-form>
       <a-divider>目录</a-divider>
-      <div>
+      <a-space>
         <a-button type="ghost">+新增卷目</a-button>
         <a-button type="ghost">R删除卷目</a-button>
         <a-button type="ghost">E修改卷目</a-button>
-      </div>
+      </a-space>
       <a-collapse v-model:activeKey="activeKey" :bordered="false">
         <a-collapse-panel
           :header="item.name"
@@ -96,29 +97,7 @@
         </a-collapse-panel>
       </a-collapse>
     </aside>
-    <a-button type="primary" @click="showDrawer">Open</a-button>
-
-    <a-drawer
-      v-model:visible="editVolumeVisi"
-      class="custom-class"
-      style="color: red"
-      title="修改卷目"
-      placement="right"
-      @after-visible-change="afterVisibleChange"
-    >
-      <a-form
-        :model="editVolume"
-        :label-col="labelCol"
-        :wrapper-col="wrapperCol"
-      >
-        <a-form-item label="卷ID">
-          <a-input v-model:value="editVolume.id" placeholder="名字" />
-        </a-form-item>
-        <a-form-item label="卷名">
-          <a-input v-model:value="editVolume.name" placeholder="名字" />
-        </a-form-item>
-      </a-form>
-    </a-drawer>
+    <a-button type="primary" @click="showAuthor">Open</a-button>
 
     <a-drawer
       v-model:visible="newChapterVisi"
@@ -129,19 +108,159 @@
       @after-visible-change="afterVisibleChange"
     >
       <a-form
-        :model="editVolume"
+        :model="newChapter"
         :label-col="labelCol"
         :wrapper-col="wrapperCol"
       >
         <a-form-item label="标题">
-            <a-input v-model:value="editVolume.id" placeholder="名字" />
+          <a-input v-model:value="newChapter.title" placeholder="名字" />
+        </a-form-item>
+        <a-form-item label="所属卷目">
+          <a-select
+            ref="select"
+            v-model:value="newChapter.volumeId"
+            style="width: 120px"
+            @focus="focus"
+            @change="handleChange"
+          >
+            <a-select-option value="1">第一卷</a-select-option>
+            <a-select-option value="2">第二卷</a-select-option>
+            <a-select-option value="3">第三卷</a-select-option>
+            <a-select-option value="4">第四卷</a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-divider><h2>文章正文</h2></a-divider>
+        <a-textarea :rows="20" style="overflow: scroll"></a-textarea>
+        <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
+          <a-button type="primary" html-type="submit">发布</a-button>
+        </a-form-item>
+      </a-form>
+    </a-drawer>
+
+    <a-drawer
+      v-model:visible="editChapterVisi"
+      class="custom-class"
+      style="color: red"
+      title="修改章节"
+      placement="right"
+      @after-visible-change="afterVisibleChange"
+    >
+      <a-form
+        :model="editChapter"
+        :label-col="labelCol"
+        :wrapper-col="wrapperCol"
+      >
+        <a-form-item label="标题">
+          <a-input v-model:value="newChapter.title" placeholder="名字" />
+        </a-form-item>
+        <a-form-item label="所属卷目">
+          <a-select
+            ref="select"
+            v-model:value="newChapter.volumeId"
+            style="width: 120px"
+            @focus="focus"
+            @change="handleChange"
+          >
+            <a-select-option value="1">第一卷</a-select-option>
+            <a-select-option value="2">第二卷</a-select-option>
+            <a-select-option value="3">第三卷</a-select-option>
+            <a-select-option value="4">第四卷</a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-divider><h2>文章正文</h2></a-divider>
+        <a-textarea :rows="20" style="overflow: scroll"></a-textarea>
+        <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
+          <a-button type="primary" html-type="submit">发布</a-button>
+        </a-form-item>
+      </a-form>
+    </a-drawer>
+
+    <a-drawer
+      v-model:visible="newBookVisi"
+      class="custom-class"
+      style="color: red"
+      title="New Book"
+      placement="right"
+      @after-visible-change="afterVisibleChange"
+    >
+      <a-form :model="newBook" :label-col="labelCol" :wrapper-col="wrapperCol">
+        <a-form-item label="title">
+          <a-input v-model:value="newBook.title" />
+        </a-form-item>
+        <a-form-item label="board">
+          <a-select
+            ref="select"
+            v-model:value="newBook.board"
+            :options="options"
+            style="width: 120px"
+            @focus="focus"
+            @change="handleChange"
+          >
+          </a-select>
+        </a-form-item>
+        <a-form-item label="tags">
+          <a-select
+            v-model:value="newBook.tags"
+            :options="options"
+            :size="size"
+            mode="tags"
+            placeholder="Please select"
+            style="width: 200px"
+          ></a-select>
+        </a-form-item>
+        <a-form-item label="Description">
+          <a-textarea></a-textarea>
+        </a-form-item>
+        <a-form-item :wrapper-col="{ offset: 10, span: 20 }">
+          <a-button type="primary" html-type="submit">发布</a-button>
+        </a-form-item>
+      </a-form>
+    </a-drawer>
+    <a-drawer
+      v-model:visible="editAuthorVisi"
+      class="custom-class"
+      style="color: red"
+      title="Edit Author"
+      placement="right"
+      @after-visible-change="afterVisibleChange"
+    >
+      <a-form
+        :model="authorInfo"
+        :label-col="labelCol"
+        :wrapper-col="wrapperCol"
+      >
+        <a-form-item label="头像">
+          <a-avatar shape="square" :size="64">
+            <template #icon><UserOutlined /></template>
+          </a-avatar>
+        </a-form-item>
+        <a-form-item label="名字">
+          <a-input v-model:value="authorInfo.name" />
+        </a-form-item>
+        <a-form-item label="邮箱">
+          <a-input v-model:value="authorInfo.email" />
+        </a-form-item>
+        <a-form-item label="签名">
+          <a-textarea :row="4"></a-textarea>
+        </a-form-item>
+        <a-form-item label="代表作">
+          <a-select
+            v-model:value="authorInfo.present"
+            :options="options"
+            :size="size"
+            placeholder="Please select"
+            style="width: 200px"
+          ></a-select>
+        </a-form-item>
+        <a-form-item :wrapper-col="{ offset: 10, span: 20 }">
+          <a-button type="primary" html-type="submit">修改</a-button>
         </a-form-item>
       </a-form>
     </a-drawer>
   </div>
 </template>
-
 <script setup>
+import { UserOutlined } from '@ant-design/icons-vue';
 import { ref } from "@vue/reactivity";
 
 const editVolumeVisi = ref(false);
@@ -153,25 +272,69 @@ function showDrawerChapter() {
   newChapterVisi.value = true;
 }
 
+const editChapterVisi = ref(false);
+function showEditDrawer() {
+  editChapterVisi.value = true;
+}
+
+const editAuthorVisi = ref(false);
+function showAuthor() {
+  editAuthorVisi.value = true;
+}
+
+const authorInfo = ref({
+  id: "101",
+  name: "夏文纯一",
+  email: "natsufumij@yeah.net",
+  moto: `这就是 人生...`,
+  present: "",
+});
+
+const tags1 = ref([]);
+const options = ref([
+  { value: "战斗" },
+  { value: "异世界" },
+  { value: "女仆" },
+  { value: "组队" },
+  { value: "异世界" },
+]);
+const newBookVisi = ref(false);
+function showNewBook() {
+  newBookVisi.value = true;
+}
+
+const newBook = ref({
+  title: "work name",
+  board: "select",
+  tags: ["Isekai", "Meido", "Party", "Yusha"],
+  description: ``,
+});
+
 const editVolume = ref({
   id: "101",
   name: "第一卷",
 });
 
-const newContent=ref('');
+const newContent = ref("");
 
-const newChapter=ref({
-  volumeId:"101",
-  title:"",
-  content:[]
+const newChapter = ref({
+  volumeId: "101",
+  title: "",
+  contentWord: "",
+  content: [],
 });
 
-function splitContent(){
-  let words=[];
+const editChapter = ref({
+  id: "101",
+  title: "",
+  contentWord: "",
+  content: [],
+});
+
+function splitContent() {
+  let words = [];
 }
 const books = [];
-const books = [];
-const pagi = {};
 const pagi = {};
 for (let i = 0; i != 10; ++i) {
   books.push({
@@ -187,7 +350,7 @@ for (let i = 0; i != 10; ++i) {
 }
 
 const labelCol = { style: { width: "150px" } };
-const wrapperCol = { span: 20 };
+const wrapperCol = { span: 14 };
 
 const labelCol2 = { style: { width: "100px" } };
 const wrapperCol2 = { span: 14 };
@@ -254,5 +417,10 @@ const catalog = [
 
 .authorStation aside {
   width: 40%;
+}
+
+.info h2 {
+  font-size: 1.3em;
+  margin-left: 1em;
 }
 </style>
