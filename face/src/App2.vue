@@ -6,12 +6,14 @@
         v-model:selectedKeys="selectedKeys"
         theme="dark"
         mode="horizontal"
-        :style="{ lineHeight: '64px'}"
+        :style="{ lineHeight: '64px', width: '100%' }"
+        @click="selectMenu"
       >
         <a-menu-item key="1">书库</a-menu-item>
         <a-menu-item key="2">作者</a-menu-item>
         <a-menu-item key="3">社团</a-menu-item>
         <a-menu-item key="4">工作台</a-menu-item>
+        <a-menu-item key="5">个人主页</a-menu-item>
       </a-menu>
     </a-layout-header>
     <a-layout-content :style="{ padding: '0px 0px', marginTop: '64px' }">
@@ -25,8 +27,24 @@
   </a-layout>
 </template>
 <script setup>
-import { ref } from 'vue';
-const selectedKeys= ref(['2']);
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+const router = useRouter();
+
+const selectedKeys = ref(["2"]);
+function selectMenu(e) {
+  if (e.key == "1") {
+    router.push({ name: "bookHome" });
+  } else if (e.key == "2") {
+    router.push({ name: "authorHome" });
+  } else if (e.key == "3") {
+    router.push({ name: "socialHome" });
+  } else if(e.key=='4') {
+    router.push({ name: "authorStation" });
+  }else {
+    router.push({name:"login"});
+  }
+}
 </script>
 <style>
 #components-layout-demo-fixed .logo {

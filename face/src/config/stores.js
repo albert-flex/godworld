@@ -38,6 +38,9 @@ const loadUser = defineStore('userData', {
         }
     },
     actions: {
+        logined() {
+            return this.userId === NO_LOGIN_ACCESS;
+        },
         set(data) {
             this.userId = data.userId;
             this.email = data.email;

@@ -11,11 +11,18 @@ import SocialPage from "../views/social/SocialPage.vue";
 import SocialNew from "../views/social/SocialNew.vue";
 import AuthorStation from "../views/work/AuthorStation.vue";
 import SocialStation from "../views/work/SocialStation.vue";
+import UserLogin from "../views/user/UserLogin.vue";
+import UserRegister from "../views/user/UserRegister.vue";
 
 const routes = [
     {
         path: "/",
         name: "site",
+        component: BookLibHome
+    },
+    {
+        path: "/book",
+        name: "bookHome",
         component: BookLibHome
     },
     {
@@ -67,7 +74,17 @@ const routes = [
         path: "/work/social",
         name: "socialStation",
         component: SocialStation,
-    }
+    },
+    {
+        path:"/login",
+        name:"login",
+        component: UserLogin,
+    },
+    {
+        path:"/register",
+        name:"register",
+        component: UserRegister,
+    },
 ];
 
 const router = createRouter({
