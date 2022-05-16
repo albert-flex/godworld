@@ -10,6 +10,7 @@ public class BookInfo {
     private Long id;
     private Long authorId;
     private String name;
+    private Long wordCount;
     private Long boardId;
     private Long point;
     private Date createTime;

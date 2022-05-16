@@ -57,4 +57,14 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return !locked;
     }
+
+    public boolean hasPermission(String per){
+        for(int i=0;i!=allPermission.size();++i){
+            Permission permission=allPermission.get(i);
+            if(permission.getName().equals(per)){
+                return true;
+            }
+        }
+        return false;
+    }
 }

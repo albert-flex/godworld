@@ -63,6 +63,7 @@ create table book_info(
     author_id bigint not null,
     name varchar(30) not null,
     point bigint not null default 0,
+    word_count bigint not null default 0,
     board_id bigint not null,
     create_time datetime not null default now(),
     update_time datetime not null default now(),
