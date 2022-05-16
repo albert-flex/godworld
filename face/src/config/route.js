@@ -10,6 +10,7 @@ import SocialHome from "../views/social/SocialHome.vue";
 import SocialPage from "../views/social/SocialPage.vue";
 import SocialNew from "../views/social/SocialNew.vue";
 import AuthorStation from "../views/work/AuthorStation.vue";
+import SocialStation from "../views/work/SocialStation.vue";
 
 const routes = [
     {
@@ -18,38 +19,38 @@ const routes = [
         component: BookLibHome
     },
     {
-        path:"/book/:id",
-        name:"book",
+        path: "/book/:id",
+        name: "book",
         component: BookContent,
     },
     {
-        path:"/chapter/:id",
-        name:"chapter",
+        path: "/chapter/:id",
+        name: "chapter",
         component: BookChapter,
     },
     {
-        path:"/author",
-        name:"authorHome",
+        path: "/author",
+        name: "authorHome",
         component: AuthorHome
     },
     {
         path: "/author/new",
-        name:"authorNew",
+        name: "authorNew",
         component: AuthorNew,
     },
     {
-        path:"/author/:id",
-        name:"authorPage",
+        path: "/author/:id",
+        name: "authorPage",
         component: AuthorPage,
     },
     {
-        path:"/social",
-        name:"socialHome",
+        path: "/social",
+        name: "socialHome",
         component: SocialHome,
     },
     {
-        path:"/social/new",
-        name:"socialNew",
+        path: "/social/new",
+        name: "socialNew",
         component: SocialNew
     },
     {
@@ -58,9 +59,14 @@ const routes = [
         component: SocialPage,
     },
     {
-        path:"/work/author",
-        name:"authorStation",
-        component:AuthorStation
+        path: "/work/author",
+        name: "authorStation",
+        component: AuthorStation
+    },
+    {
+        path: "/work/social",
+        name: "socialStation",
+        component: SocialStation,
     }
 ];
 
