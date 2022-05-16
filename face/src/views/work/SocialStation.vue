@@ -163,6 +163,7 @@
                                   src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
                                 />
                               </a-card>
+                              {{item.name}}
                             </a-list-item>
                           </template>
                         </a-list>
