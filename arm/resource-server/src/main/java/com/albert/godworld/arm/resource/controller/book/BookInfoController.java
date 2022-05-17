@@ -2,8 +2,10 @@ package com.albert.godworld.arm.resource.controller.book;
 
 
 import com.albert.godworld.arm.resource.domain.book.BookInfo;
+import com.albert.godworld.arm.resource.dto.BookQueryDTO;
 import com.albert.godworld.arm.resource.service.book.BookInfoService;
 import com.albert.godworld.arm.resource.service.book.BookRankService;
+import com.albert.godworld.arm.resource.vo.BookVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -35,11 +37,6 @@ public class BookInfoController {
         return bookInfoService.updateById(bookInfo);
     }
 
-    @GetMapping("/page/newest")
-    public Page<BookInfo> pageOfNewes(Page<BookInfo> page){
-        return bookInfoService.pageOfUpdate(page);
-    }
-
     @GetMapping("/rank")
     public List<BookInfo> rank(){
         return bookRankService.getRankList();
@@ -51,13 +48,22 @@ public class BookInfoController {
     }
 
     @GetMapping("/page/author/{authorName}")
-    public Page<BookInfo> pageOfAuthor(@PathVariable("authorName") String authorName,Page<BookInfo> page){
+    public Page<BookVo> pageOfAuthor(@PathVariable("authorName") String authorName,Page<BookVo> page){
         return bookInfoService.pageOfAuthor(page,authorName);
     }
 
-    @GetMapping("/page/board/{boardName}")
-    public Page<BookInfo> pageOfBoard(@PathVariable("boardName") String boardName,Page<BookInfo> page){
-        return bookInfoService.pageOfBoard(page,boardName);
+    @PostMapping("/update/rank")
+    public void updateRank(){
+        bookRankService.updateRankList();
+        bookRankService.updateAllRankListOfBoard();
+    }
+    @GetMapping("/page/name/{name}")
+    public Page<BookInfo> queryByName(@PathVariable("name") String bookName,Page<BookInfo> page){
+        return bookInfoService.queryByName(page,bookName);
+    }
+
+    public Page<BookVo> query(@RequestBody BookQueryDTO queryDTO,Page<BookVo> page){
+        return bookInfoService.query(page,queryDTO.getYear(),queryDTO.getMonth(),queryDTO.getTags(),queryDTO.getBoard());
     }
 
     @GetMapping("/page/all")

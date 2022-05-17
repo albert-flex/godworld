@@ -4,7 +4,7 @@ import com.albert.godworld.arm.resource.domain.user.User;
 import lombok.Data;
 
 @Data
-public class RegisterRequire {
+public class RegisterRequireDTO {
 
     private String userName;
     private String password;

@@ -64,6 +64,7 @@ create table book_info(
     name varchar(30) not null,
     point bigint not null default 0,
     word_count bigint not null default 0,
+    description varchar(512) not null default '',
     board_id bigint not null,
     create_time datetime not null default now(),
     update_time datetime not null default now(),
@@ -116,6 +117,21 @@ create table book_shelf_book(
     user_id bigint not null,
     book_id bigint not null,
     add_time datetime not null default now(),
+    primary key(id)
+);
+
+drop table if exists book_tag;
+create table book_tag(
+    id bigint not null auto_increment,
+    name varchar(30) not null,
+    primary key(id)
+);
+
+drop table if exists book_tag_bind;
+create table book_tag_bind(
+    id bigint not null auto_increment,
+    book_id bigint not null,
+    tag_id bigint not null,
     primary key(id)
 );
 

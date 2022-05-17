@@ -1,5 +1,6 @@
 package com.albert.godworld.arm.resource.controller;
 
+import com.albert.godworld.arm.resource.dto.RV;
 import com.albert.godworld.arm.resource.service.other.CaptchaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +17,14 @@ public class CaptchaController {
     }
 
     @PostMapping
-    public void saveAndSend(@RequestParam("email") String email){
+    public RV<Boolean> saveAndSend(@RequestParam("email") String email){
         String captcha=captchaService.createOne();
-        captchaService.saveAndSend(captcha,email);
+        boolean result= captchaService.saveAndSend(captcha,email);
+        if(result){
+            return RV.success(true);
+        }else {
+            return RV.error(-1,"发送验证码失败");
+        }
     }
 
     @GetMapping

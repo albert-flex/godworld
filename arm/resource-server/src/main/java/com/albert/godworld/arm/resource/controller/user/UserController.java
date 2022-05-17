@@ -111,14 +111,11 @@ public class UserController {
     }
 
     @GetMapping("/info")
-    public UserResponse get(Principal principal) {
+    public UserDTO get(Principal principal) {
         if (principal == null) return null;
 
-        UserResponse response = new UserResponse();
         User user = convert.convert(principal);
-        response.setUserId(user.getId()+"");
-        response.setUserName(user.getUsername());
-        response.setEmail(user.getEmail());
+        UserDTO response=UserDTO.create(user);
         Long authorId = authorService.getAuthorIdByUserId(user.getId());
         if (authorId != null) {
             response.setAuthorId(authorId);
@@ -131,7 +128,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public RV<UserDTO> register(@RequestBody RegisterRequire require) {
+    public RV<UserDTO> register(@RequestBody RegisterRequireDTO require) {
 
         //检查用户名唯一性
         if(!userService.checkNameAvail(require.getUserName())){

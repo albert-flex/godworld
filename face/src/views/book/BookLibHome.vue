@@ -143,6 +143,12 @@
 <script setup>
 import { ref } from "@vue/reactivity";
 import {
+  NewestBooksPort,
+  AllBoardBooks,
+  FetchBooksByName,
+  QueryBooks,
+} from "../../ports/book.js";
+import {
   StarOutlined,
   LikeOutlined,
   MessageOutlined,
@@ -255,6 +261,9 @@ const actions = [
     text: "2",
   },
 ];
+
+
+
 </script>
 
 <style scoped>

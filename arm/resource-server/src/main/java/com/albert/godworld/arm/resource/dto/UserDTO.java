@@ -8,6 +8,8 @@ public class UserDTO {
     private String userId;
     private String userName;
     private String email;
+    private Long authorId;
+    private Long socialId;
 
     private UserDTO(){
 

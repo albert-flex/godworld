@@ -38,13 +38,13 @@ public class BookCataServiceSPI extends ServiceImpl<BookCataMapper, BookCata>
     }
 
     @Override
-    public boolean removeCata(Long cataId) {
+    public boolean removeVolume(Long volumeId) {
         LambdaQueryWrapper<BookChapter> queryWrapper=new LambdaQueryWrapper<>();
-        queryWrapper.eq(BookChapter::getCataId,cataId);
+        queryWrapper.eq(BookChapter::getVolumeId,volumeId);
         if(bookChapterService.getOne(queryWrapper)!=null){
             return false;
         }
 
-        return super.removeById(cataId);
+        return super.removeById(queryWrapper);
     }
 }

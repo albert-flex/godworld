@@ -11,6 +11,9 @@ public enum RVError {
 
     AUTHOR_USER_NOT_SAME(201,"使用的用户与提交的作者不是同一个账号"),
 
+
+    UNKNOWN_ERROR(10001,"未知错误"),
+    DATABASE_ERROR(10002,"数据库操作失败"),
     ;
     final int code;
     final String msg;

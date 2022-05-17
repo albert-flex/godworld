@@ -32,4 +32,8 @@ public class RV <T>{
         res.obj=obj;
         return res;
     }
+
+    public static RV<Boolean> success(){
+        return success(true);
+    }
 }

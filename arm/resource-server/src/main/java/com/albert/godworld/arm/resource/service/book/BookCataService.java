@@ -9,5 +9,5 @@ public interface BookCataService extends IService<BookCata>{
     Page<BookCata> rootCataOfBook(Page<BookCata> page,Long bookId);
     Page<BookCata> cataOfParent(Page<BookCata> page,Long parentId);
 
-    boolean removeCata(Long cataId);
+    boolean removeVolume(Long volumeId);
 }

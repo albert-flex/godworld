@@ -5,6 +5,7 @@ import com.albert.godworld.arm.resource.domain.book.BookInfo;
 import com.albert.godworld.arm.resource.service.book.BookBoardService;
 import com.albert.godworld.arm.resource.service.book.BookInfoService;
 import com.albert.godworld.arm.resource.service.book.BookRankService;
+import com.albert.godworld.arm.resource.vo.BookVo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -70,10 +71,10 @@ public class BookRankServiceSPI implements BookRankService {
         return bookInfos;
     }
 
-    private void updateBoard(String key, List<BookInfo> list) {
+    private void updateBoard(String key, List<BookVo> list) {
         redisTemplate.delete(key);
         try {
-            for (BookInfo bookInfo : list) {
+            for (BookVo bookInfo : list) {
                 String s = objectMapper.writeValueAsString(bookInfo);
                 redisTemplate.opsForList().leftPush(key, s);
             }
@@ -84,7 +85,7 @@ public class BookRankServiceSPI implements BookRankService {
 
     @Override
     public void updateRankList() {
-        List<BookInfo> list=bookInfoService.OfPoint();
+        List<BookVo> list=bookInfoService.OfPoint();
         updateBoard(bookHotLib,list);
     }
 
@@ -93,7 +94,7 @@ public class BookRankServiceSPI implements BookRankService {
         List<BookBoard> bookBoards=bookBoardService.list();
         for(int i=0;i!=bookBoards.size();++i){
             BookBoard bookBoard=bookBoards.get(i);
-            List<BookInfo> list=bookInfoService.OfPointBoard(bookBoard.getId());
+            List<BookVo> list=bookInfoService.OfPointBoard(bookBoard.getId());
             updateBoard(bookHotBoardLib+bookBoard.getId(),list);
         }
     }

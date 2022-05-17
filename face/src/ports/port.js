@@ -12,7 +12,17 @@ const AuthPatch = function (url) {
     return realUrl;
 }
 
+const RequestGet = function (url, method = "GET", successCall) {
+    fetch(url, {
+        method: method,
+        mode: "cors",
+    }).then(res => res.json())
+        .then(data => successCall(data))
+        .catch(error => alert(error));
+}
+
 export {
     UrlPatch,
-    AuthPatch
+    AuthPatch,
+    RequestGet
 }

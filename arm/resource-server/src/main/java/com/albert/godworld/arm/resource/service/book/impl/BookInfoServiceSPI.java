@@ -2,16 +2,15 @@ package com.albert.godworld.arm.resource.service.book.impl;
 
 import com.albert.godworld.arm.resource.domain.author.AuthorInfo;
 import com.albert.godworld.arm.resource.domain.book.BookInfo;
-import com.albert.godworld.arm.resource.domain.user.User;
 import com.albert.godworld.arm.resource.mapper.book.BookInfoMapper;
+import com.albert.godworld.arm.resource.mapper.book.BookTagBindMapper;
 import com.albert.godworld.arm.resource.service.author.AuthorService;
 import com.albert.godworld.arm.resource.service.book.BookInfoService;
-import com.albert.godworld.arm.resource.service.user.UserService;
+import com.albert.godworld.arm.resource.vo.BookVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,50 +22,21 @@ public class BookInfoServiceSPI extends ServiceImpl<BookInfoMapper, BookInfo>
 
     private final AuthorService authorService;
 
-    @Override
-    public Page<BookInfo> pageOfAuthor(Page<BookInfo> page, String authorName) {
-        LambdaQueryWrapper<AuthorInfo> authQ=new LambdaQueryWrapper<>();
-        authQ.eq(AuthorInfo::getName,authorName);
-        AuthorInfo authorInfo=authorService.getOne(authQ);
-        if(authorInfo==null)return page;
+    private final BookTagBindMapper bookTagBindMapper;
 
-        LambdaQueryWrapper<BookInfo> queryWrapper=new LambdaQueryWrapper<>();
-        queryWrapper.eq(BookInfo::getAuthorId,authorInfo.getId());
-        return super.page(page,queryWrapper);
+    @Override
+    public Page<BookVo> pageOfAuthor(Page<BookVo> page, String authorName) {
+        return super.baseMapper.queryByAuthorName(page,authorName);
     }
 
     @Override
-    public List<BookInfo> OfPointBoard(Long boardId) {
-        LambdaQueryWrapper<BookInfo> queryWrapper=new LambdaQueryWrapper<>();
-        if(boardId!=null){
-            queryWrapper.orderByDesc(BookInfo::getPoint);
-        }
-        queryWrapper.eq(BookInfo::getBoardId,boardId);
-        Page<BookInfo> page=new Page<>();
-        page.setSize(20);
-        page.setCurrent(1);
-
-        page=super.page(page,queryWrapper);
-        return page.getRecords();
+    public List<BookVo> OfPointBoard(Long boardId) {
+        return super.baseMapper.queryOfPointAtBoard(boardId);
     }
 
     @Override
-    public List<BookInfo> OfPoint() {
-        return OfPointBoard(null);
-    }
-
-    @Override
-    public Page<BookInfo> pageOfBoard(Page<BookInfo> page, String boardName) {
-        LambdaQueryWrapper<BookInfo> queryWrapper=new LambdaQueryWrapper<>();
-        queryWrapper.eq(BookInfo::getBoardId,boardName);
-        return super.page(page,queryWrapper);
-    }
-
-    @Override
-    public Page<BookInfo> pageOfUpdate(Page<BookInfo> page) {
-        LambdaQueryWrapper<BookInfo> queryWrapper=new LambdaQueryWrapper<>();
-        queryWrapper.orderByDesc(BookInfo::getUpdateTime);
-        return super.page(page,queryWrapper);
+    public List<BookVo> OfPoint() {
+        return super.baseMapper.queryOfPoint();
     }
 
     @Override
@@ -74,5 +44,14 @@ public class BookInfoServiceSPI extends ServiceImpl<BookInfoMapper, BookInfo>
         LambdaQueryWrapper<BookInfo> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.like(BookInfo::getName,bookName);
         return super.page(page,queryWrapper);
+    }
+
+    @Override
+    public Page<BookVo> query(Page<BookVo> page, Integer year, Integer month, List<Long> tags, String board) {
+        Page<BookVo> info= super.baseMapper.query(page,tags,board,year,month);
+        for(int i=0;i!=info.getRecords().size();++i){
+            info.getRecords().get(i).prepareTags();
+        }
+        return info;
     }
 }

@@ -31,14 +31,16 @@ public class CaptchaServiceSPI implements CaptchaService {
     }
 
     @Override
-    public void saveAndSend(String captcha, String email) {
+    public boolean saveAndSend(String captcha, String email) {
         String emailC = createEmail(email, captcha);
         if (emailService.sendMimeMail(email, "GodWorld 验证码", emailC)) {
             String key = redisLib + email;
             redisTemplate.opsForValue().set(key, captcha);
             redisTemplate.expire(key,5,TimeUnit.MINUTES);
+            return true;
         } else {
             log.error("发送验证码到邮箱:" + email + " 失败.");
+            return  false;
         }
     }
 
