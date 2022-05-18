@@ -1,13 +1,11 @@
 package com.albert.godworld.arm.resource.service.book.impl;
 
-import com.albert.godworld.arm.resource.domain.author.AuthorInfo;
 import com.albert.godworld.arm.resource.domain.book.BookInfo;
 import com.albert.godworld.arm.resource.mapper.book.BookInfoMapper;
 import com.albert.godworld.arm.resource.mapper.book.BookTagBindMapper;
 import com.albert.godworld.arm.resource.service.author.AuthorService;
 import com.albert.godworld.arm.resource.service.book.BookInfoService;
 import com.albert.godworld.arm.resource.vo.BookVo;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
@@ -30,8 +28,8 @@ public class BookInfoServiceSPI extends ServiceImpl<BookInfoMapper, BookInfo>
     }
 
     @Override
-    public List<BookVo> OfPointBoard(Long boardId) {
-        return super.baseMapper.queryOfPointAtBoard(boardId);
+    public List<BookVo> OfPointBoard(String board) {
+        return super.baseMapper.queryOfPointAtBoard(board);
     }
 
     @Override
@@ -40,18 +38,12 @@ public class BookInfoServiceSPI extends ServiceImpl<BookInfoMapper, BookInfo>
     }
 
     @Override
-    public Page<BookInfo> queryByName(Page<BookInfo> page, String bookName) {
-        LambdaQueryWrapper<BookInfo> queryWrapper=new LambdaQueryWrapper<>();
-        queryWrapper.like(BookInfo::getName,bookName);
-        return super.page(page,queryWrapper);
+    public Page<BookVo> queryByName(Page<BookVo> page, String bookName) {
+        return super.baseMapper.queryByName(page,bookName);
     }
 
     @Override
     public Page<BookVo> query(Page<BookVo> page, Integer year, Integer month, List<Long> tags, String board) {
-        Page<BookVo> info= super.baseMapper.query(page,tags,board,year,month);
-        for(int i=0;i!=info.getRecords().size();++i){
-            info.getRecords().get(i).prepareTags();
-        }
-        return info;
+        return super.baseMapper.query(page,tags,board,year,month);
     }
 }

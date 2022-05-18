@@ -27,7 +27,7 @@ public class BookRankServiceSPI implements BookRankService {
     private final String bookHotBoardLib = "hot.book.board-";
 
     @Override
-    public List<BookInfo> getRankList() {
+    public List<BookVo> getRankList() {
         if (Boolean.FALSE.equals(redisTemplate.hasKey(bookHotLib))) {
             return Collections.emptyList();
         }
@@ -36,18 +36,18 @@ public class BookRankServiceSPI implements BookRankService {
     }
 
     @Override
-    public Map<String, List<BookInfo>> getAllRankListOfBoard() {
+    public Map<String, List<BookVo>> getAllRankListOfBoard() {
         List<BookBoard> list = bookBoardService.list();
-        Map<String, List<BookInfo>> map = new LinkedHashMap<>();
+        Map<String, List<BookVo>> map = new LinkedHashMap<>();
         for (BookBoard bookBoard : list) {
             String key = bookHotBoardLib + bookBoard.getId();
-            List<BookInfo> info_list = hotOfBoard(key);
+            List<BookVo> info_list = hotOfBoard(key);
             map.put(bookBoard.getName(), info_list);
         }
         return map;
     }
 
-    private List<BookInfo> hotOfBoard(String key) {
+    private List<BookVo> hotOfBoard(String key) {
         if (Boolean.FALSE.equals(redisTemplate.hasKey(key))) {
             return Collections.emptyList();
         }
@@ -58,11 +58,11 @@ public class BookRankServiceSPI implements BookRankService {
         List<String> list = redisTemplate.opsForList().range(key, 0, size);
         if (list == null || list.isEmpty()) return Collections.emptyList();
 
-        List<BookInfo> bookInfos = new LinkedList<>();
+        List<BookVo> bookInfos = new LinkedList<>();
         try {
             for (int i = 0; i != list.size(); ++i) {
                 String t = list.get(i);
-                BookInfo info = objectMapper.readValue(t, BookInfo.class);
+                BookVo info = objectMapper.readValue(t, BookVo.class);
                 bookInfos.add(info);
             }
         } catch (JsonProcessingException e) {
@@ -94,7 +94,7 @@ public class BookRankServiceSPI implements BookRankService {
         List<BookBoard> bookBoards=bookBoardService.list();
         for(int i=0;i!=bookBoards.size();++i){
             BookBoard bookBoard=bookBoards.get(i);
-            List<BookVo> list=bookInfoService.OfPointBoard(bookBoard.getId());
+            List<BookVo> list=bookInfoService.OfPointBoard(bookBoard.getName());
             updateBoard(bookHotBoardLib+bookBoard.getId(),list);
         }
     }

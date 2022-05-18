@@ -11,7 +11,7 @@ public interface BookInfoService extends IService<BookInfo> {
 
     Page<BookVo> pageOfAuthor(Page<BookVo> page,String authorName);
     List<BookVo> OfPoint();
-    List<BookVo> OfPointBoard(Long boardId);
-    Page<BookInfo> queryByName(Page<BookInfo> page,String bookName);
+    List<BookVo> OfPointBoard(String board);
+    Page<BookVo> queryByName(Page<BookVo> page,String bookName);
     Page<BookVo> query(Page<BookVo> page, Integer year, Integer month, List<Long> tags, String board);
 }

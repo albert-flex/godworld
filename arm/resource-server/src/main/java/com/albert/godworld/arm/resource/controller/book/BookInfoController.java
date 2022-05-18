@@ -38,12 +38,12 @@ public class BookInfoController {
     }
 
     @GetMapping("/rank")
-    public List<BookInfo> rank(){
+    public List<BookVo> rank(){
         return bookRankService.getRankList();
     }
 
     @GetMapping("/rank/all")
-    public Map<String,List<BookInfo>> rankAllBoards(){
+    public Map<String,List<BookVo>> rankAllBoards(){
         return bookRankService.getAllRankListOfBoard();
     }
 
@@ -58,7 +58,7 @@ public class BookInfoController {
         bookRankService.updateAllRankListOfBoard();
     }
     @GetMapping("/page/name/{name}")
-    public Page<BookInfo> queryByName(@PathVariable("name") String bookName,Page<BookInfo> page){
+    public Page<BookVo> queryByName(@PathVariable("name") String bookName,Page<BookVo> page){
         return bookInfoService.queryByName(page,bookName);
     }
 

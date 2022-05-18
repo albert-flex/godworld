@@ -1,6 +1,5 @@
 package com.albert.godworld.arm.resource.vo;
 
-import com.albert.godworld.arm.resource.domain.book.BookInfo;
 import lombok.Data;
 
 @Data
@@ -12,20 +11,33 @@ public class BookVo {
     private String[] tags;
     private String boardName;
     private String description;
+    private Long wordCount;
 
-    public void parse(BookInfo info){
-        this.id=info.getId();
-        this.name=info.getName();
-        this.description=info.getDescription();
+    public String[] getTags() {
+        if (tags == null) {
+            prepareTags();
+        }
+        return tags;
     }
 
-    public BookVo prepareTags(){
-        if(tagWords!=null && tagWords.isEmpty()){
-            this.tags= tagWords.split(",");
-            for(int i=0;i!=tags.length;++i){
-                tags[i]=tags[i].trim();
+    public String getTagWords() {
+        if (tagWords != null && !tagWords.isEmpty() && tags != null && tags.length > 0) {
+            tagWords = "";
+            StringBuilder builder = new StringBuilder();
+            for (String tag : tags) {
+                builder.append(tag).append(",");
+            }
+            tagWords = builder.toString();
+        }
+        return tagWords;
+    }
+
+    private void prepareTags() {
+        if (tagWords != null && !tagWords.isEmpty()) {
+            this.tags = tagWords.split(",");
+            for (int i = 0; i != tags.length; ++i) {
+                tags[i] = tags[i].trim();
             }
         }
-        return this;
     }
 }
