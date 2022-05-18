@@ -152,9 +152,14 @@
 import { ref } from "@vue/reactivity";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import {useRoute} from "vue-router";
 dayjs.extend(relativeTime);
 
 const random = ref();
+const route=useRoute();
+const bookId=route.params.id;
+const bookInfo=ref({});
+
 
 const data = [
   {

@@ -28,6 +28,11 @@ public class BookInfoServiceSPI extends ServiceImpl<BookInfoMapper, BookInfo>
     }
 
     @Override
+    public Page<BookVo> pageOfUpdate(Page<BookVo> page) {
+        return super.baseMapper.getUpdatePage(page);
+    }
+
+    @Override
     public List<BookVo> OfPointBoard(String board) {
         return super.baseMapper.queryOfPointAtBoard(board);
     }
@@ -43,7 +48,22 @@ public class BookInfoServiceSPI extends ServiceImpl<BookInfoMapper, BookInfo>
     }
 
     @Override
-    public Page<BookVo> query(Page<BookVo> page, Integer year, Integer month, List<Long> tags, String board) {
+    public Page<BookVo> queryByBoard(Page<BookVo> page, String board) {
+        return super.baseMapper.queryByBoard(page,board);
+    }
+
+    @Override
+    public Page<BookVo> queryByTags(Page<BookVo> page, List<String> tag) {
+        return super.baseMapper.queryByTags(page,tag);
+    }
+
+    @Override
+    public BookVo getById(Long id) {
+        return super.baseMapper.getById(id);
+    }
+
+    @Override
+    public Page<BookVo> query(Page<BookVo> page, Integer year, Integer month, List<String> tags, String board) {
         return super.baseMapper.query(page,tags,board,year,month);
     }
 }

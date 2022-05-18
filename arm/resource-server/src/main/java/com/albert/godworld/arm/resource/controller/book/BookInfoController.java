@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +53,26 @@ public class BookInfoController {
         return bookInfoService.pageOfAuthor(page,authorName);
     }
 
+    @GetMapping("/page/board/{board}")
+    public Page<BookVo> pageOfBoard(@PathVariable("board") String board,Page<BookVo> page){
+        return bookInfoService.queryByBoard(page,board);
+    }
+
+    @GetMapping("/page/tags")
+    public Page<BookVo> pageOfTags(String[] tag,Page<BookVo> page){
+        return bookInfoService.queryByTags(page, Arrays.asList(tag));
+    }
+
+    @GetMapping("/get/id/{id}")
+    public BookVo getById(@PathVariable("id") Long id){
+        return bookInfoService.getById(id);
+    }
+
+    @GetMapping("/page/update")
+    public Page<BookVo> getUpdate(Page<BookVo> page){
+        return bookInfoService.pageOfUpdate(page);
+    }
+
     @PostMapping("/update/rank")
     public void updateRank(){
         bookRankService.updateRankList();
@@ -62,6 +83,7 @@ public class BookInfoController {
         return bookInfoService.queryByName(page,bookName);
     }
 
+    @PutMapping("/page/query")
     public Page<BookVo> query(@RequestBody BookQueryDTO queryDTO,Page<BookVo> page){
         return bookInfoService.query(page,queryDTO.getYear(),queryDTO.getMonth(),queryDTO.getTags(),queryDTO.getBoard());
     }

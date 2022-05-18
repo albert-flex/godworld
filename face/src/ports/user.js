@@ -8,8 +8,8 @@ const sendcaptcha_api = UrlPatch("captcha");
 
 /**
  * 发送验证码接口
- * @param {*} email : String
- * @param {*} successCall : function(data)
+ * @param {String} email
+ * @param {(data)=>{}} successCall
  */
 const sendCaptchaPort = function (email, successCall) {
     let params = { email: email };
@@ -27,8 +27,8 @@ const sendCaptchaPort = function (email, successCall) {
 
 /**
  * 注册接口
- * @param {*} require : {userName,password,email,captcha}
- * @param {*} successCall : function(data)
+ * @param {{userName: String, password: String, email: String, captcha: String}} require
+ * @param {(data)=>{}} successCall
  */
 const registerPort = function (require, successCall) {
     let myHeader = new Headers();
@@ -45,9 +45,9 @@ const registerPort = function (require, successCall) {
 
 /**
  * 登录接口
- * @param {String} userName : String
- * @param {*} password : String
- * @param {*} successCall : function(data)
+ * @param {String} userName
+ * @param {String} password
+ * @param {(data)=>{}} successCall
  */
 const loginPort = function (userName, password, successCall) {
     let params = {
@@ -69,8 +69,8 @@ const loginPort = function (userName, password, successCall) {
 
 /**
  * 根据用户凭证获取用户信息
- * @param {*} token : String
- * @param {*} successCall : function(data)
+ * @param {String} token
+ * @param {(data)=>{}} successCall
  * @returns 
  */
 const userinfoPort = function (token, successCall) {

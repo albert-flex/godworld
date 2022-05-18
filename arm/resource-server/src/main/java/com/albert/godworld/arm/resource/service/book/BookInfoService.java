@@ -10,8 +10,12 @@ import java.util.List;
 public interface BookInfoService extends IService<BookInfo> {
 
     Page<BookVo> pageOfAuthor(Page<BookVo> page,String authorName);
+    Page<BookVo> pageOfUpdate(Page<BookVo> page);
     List<BookVo> OfPoint();
     List<BookVo> OfPointBoard(String board);
     Page<BookVo> queryByName(Page<BookVo> page,String bookName);
-    Page<BookVo> query(Page<BookVo> page, Integer year, Integer month, List<Long> tags, String board);
+    Page<BookVo> queryByBoard(Page<BookVo> page,String board);
+    Page<BookVo> queryByTags(Page<BookVo> page, List<String> tag);
+    BookVo getById(Long id);
+    Page<BookVo> query(Page<BookVo> page, Integer year, Integer month, List<String> tags, String board);
 }

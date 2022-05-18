@@ -57,7 +57,7 @@ spring:
       max-file-size: 20MB
 logging:
   level:
-    com.albert.godword.arm.mapper: trace
+    com.albert.godworld.arm.resource.mapper.book: trace
     org.springframework.security: debug
   file:
     path: .cata_log

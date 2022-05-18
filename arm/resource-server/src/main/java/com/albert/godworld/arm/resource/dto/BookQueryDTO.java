@@ -8,8 +8,7 @@ import java.util.List;
 public class BookQueryDTO {
 
     private String board;
-    //tags: [1,2,3,4,56,6]
-    private List<Long> tags;
+    private List<String> tags;
     private Integer year;
     private Integer month;
 }
