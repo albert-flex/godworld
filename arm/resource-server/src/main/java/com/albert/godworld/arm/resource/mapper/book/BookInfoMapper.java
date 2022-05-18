@@ -127,8 +127,8 @@ public interface BookInfoMapper extends BaseMapper<BookInfo> {
             "join author_info ai on ai.id=bi.author_id\n" +
             "join book_tag_bind btb on btb.book_id=bi.id\n" +
             "join book_tag bt on bt.id=btb.tag_id\n" +
-            "group by bi.id\n" +
-            "where bi.id=#{id}\n")
+            "where bi.id=#{id}\n" +
+            "group by bi.id\n")
     BookVo getById(Long id);
 
     @Select("select bi.id,bi.update_time,bb.name as boardName,bi.name,bi.word_count,\n" +

@@ -15,9 +15,9 @@
                   >
                 </template>
                 <template #description>
-                  <a-button type="link" style="font-size: 0.8em; color: grey">作者: {{
-                    item.author
-                  }}</a-button>
+                  <a-button type="link" style="font-size: 0.8em; color: grey"
+                    >作者: {{ item.author }}</a-button
+                  >
                 </template>
               </a-list-item-meta>
             </template>
@@ -38,9 +38,9 @@
                   >
                 </template>
                 <template #description>
-                  <a-button type="link" style="font-size: 0.8em; color: grey">作者: {{
-                    item.author
-                  }}</a-button>
+                  <a-button type="link" style="font-size: 0.8em; color: grey"
+                    >作者: {{ item.author }}</a-button
+                  >
                 </template>
               </a-list-item-meta>
             </template>
@@ -49,7 +49,7 @@
       </aside>
       <main>
         <header style="text-align: center">
-          <h1 style="font-size:2.3em;">《{{ book.title }}》</h1>
+          <h1 style="font-size: 2.3em">《{{ bookInfo.name }}》</h1>
         </header>
         <div style="display: flex">
           <a-image
@@ -59,23 +59,23 @@
             fallback="data:image/png;base64,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"
           />
           <div>
-            <h3 style="margin: 10px">作者: {{ book.author }}</h3>
-            <h3 style="margin: 10px">板块: {{ book.board }}</h3>
-            <h3 style="margin: 10px">更新: {{ book.updateTime }}</h3>
-            <h3 style="margin: 10px">更新: {{ book.updateChapter }}</h3>
-            <h3 style="margin: 10px">总字数: {{ book.charCount }}</h3>
+            <h3 style="margin: 10px">作者: {{ bookInfo.author }}</h3>
+            <h3 style="margin: 10px">板块: {{ bookInfo.boardName }}</h3>
+            <h3 style="margin: 10px">更新: {{ bookInfo.updateTime }}</h3>
+            <h3 style="margin: 10px">更新: {{ bookInfo.updateChapter }}</h3>
+            <h3 style="margin: 10px">总字数: {{ bookInfo.wordCount }}</h3>
           </div>
         </div>
         <div>
           <h2>简介:</h2>
           <p>
-            {{ book.description }}
+            {{ bookInfo.description }}
           </p>
         </div>
         <div>
           <h2>标签:</h2>
           <div>
-            <a-tag color="pink" v-for="item in book.tags" :key="item.id">{{
+            <a-tag color="pink" v-for="item in bookInfo.tags" :key="item.id">{{
               item
             }}</a-tag>
           </div>
@@ -152,14 +152,29 @@
 import { ref } from "@vue/reactivity";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import {useRoute} from "vue-router";
+import { useRoute } from "vue-router";
+import {
+  FetchBookVo,
+  FetchBooksByBoard,
+  FetchBooksBytags,
+} from "../../ports/book.js";
 dayjs.extend(relativeTime);
 
 const random = ref();
-const route=useRoute();
-const bookId=route.params.id;
-const bookInfo=ref({});
-
+const route = useRoute();
+const bookId = route.params.id;
+const bookInfo = ref({});
+FetchBookVo(bookId,(data)=>{
+  bookInfo.value=data;
+  FetchBooksByBoard(data.boardName,(da)=>{
+    sameBoards.value=da.records;
+  });
+  FetchBooksBytags(data.tags,(dat)=>{
+    sameTags.value=dat.records;
+  })
+});
+const sameBoards = ref([]);
+const sameTags=ref([]);
 
 const data = [
   {
@@ -178,39 +193,6 @@ const data = [
   },
 ];
 
-const sameBoards = [
-  { name: "火之异能者", author: "夏文纯一", id: "101" },
-  { name: "火之异能者", author: "夏文纯一", id: "101" },
-  { name: "火之异能者", author: "夏文纯一", id: "101" },
-  { name: "火之异能者", author: "夏文纯一", id: "101" },
-  { name: "火之异能者", author: "夏文纯一", id: "101" },
-];
-
-const sameTags = [
-  { name: "无界法魂", author: "夏文纯一", id: "102" },
-  { name: "无界法魂", author: "夏文纯一", id: "102" },
-  { name: "无界法魂", author: "夏文纯一", id: "102" },
-  { name: "无界法魂", author: "夏文纯一", id: "102" },
-  { name: "无界法魂", author: "夏文纯一", id: "102" },
-];
-
-const book = ref({
-  title: "火之异能者",
-  author: "夏文纯一",
-  board: "轻小说",
-  updateTime: "2022/05/13 11:13",
-  updateChapter: "第一卷 第七章",
-  charCount: 0,
-  tags: ["恋爱", "冒险", "双马尾", "纯爱", "异世界"],
-  description: `
-        中原区望洋县研究所出现了暴乱，主角夏宇轩和秋淼汐带上刘杰戈很快掌握了信息，
-        夏宇轩和秋淼汐获得了异能的力量，并且一连三次突破重围找到了暂时可以适合居住的敌方，
-        半途遇到程辰和林残月，并解救他们加入队伍之中，在无人的极力争取之下，
-        清除了一个区域， 在这个区域生活一段时间，但是在最后还是被一名丧尸入侵了，
-        很快据点就不能使用了， 大家为了生存不得不抛弃据点，
-        继续寻找其他的合适的生存点。
-    `,
-});
 
 const catalog = [
   {
@@ -261,7 +243,7 @@ const catalog = [
 
 const commentV = ref("");
 
-const current=ref("2");
+const current = ref("2");
 </script>
 
 <style scoped>

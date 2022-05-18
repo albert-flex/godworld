@@ -49,9 +49,9 @@ function AllBoardBooks(successCall) {
  * @param {(data)=>{}} successCall
  */
 function FetchBooksByName(name, successCall) {
-    let params = { size: 10, current: 1 };
+    let params = { size: 10, current: 1 ,name: name };
     books_fetch_by_name.search = new URLSearchParams(params).toString();
-    RequestGet(books_fetch_by_name + name, 'GET', successCall);
+    RequestGet(books_fetch_by_name, 'GET', successCall);
 }
 
 /**
@@ -96,7 +96,7 @@ function FetchTagList(successCall) {
  * @param {(data)=>{}} successCall
  */
 function FetchBooksByBoard(name, successCall) {
-    let params = { size: 10, current: 1 };
+    let params = { size: 10, current: 1 ,board: name };
     books_board_page.search = new URLSearchParams(params).toString();
     RequestGet(books_board_page, 'GET', successCall);
 }
