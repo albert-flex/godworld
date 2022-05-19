@@ -9,9 +9,7 @@ import java.security.Principal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class PrincipalConvert {
@@ -61,7 +59,15 @@ public class PrincipalConvert {
         user.setLocked(Boolean.parseBoolean(b.get("lock") + ""));
         user.setLogin(Boolean.parseBoolean(b.get("login")+""));
         user.setEmail((String) b.get("email"));
-        user.setAllPermission((List<Permission>) b.get("allPermission"));
+        user.setAllPermission(new ArrayList<>());
+        for(LinkedHashMap<String,Object> map: (List<LinkedHashMap<String,Object>>)b.get("allPermission")){
+            Permission permission=new Permission();
+            String idStr=Integer.parseInt(map.get("id").toString())+"";
+            permission.setId(Long.parseLong(idStr));
+            permission.setName(map.get("name")+"");
+            permission.setDescription(map.get("description")+"");
+            user.getAllPermission().add(permission);
+        }
         return user;
     }
 }

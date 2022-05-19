@@ -2,6 +2,7 @@ package com.albert.godworld.arm.resource.controller.book;
 
 import com.albert.godworld.arm.resource.domain.book.BookChapter;
 import com.albert.godworld.arm.resource.service.book.BookChapterService;
+import com.albert.godworld.arm.resource.vo.BookChapterInfoVo;
 import com.albert.godworld.arm.resource.vo.BookChapterVo;
 import com.albert.godworld.arm.resource.vo.BookVolumeVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -35,6 +36,16 @@ public class BookChapterController {
     @GetMapping("/page/volume/{volumeId}")
     public Page<BookChapter> chapterOfVolume(@PathVariable("volumeId")Long volumeId,Page<BookChapter> page){
         return bookChapterService.chapterOfVolume(page,volumeId);
+    }
+
+    @GetMapping("/volumes/{bookId}")
+    public List<BookVolumeVo> volumeVos(@PathVariable("bookId") Long bookId){
+        return bookChapterService.volumeOfBook(bookId);
+    }
+
+    @GetMapping("/id/{id}")
+    public BookChapterInfoVo getInfoByChapter(@PathVariable("id") Long id){
+        return bookChapterService.getChapter(id);
     }
 
 

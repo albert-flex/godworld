@@ -8,6 +8,7 @@ import java.util.Date;
 public class BookChapterVo {
 
     private Long id;
+    private Long bookId;
     private String title;
     private Date updateTime;
     private String volumeTitle;

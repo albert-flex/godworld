@@ -39,7 +39,7 @@ public class AuthorController {
     }
 
     @PutMapping
-    @PreAuthorize("hasAnyAuthority('ADMIN_PER,AUTHOR_PER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN_PER','AUTHOR_PER')")
     public RV<Boolean> update(@RequestBody AuthorInfo info, Principal principal) {
         User user = principalConvert.convert(principal);
         if(Permissions.ADMIN_PER.hasIn(user)){

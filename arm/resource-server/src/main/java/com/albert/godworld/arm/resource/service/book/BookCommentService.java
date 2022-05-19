@@ -1,12 +1,13 @@
 package com.albert.godworld.arm.resource.service.book;
 
 import com.albert.godworld.arm.resource.domain.book.BookComment;
+import com.albert.godworld.arm.resource.vo.BookCommentVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 public interface BookCommentService extends IService<BookComment> {
 
-    Page<BookComment> pageOf(Page<BookComment> page, Long bookId);
+    Page<BookCommentVo> pageOf(Page<BookCommentVo> page, Long bookId);
 
-    Page<BookComment> pageOfReader(Page<BookComment> page, Long userId);
+    Page<BookCommentVo> pageOfReader(Page<BookCommentVo> page, Long userId);
 }

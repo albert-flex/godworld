@@ -3,10 +3,15 @@ package com.albert.godworld.arm.resource.service.book.impl;
 import com.albert.godworld.arm.resource.domain.book.BookChapter;
 import com.albert.godworld.arm.resource.mapper.book.BookChapterMapper;
 import com.albert.godworld.arm.resource.service.book.BookChapterService;
+import com.albert.godworld.arm.resource.vo.BookChapterInfoVo;
+import com.albert.godworld.arm.resource.vo.BookChapterVo;
+import com.albert.godworld.arm.resource.vo.BookVolumeVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class BookChapterServiceSPI extends ServiceImpl<BookChapterMapper, BookChapter>
@@ -32,5 +37,16 @@ public class BookChapterServiceSPI extends ServiceImpl<BookChapterMapper, BookCh
         queryWrapper.eq(BookChapter::getBookId,bookId);
         queryWrapper.orderByDesc(BookChapter::getCreateTime);
         return super.getOne(queryWrapper);
+    }
+
+    @Override
+    public List<BookVolumeVo> volumeOfBook(Long bookId) {
+        List<BookChapterVo> vos=super.baseMapper.listChaptersOfBook(bookId);
+        return BookVolumeVo.parse(vos);
+    }
+
+    @Override
+    public BookChapterInfoVo getChapter(Long chapterId) {
+        return super.baseMapper.getInfoOnChapter(chapterId);
     }
 }
