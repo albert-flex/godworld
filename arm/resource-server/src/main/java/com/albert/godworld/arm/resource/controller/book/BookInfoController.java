@@ -48,13 +48,13 @@ public class BookInfoController {
         return bookRankService.getAllRankListOfBoard();
     }
 
-    @GetMapping("/page/author")
-    public Page<BookVo> pageOfAuthor(@RequestParam("authorName") String authorName,Page<BookVo> page){
+    @GetMapping("/page/author/{authorName}")
+    public Page<BookVo> pageOfAuthor(@PathVariable("authorName") String authorName,Page<BookVo> page){
         return bookInfoService.pageOfAuthor(page,authorName);
     }
 
-    @GetMapping("/page/board")
-    public Page<BookVo> pageOfBoard(@RequestParam("board") String board,Page<BookVo> page){
+    @GetMapping("/page/board/{board}")
+    public Page<BookVo> pageOfBoard(@PathVariable("board") String board,Page<BookVo> page){
         return bookInfoService.queryByBoard(page,board);
     }
 
@@ -78,8 +78,8 @@ public class BookInfoController {
         bookRankService.updateRankList();
         bookRankService.updateAllRankListOfBoard();
     }
-    @GetMapping("/page/name")
-    public Page<BookVo> queryByName(@RequestParam("name") String bookName,Page<BookVo> page){
+    @GetMapping("/page/name/{name}")
+    public Page<BookVo> queryByName(@PathVariable("name") String bookName,Page<BookVo> page){
         return bookInfoService.queryByName(page,bookName);
     }
 

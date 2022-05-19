@@ -13,6 +13,7 @@ public class BookVo {
     private String[] tags;
     private String boardName;
     private String description;
+    private String updateChapter;
     private Date updateTime;
     private Long wordCount;
 

@@ -16,4 +16,5 @@ public class BookInfo {
     private Long point;
     private Date createTime;
     private Date updateTime;
+    private Long updateChapterId;
 }

@@ -7,5 +7,7 @@ public class BookVolume {
 
     private Long id;
     private Long bookId;
+    private Long prev_volume_id;
+    private Long next_volume_id;
     private String name;
 }

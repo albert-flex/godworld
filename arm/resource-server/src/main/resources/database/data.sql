@@ -73,13 +73,13 @@ insert book_board(id,name) values
 (8,"散文");
 
 delete from book_info;
-insert book_info(id,author_id,name,board_id) values
-(1,1,"樱花变奏曲",3),
-(2,1,"谋杀者Z",3),
-(3,1,"被封印的魔力",4),
-(4,1,"无界法魂",9),
-(5,1,"康德莱特街39号",3),
-(6,2,"Spring EE的开发方式",7);
+insert book_info(id,author_id,name,board_id,update_chapter_id) values
+(1,1,"樱花变奏曲",3,1),
+(2,1,"谋杀者Z",3,0),
+(3,1,"被封印的魔力",4,0),
+(4,1,"无界法魂",9,0),
+(5,1,"康德莱特街39号",3,0),
+(6,2,"Spring EE的开发方式",7,0);
 
 delete from book_tag;
 insert book_tag(id,name) values
@@ -123,4 +123,12 @@ insert book_tag_bind(id,book_id,tag_id) values
 (22,5,6),
 (23,6,13);
 
+delete from book_volume;
+insert into book_volume(id,book_id,name) values
+(1,1,'第一卷 嗯，这个名字不错');
 
+delete from book_chapter;
+insert into book_chapter(id,book_id,volume_id,title,content,prev_chapter_id,next_chapter_id)values
+(1,1,1,'第一章 新生报告会','众所周知，这里是一个十分友好的城市，在这个城市里...',0,3),
+(2,1,1,'第三章 可爱的人是谁','众所周知，这里是一个十分友好的城市，在这个城市里...',3,0),
+(3,1,1,'第二章 别想睡觉！','众所周知，这里是一个十分友好的城市，在这个城市里...',1,2);

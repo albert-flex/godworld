@@ -1,19 +1,17 @@
-package com.albert.godworld.arm.resource.domain.book;
+package com.albert.godworld.arm.resource.vo;
 
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-public class BookChapter {
+public class BookChapterVo {
 
     private Long id;
-    private Long bookId;
-    private Long volumeId;
     private String title;
-    private String content;
-    private Date createTime;
     private Date updateTime;
+    private String volumeTitle;
+    private Long volumeId;
     private Long prev_chapter_id;
     private Long next_chapter_id;
 }

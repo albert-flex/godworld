@@ -68,15 +68,17 @@ create table book_info(
     board_id bigint not null,
     create_time datetime not null default now(),
     update_time datetime not null default now(),
+    update_chapter_id bigint not null default 0,
     primary key(id)
 );
 
-drop table if exists book_cata;
-create table book_cata(
+drop table if exists book_volume;
+create table book_volume(
     id bigint not null auto_increment,
-    parent_id bigint not null default 0,
     book_id bigint not null,
     name varchar(30) not null default "未命名",
+    prev_volume_id bigint not null default 0,
+    next_volume_id bigint not null default 0,
     primary key(id)
 );
 
@@ -84,10 +86,13 @@ drop table if exists book_chapter;
 create table book_chapter(
     id bigint not null auto_increment,
     book_id bigint not null,
-    cata_id bigint not null,
+    volume_id bigint not null,
     title varchar(30) not null default "未命名",
     content text not null,
     create_time datetime not null default now(),
+    update_time datetime not null default now(),
+    prev_chapter_id bigint not null default 0,
+    next_chapter_id bigint not null default 0,
     primary key(id)
 );
 
