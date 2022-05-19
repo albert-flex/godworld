@@ -20,7 +20,15 @@ const books_board_page = UrlPatch("book/page/board/:1");
 //查找同标签的分页
 const books_tags_page = UrlPatch("book/page/tags");
 //查找书本的评论
-const comments_on_book = UrlPatch("book_comment/page/book/:1")
+const comments_on_book = UrlPatch("book_comment/page/book/:1");
+//获取书本的卷目信息
+const volumes_on_book = UrlPatch("book_chapter/volumes/:1");
+//发送评论
+const send_comments = UrlPatch("book_comment");
+//获取章节信息
+const chapter_info = UrlPatch("book_chapter/id/:1")
+
+
 /**
  * 
  * @param {(data)=>{}} successCall
@@ -88,7 +96,7 @@ function FetchBoardList(successCall) {
  * @param {(data)=>{}} successCall
  */
 function FetchTagList(successCall) {
-    RequestGet(URLConcat(board_list), 'GET', successCall);
+    RequestGet(URLConcat(tag_list), 'GET', successCall);
 }
 
 /**
@@ -132,6 +140,45 @@ function FetchBookComments(page, bookId, successCall) {
     RequestGet(URLConcat(comments_on_book, [bookId], page), 'GET', successCall);
 }
 
+/**
+ * 
+ * @param {String} bookId 
+ * @param {(data)=>{}} successCall 
+ */
+function FetchVolumesOnBook(bookId, successCall) {
+    RequestGet(URLConcat(volumes_on_book, [bookId]), 'GET', successCall);
+}
+
+/**
+ * 
+ * @param {String} token 
+ * @param {{userId: String, content: String, bookId:String}} comment 
+ * @param {(data)=>{}} successCall 
+ */
+function PostComment(token, comment, successCall) {
+    let api = send_comments;
+    let myHeader = new Headers();
+    myHeader.append('Content-Type', 'application/json');
+    myHeader.append('Authorization', 'bearer ' + token);
+    fetch(api, {
+        method: "POST",
+        headers: myHeader,
+        body: JSON.stringify(comment),
+        mode: "cors"
+    }).then(res => res.json())
+        .then(data => successCall(data))
+        .catch(error => alert(error));
+}
+
+/**
+ * 
+ * @param {Number} chapterId 
+ * @param {(data)=>{}} successCall 
+ */
+function FetchChapter(chapterId, successCall) {
+    RequestGet(URLConcat(chapter_info, [chapterId], {}), 'GET', successCall);
+}
+
 export {
     NewestBooksPort,
     AllBoardBooks,
@@ -143,4 +190,7 @@ export {
     FetchBooksBytags,
     FetchBookVo,
     FetchBookComments,
+    FetchVolumesOnBook,
+    PostComment,
+    FetchChapter,
 }

@@ -21,7 +21,10 @@ delete from user;
 insert into user(id,username,email) values
 (1,"A1","A1@godworld.com"),
 (2,"A2","A2@godworld.com"),
-(3,"A3","A3@godworld.com");
+(3,"A3","A3@godworld.com"),
+(4,"A4","A4@godworld.com"),
+(5,"A5","A5@godworld.com"),
+(6,"A6","A6@godworld.com");
 
 delete from group_permission;
 insert into group_permission(id,group_id,permission_id) values
@@ -30,15 +33,16 @@ insert into group_permission(id,group_id,permission_id) values
 (3,1,3),
 (4,1,4),
 (5,1,5),
-(6,2,1),
+(6,2,2),
 (7,3,2),
-(8,4,2),
-(9,4,3),
-(10,4,4),
-(11,5,2),
-(12,5,3),
-(13,5,4),
-(14,5,5);
+(8,3,3),
+(9,4,2),
+(10,4,3),
+(11,4,4),
+(12,5,2),
+(13,5,3),
+(14,5,4),
+(15,5,5);
 
 delete from user_group;
 insert into user_group(id,user_id,group_id) values
@@ -46,7 +50,14 @@ insert into user_group(id,user_id,group_id) values
 (2,1,2),
 (3,1,3),
 (4,2,2),
-(5,3,3);
+(5,3,2),
+(6,3,3),
+(7,3,4),
+(8,4,1),
+(9,4,2),
+(10,4,3),
+(11,4,4),
+(12,4,5);
 
 /**
  * Author
@@ -54,8 +65,10 @@ insert into user_group(id,user_id,group_id) values
 delete from author_info;
 insert author_info(id,name,user_id,email,moto) values
 (1,"夏文纯一",1,"natsufumij@yeah.net","恭喜你，尤克，从今后你就是A级冒险者了"),
-(2,"阿尔伯特",2,"albert_flex@yeah.net","恭喜你，尤克，从今后你就是A级冒险者了");
-
+(2,"阿尔伯特",3,"albert_flex@yeah.net","恭喜你，尤克，从今后你就是A级冒险者了"),
+(3,'夏文悠二',4,"youji@yeah.net","夏文悠二的问题箱，请多指教."),
+(4,'夏文狂三',5,"kurumi@yeah.net","夏文狂三的帝帝刻，请多指教."),
+(5,'夏文四郎',5,"sirou@yeah.net","夏文四郎的指纹，请多指教.");
 
 /**
  * Book
@@ -73,13 +86,14 @@ insert book_board(id,name) values
 (8,"散文");
 
 delete from book_info;
-insert book_info(id,author_id,name,board_id,update_chapter_id) values
-(1,1,"樱花变奏曲",3,1),
-(2,1,"谋杀者Z",3,0),
-(3,1,"被封印的魔力",4,0),
-(4,1,"无界法魂",9,0),
-(5,1,"康德莱特街39号",3,0),
-(6,2,"Spring EE的开发方式",7,0);
+insert book_info(id,author_id,name,description,board_id,update_chapter_id) values
+(1,1,"樱花变奏曲","樱花飞舞的初春，这是我们相遇的季节。",3,1),
+(2,3,"谋杀者Z","我想要谋杀一个人，但是无论如何也成功不了。",3,0),
+(3,3,"被封印的魔力","每一个人都有一股被封印的魔力，他会让人发出强大的力量。",4,0),
+(4,4,"无界法魂","我会为你报仇，师傅",9,0),
+(5,6,"康德莱特街39号","见证人心与人心的隔阂与联系。",3,0),
+(6,2,"Spring EE的开发方式","笨重又无法舍弃的开发方式",7,0),
+(7,2,"Java EE的正确开发方式","古老又传统的方法",7,0);
 
 delete from book_tag;
 insert book_tag(id,name) values
@@ -129,6 +143,6 @@ insert into book_volume(id,book_id,name) values
 
 delete from book_chapter;
 insert into book_chapter(id,book_id,volume_id,title,content,prev_chapter_id,next_chapter_id)values
-(1,1,1,'第一章 新生报告会','众所周知，这里是一个十分友好的城市，在这个城市里...',0,3),
-(2,1,1,'第三章 可爱的人是谁','众所周知，这里是一个十分友好的城市，在这个城市里...',3,0),
-(3,1,1,'第二章 别想睡觉！','众所周知，这里是一个十分友好的城市，在这个城市里...',1,2);
+(1,1,1,'第一章 新生报告会','众所周知，这里是一个十分友好的城市，在这个城市里...\n众所周知，这里是一个十分友好的城市，在这个城市里...\n',0,3),
+(2,1,1,'第三章 可爱的人是谁','众所周知，这里是一个十分友好的城市，在这个城市里...\n众所周知，这里是一个十分友好的城市，在这个城市里...\n',3,0),
+(3,1,1,'第二章 别想睡觉！','众所周知，这里是一个十分友好的城市，在这个城市里...、\n众所周知，这里是一个十分友好的城市，在这个城市里...\n',1,2);

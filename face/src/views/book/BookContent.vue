@@ -10,6 +10,7 @@
                 <template #title>
                   <a-button
                     type="link"
+                    @click="toBook(item.id)"
                     style="font-size: 1.2em; color: green"
                     >{{ item.name }}</a-button
                   >
@@ -33,6 +34,7 @@
                 <template #title>
                   <a-button
                     type="link"
+                    @click="toBook(item.id)"
                     style="font-size: 1.2em; color: green"
                     >{{ item.name }}</a-button
                   >
@@ -55,8 +57,7 @@
           <a-image
             :width="200"
             :height="200"
-            :src="'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png?${random}'"
-            fallback="data:image/png;base64,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"
+            src="https://joeschmoe.io/api/v1/random"
           />
           <div>
             <h3 style="margin: 10px">作者: {{ bookInfo.author }}</h3>
@@ -83,12 +84,12 @@
         <a-divider><h1>目录</h1></a-divider>
         <a-collapse v-model:activeKey="activeKey" :bordered="false">
           <a-collapse-panel
-            :header="item.name"
+            :header="item.title"
             v-for="item in catalog"
             :key="item.id"
           >
-            <a-button type="ghost" v-for="it in item.chapters" :key="it.id">
-              {{ it.name }}
+            <a-button type="ghost" @click="toChapter(it.id)" v-for="it in item.chapters" :key="it.id">
+              {{ it.title }}
             </a-button>
           </a-collapse-panel>
         </a-collapse>
@@ -96,24 +97,25 @@
         <div>
           <a-list
             class="comment-list"
-            :header="`${data.length} 条`"
+            :header="`共 ${commentPagi.total} 条`"
             item-layout="horizontal"
             :pagination="commentPagi"
-            :data-source="data"
+            :data-source="comments"
           >
             <template #renderItem="{ item }">
               <a-list-item>
-                <a-comment :author="item.userId" :avatar="item.userId">
+                <a-comment
+                  :author="item.userName"
+                  avatar="https://joeschmoe.io/api/v1/random"
+                >
                   <template #content>
                     <p>
                       {{ item.content }}
                     </p>
                   </template>
                   <template #datetime>
-                    <a-tooltip
-                      :title="item.createTime.format('YYYY-MM-DD HH:mm:ss')"
-                    >
-                      <span>{{ item.createTime.fromNow() }}</span>
+                    <a-tooltip :title="item.createTime">
+                      <span>{{ item.createTime }}</span>
                     </a-tooltip>
                   </template>
                 </a-comment>
@@ -129,14 +131,10 @@
             </template>
             <template #content>
               <a-form-item>
-                <a-textarea v-model:value="commentV" :rows="4" />
+                <a-textarea v-model:value="commentV.content" :rows="4" />
               </a-form-item>
               <a-form-item>
-                <a-button
-                  html-type="submit"
-                  type="primary"
-                  @click="handleSubmit"
-                >
+                <a-button html-type="submit" type="primary" @click="PostComm">
                   留下评论
                 </a-button>
               </a-form-item>
@@ -152,112 +150,104 @@
 import { ref } from "@vue/reactivity";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { useRoute } from "vue-router";
+import { loadAccess, loadUser } from "../../config/stores.js";
+import { useRoute, useRouter } from "vue-router";
 import {
   FetchBookVo,
   FetchBooksByBoard,
   FetchBooksBytags,
-  FetchBookComments
+  FetchBookComments,
+  FetchVolumesOnBook,
+  PostComment,
 } from "../../ports/book.js";
 dayjs.extend(relativeTime);
 
-const random = ref();
 const route = useRoute();
+const router = useRouter();
+
 const bookId = route.params.id;
 const bookInfo = ref({});
-FetchBookVo(bookId,(data)=>{
-  bookInfo.value=data;
-  FetchBooksByBoard(data.boardName,(da)=>{
-    sameBoards.value=da.records;
-  });
-  FetchBooksBytags(data.tags,(dat)=>{
-    sameTags.value=dat.records;
-  })
-});
-const sameBoards = ref([]);
-const sameTags=ref([]);
 
-const commentPagi=ref({
+const sameBoards = ref([]);
+const sameTags = ref([]);
+
+const catalog = ref([]);
+
+const comments = ref([]);
+const commentPagi = ref({
+  onChange: (page) => {
+    commentPagi.value.current = page;
+    QueryComments();
+  },
   pageSize: 10,
-  size: 10,
   current: 1,
   total: 1,
 });
-const data=ref([]);
-FetchBookComments(commentPagi.value,bookId,(data)=>{
-  commentPagi.value.current=data.current;
-  commentPagi.value.total=data.total;
-  data.value=data.records;
+
+function QueryComments() {
+  FetchBookComments(
+    { size: commentPagi.value.pageSize, current: commentPagi.value.current },
+    bookId,
+    (d) => {
+      commentPagi.value.current = Number.parseInt(d.current);
+      commentPagi.value.total = Number.parseInt(d.total);
+      comments.value = [];
+      comments.value = d.records;
+    }
+  );
+}
+
+function toBook(book) {
+  router.push({ name: "book", params: { id: book } });
+}
+
+function toChapter(chapter){
+  router.push({ name: "chapter", params: { id: chapter } });
+}
+
+function goToBook(book) {
+  FetchBookVo(book, (data) => {
+    bookInfo.value = data;
+    FetchBooksByBoard(data.boardName, (da) => {
+      sameBoards.value = da.records;
+    });
+    FetchBooksBytags(data.tags, (dat) => {
+      sameTags.value = dat.records;
+    });
+    FetchVolumesOnBook(bookId, (data) => {
+      catalog.value = data;
+    });
+    QueryComments();
+  });
+}
+
+goToBook(bookId);
+
+const commentV = ref({
+  userId: "",
+  content: "",
+  bookId: "",
 });
 
-const data1 = [
-  {
-    author: "Han Solo",
-    avatar: "https://joeschmoe.io/api/v1/random",
-    content:
-      "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
-    datetime: dayjs().subtract(1, "days"),
-  },
-  {
-    author: "Han Solo",
-    avatar: "https://joeschmoe.io/api/v1/random",
-    content:
-      "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
-    datetime: dayjs().subtract(2, "days"),
-  },
-];
+const access = loadAccess();
+function PostComm() {
+  if (access.access_token == "") {
+    alert("请先登录，再评论");
+    return;
+  }
 
+  const user = loadUser();
+  commentV.value.userId = user.userId;
+  commentV.value.bookId = bookId;
+  PostComment(access.access_token, commentV.value, (da) => {
+    if (!da.success) {
+      alert("错误:" + da.error);
+      return;
+    }
 
-const catalog = [
-  {
-    id: "101",
-    name: "第一卷 狂僵异变",
-    chapters: [
-      {
-        id: "101",
-        name: "第一章 开幕",
-      },
-      {
-        id: "102",
-        name: "第二章 异变",
-      },
-      {
-        id: "103",
-        name: "第三章 拯救",
-      },
-      {
-        id: "104",
-        name: "第四章 打扫",
-      },
-      {
-        id: "105",
-        name: "第五章 据点",
-      },
-      {
-        id: "106",
-        name: "第六章 入侵",
-      },
-      {
-        id: "107",
-        name: "第七章 抛弃",
-      },
-    ],
-  },
-  {
-    id: "102",
-    name: "第二卷 生存方舟",
-    chapters: [],
-  },
-  {
-    id: "103",
-    name: "第三卷 死亡世界",
-    chapters: [],
-  },
-];
-
-const commentV = ref("");
-
-const current = ref("2");
+    QueryComments();
+  });
+}
 </script>
 
 <style scoped>

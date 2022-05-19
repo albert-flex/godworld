@@ -45,6 +45,7 @@ function login(data) {
     userinfoPort(access.access_token, (d) => {
       info.set(d);
       alert("登录成功！用户Id:" + info.userId);
+      router.push({name:"site"});
     });
   });
 }
