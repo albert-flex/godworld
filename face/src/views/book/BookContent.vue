@@ -98,11 +98,12 @@
             class="comment-list"
             :header="`${data.length} 条`"
             item-layout="horizontal"
+            :pagination="commentPagi"
             :data-source="data"
           >
             <template #renderItem="{ item }">
               <a-list-item>
-                <a-comment :author="item.author" :avatar="item.avatar">
+                <a-comment :author="item.userId" :avatar="item.userId">
                   <template #content>
                     <p>
                       {{ item.content }}
@@ -110,16 +111,15 @@
                   </template>
                   <template #datetime>
                     <a-tooltip
-                      :title="item.datetime.format('YYYY-MM-DD HH:mm:ss')"
+                      :title="item.createTime.format('YYYY-MM-DD HH:mm:ss')"
                     >
-                      <span>{{ item.datetime.fromNow() }}</span>
+                      <span>{{ item.createTime.fromNow() }}</span>
                     </a-tooltip>
                   </template>
                 </a-comment>
               </a-list-item>
             </template>
           </a-list>
-          <a-pagination v-model:current="current" :total="50" show-less-items />
           <a-comment>
             <template #avatar>
               <a-avatar
@@ -157,6 +157,7 @@ import {
   FetchBookVo,
   FetchBooksByBoard,
   FetchBooksBytags,
+  FetchBookComments
 } from "../../ports/book.js";
 dayjs.extend(relativeTime);
 
@@ -176,7 +177,20 @@ FetchBookVo(bookId,(data)=>{
 const sameBoards = ref([]);
 const sameTags=ref([]);
 
-const data = [
+const commentPagi=ref({
+  pageSize: 10,
+  size: 10,
+  current: 1,
+  total: 1,
+});
+const data=ref([]);
+FetchBookComments(commentPagi.value,bookId,(data)=>{
+  commentPagi.value.current=data.current;
+  commentPagi.value.total=data.total;
+  data.value=data.records;
+});
+
+const data1 = [
   {
     author: "Han Solo",
     avatar: "https://joeschmoe.io/api/v1/random",
