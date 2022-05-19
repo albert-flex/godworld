@@ -17,6 +17,7 @@
                 <template #title>
                   <a-button
                     type="link"
+                    @click="toBook(item.id)"
                     style="font-size: 1.2em; color: green"
                     >{{ item.name }}</a-button
                   >
@@ -38,6 +39,7 @@
                 <template #title>
                   <a-button
                     type="link"
+                    @click="toBook(item.id)"
                     style="font-size: 1.2em; color: green"
                     >{{ item.name }}</a-button
                   >
@@ -127,7 +129,7 @@
                     :description="item.updateTime + ' ' + item.author"
                   >
                     <template #title>
-                      <a :href="item.href">{{ item.name }}</a>
+                      <a-button type="link" @click="toBook(item.id)">{{item.name}}</a-button>
                     </template>
                   </a-list-item-meta>
                   {{ item.content }}
@@ -156,11 +158,18 @@ import {
   LikeOutlined,
   MessageOutlined,
 } from "@ant-design/icons-vue";
+import {useRouter} from "vue-router";
+
+const router=useRouter();
 
 const updateList = ref([]);
 NewestBooksPort((data) => {
   updateList.value = data.records;
 });
+
+function toBook(book) {
+  router.push({ name: "book", params: { id: book } });
+}
 
 const boardData = ref([]);
 AllBoardBooks((data) => {

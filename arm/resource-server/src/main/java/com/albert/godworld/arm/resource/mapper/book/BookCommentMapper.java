@@ -1,7 +1,7 @@
 package com.albert.godworld.arm.resource.mapper.book;
 
 import com.albert.godworld.arm.resource.domain.book.BookComment;
-import com.albert.godworld.arm.resource.vo.BookCommentVo;
+import com.albert.godworld.arm.resource.vo.book.BookCommentVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;

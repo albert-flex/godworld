@@ -1,11 +1,10 @@
 package com.albert.godworld.arm.resource.service.book.impl;
 
 import com.albert.godworld.arm.resource.domain.book.BookBoard;
-import com.albert.godworld.arm.resource.domain.book.BookInfo;
 import com.albert.godworld.arm.resource.service.book.BookBoardService;
 import com.albert.godworld.arm.resource.service.book.BookInfoService;
 import com.albert.godworld.arm.resource.service.book.BookRankService;
-import com.albert.godworld.arm.resource.vo.BookVo;
+import com.albert.godworld.arm.resource.vo.book.BookVo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;

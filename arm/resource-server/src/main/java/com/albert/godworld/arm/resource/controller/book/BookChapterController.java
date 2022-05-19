@@ -2,9 +2,8 @@ package com.albert.godworld.arm.resource.controller.book;
 
 import com.albert.godworld.arm.resource.domain.book.BookChapter;
 import com.albert.godworld.arm.resource.service.book.BookChapterService;
-import com.albert.godworld.arm.resource.vo.BookChapterInfoVo;
-import com.albert.godworld.arm.resource.vo.BookChapterVo;
-import com.albert.godworld.arm.resource.vo.BookVolumeVo;
+import com.albert.godworld.arm.resource.vo.book.BookChapterInfoVo;
+import com.albert.godworld.arm.resource.vo.book.BookVolumeVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

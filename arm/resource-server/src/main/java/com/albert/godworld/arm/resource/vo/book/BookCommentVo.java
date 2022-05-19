@@ -1,4 +1,4 @@
-package com.albert.godworld.arm.resource.vo;
+package com.albert.godworld.arm.resource.vo.book;
 
 import lombok.Data;
 import java.util.Date;

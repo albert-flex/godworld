@@ -18,7 +18,9 @@
     </a-layout-header>
     <a-layout-content :style="{ padding: '0px 0px', marginTop: '64px' }">
       <div :style="{ background: '#fff', padding: '10px', minHeight: '380px' }">
-        <router-view />
+        <transition :name="transition">
+          <router-view :key="route.fullPath" />
+        </transition>
       </div>
     </a-layout-content>
     <a-layout-footer :style="{ textAlign: 'center' }">
@@ -28,8 +30,10 @@
 </template>
 <script setup>
 import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 const router = useRouter();
+const route = useRoute();
+const transition = "slide-right";
 
 const selectedKeys = ref(["2"]);
 function selectMenu(e) {
@@ -39,10 +43,10 @@ function selectMenu(e) {
     router.push({ name: "authorHome" });
   } else if (e.key == "3") {
     router.push({ name: "socialHome" });
-  } else if(e.key=='4') {
+  } else if (e.key == "4") {
     router.push({ name: "authorStation" });
-  }else {
-    router.push({name:"login"});
+  } else {
+    router.push({ name: "login" });
   }
 }
 </script>
@@ -53,12 +57,5 @@ function selectMenu(e) {
   background: rgba(255, 255, 255, 0.2);
   margin: 16px 24px 16px 0;
   float: left;
-}
-.site-layout .site-layout-background {
-  background: #fff;
-}
-
-[data-theme="dark"] .site-layout .site-layout-background {
-  background: #141414;
 }
 </style>

@@ -7,10 +7,9 @@ import com.albert.godworld.arm.resource.dto.RV;
 import com.albert.godworld.arm.resource.dto.RVError;
 import com.albert.godworld.arm.resource.service.book.BookCommentService;
 import com.albert.godworld.arm.resource.util.PrincipalConvert;
-import com.albert.godworld.arm.resource.vo.BookCommentVo;
+import com.albert.godworld.arm.resource.vo.book.BookCommentVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 

@@ -5,7 +5,7 @@ import com.albert.godworld.arm.resource.mapper.book.BookInfoMapper;
 import com.albert.godworld.arm.resource.mapper.book.BookTagBindMapper;
 import com.albert.godworld.arm.resource.service.author.AuthorService;
 import com.albert.godworld.arm.resource.service.book.BookInfoService;
-import com.albert.godworld.arm.resource.vo.BookVo;
+import com.albert.godworld.arm.resource.vo.book.BookVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;

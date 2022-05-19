@@ -1,7 +1,6 @@
 package com.albert.godworld.arm.resource.service.book;
 
-import com.albert.godworld.arm.resource.domain.book.BookInfo;
-import com.albert.godworld.arm.resource.vo.BookVo;
+import com.albert.godworld.arm.resource.vo.book.BookVo;
 
 import java.util.List;
 import java.util.Map;
