@@ -1,12 +1,12 @@
 
-import { UrlPatch, RequestGet } from "./port";
+import { UrlPatch, RequestGet, URLConcat } from "./port";
 
 //获取更新页
 const books_fetch_newest = UrlPatch("book/page/update");
 //获取根据板块排列的页
 const books_fetch_by_all_board = UrlPatch("book/rank/all");
 //根据作品名称哈寻分页
-const books_fetch_by_name = UrlPatch("book/page/name/");
+const books_fetch_by_name = UrlPatch("book/page/name/:1");
 //作品查询分页
 const books_query = UrlPatch("book/page/query");
 //板块列表
@@ -14,20 +14,21 @@ const board_list = UrlPatch("book_board/list");
 //标签列表
 const tag_list = UrlPatch("book_tag/list");
 //找到书本
-const book_info = UrlPatch("book/get/id/");
+const book_info = UrlPatch("book/get/id/:1");
 //查找板块的分页
-const books_board_page = UrlPatch("book/page/board/");
+const books_board_page = UrlPatch("book/page/board/:1");
 //查找同标签的分页
 const books_tags_page = UrlPatch("book/page/tags");
-
+//查找书本的评论
+const comments_on_book = UrlPatch("book_comment/page/book/:1")
 /**
  * 
  * @param {(data)=>{}} successCall
  */
 function NewestBooksPort(successCall) {
     let params = { size: 10, current: 1 };
-    books_fetch_newest.search = new URLSearchParams(params).toString();
-    fetch(books_fetch_newest, {
+    let api = URLConcat(books_fetch_newest, [], params);
+    fetch(api, {
         method: "GET",
         mode: "cors"
     }).then(res => res.json())
@@ -40,7 +41,7 @@ function NewestBooksPort(successCall) {
  * @param {(data)=>{}} successCall
  */
 function AllBoardBooks(successCall) {
-    RequestGet(books_fetch_by_all_board, 'GET', successCall);
+    RequestGet(URLConcat(books_fetch_by_all_board), 'GET', successCall);
 }
 
 /**
@@ -49,9 +50,9 @@ function AllBoardBooks(successCall) {
  * @param {(data)=>{}} successCall
  */
 function FetchBooksByName(name, successCall) {
-    let params = { size: 10, current: 1 ,name: name };
-    books_fetch_by_name.search = new URLSearchParams(params).toString();
-    RequestGet(books_fetch_by_name, 'GET', successCall);
+    let params = { size: 10, current: 1 };
+    let api = URLConcat(books_fetch_by_name, [name], params);
+    RequestGet(api, 'GET', successCall);
 }
 
 /**
@@ -63,8 +64,8 @@ function FetchBooksByName(name, successCall) {
 function QueryBooks(require, body, successCall) {
     let myHeader = new Headers();
     myHeader.append('Content-Type', 'application/json');
-    books_query.search = new URLSearchParams(require).toString();
-    fetch(books_query, {
+    let api = URLConcat(books_query, [], require);
+    fetch(api, {
         method: "PUT",
         body: JSON.stringify(body),
         headers: myHeader,
@@ -79,7 +80,7 @@ function QueryBooks(require, body, successCall) {
  * @param {(data)=>{}} successCall
  */
 function FetchBoardList(successCall) {
-    RequestGet(board_list, 'GET', successCall);
+    RequestGet(URLConcat(board_list), 'GET', successCall);
 }
 
 /**
@@ -87,7 +88,7 @@ function FetchBoardList(successCall) {
  * @param {(data)=>{}} successCall
  */
 function FetchTagList(successCall) {
-    RequestGet(tag_list, 'GET', successCall);
+    RequestGet(URLConcat(board_list), 'GET', successCall);
 }
 
 /**
@@ -96,9 +97,9 @@ function FetchTagList(successCall) {
  * @param {(data)=>{}} successCall
  */
 function FetchBooksByBoard(name, successCall) {
-    let params = { size: 10, current: 1 ,board: name };
-    books_board_page.search = new URLSearchParams(params).toString();
-    RequestGet(books_board_page, 'GET', successCall);
+    let params = { size: 10, current: 1 };
+    let api = URLConcat(books_board_page, [name], params);
+    RequestGet(api, 'GET', successCall);
 }
 
 /**
@@ -108,8 +109,8 @@ function FetchBooksByBoard(name, successCall) {
  */
 function FetchBooksBytags(tags, successCall) {
     let params = { size: 10, current: 1, tags: tags };
-    books_tags_page.search = new URLSearchParams(params).toString();
-    RequestGet(books_tags_page, 'GET', successCall);
+    let api = URLConcat(books_tags_page, [], params);
+    RequestGet(api, 'GET', successCall);
 }
 
 /**
@@ -118,7 +119,17 @@ function FetchBooksBytags(tags, successCall) {
  * @param {(data)=>{}} successCall 
  */
 function FetchBookVo(id, successCall) {
-    RequestGet(book_info + id, 'GET', successCall);
+    RequestGet(URLConcat(book_info, [id], {}), 'GET', successCall);
+}
+
+/**
+ * 
+ * @param {{size: Number, current: Number}} page 
+ * @param {Number} bookId 
+ * @param {(data)=>{}} successCall 
+ */
+function FetchBookComments(page, bookId, successCall) {
+    RequestGet(URLConcat(comments_on_book, [bookId], page), 'GET', successCall);
 }
 
 export {
@@ -131,4 +142,5 @@ export {
     FetchBooksByBoard,
     FetchBooksBytags,
     FetchBookVo,
+    FetchBookComments,
 }

@@ -1,5 +1,5 @@
 
-import { UrlPatch, AuthPatch } from "./port";
+import { UrlPatch, AuthPatch , URLConcat } from "./port";
 
 const register_api = UrlPatch("user/register");
 const login_api = AuthPatch("oauth/token");
@@ -13,8 +13,8 @@ const sendcaptcha_api = UrlPatch("captcha");
  */
 const sendCaptchaPort = function (email, successCall) {
     let params = { email: email };
-    sendcaptcha_api.search = new URLSearchParams(params).toString();
-    fetch(sendcaptcha_api, {
+    let api = URLConcat(sendcaptcha_api,[],params);
+    fetch(api, {
         method: 'POST',
         headers: {
             "Content-Type": "application/x-www-form-urlencode",
@@ -33,7 +33,8 @@ const sendCaptchaPort = function (email, successCall) {
 const registerPort = function (require, successCall) {
     let myHeader = new Headers();
     myHeader.append('Content-Type', 'application/json');
-    fetch(register_api, {
+    let api=URLConcat(register_api,[],{});
+    fetch(api, {
         method: 'POST',
         body: JSON.stringify(require),
         headers: myHeader,
@@ -55,8 +56,8 @@ const loginPort = function (userName, password, successCall) {
         grant_type: 'password', username: userName,
         password: password
     };
-    login_api.search = new URLSearchParams(params).toString();
-    fetch(login_api, {
+    let api=URLConcat(login_api,[],params);
+    fetch(api, {
         method: 'POST',
         headers: {
             "Content-Type": "application/x-www-form-urlencode",
@@ -81,7 +82,8 @@ const userinfoPort = function (token, successCall) {
 
     let headers = new Headers();
     headers.append("Authorization", "bearer " + token);
-    fetch(userinfo_api, {
+    let api=URLConcat(userinfo_api,[],{});
+    fetch(api, {
         method: 'GET',
         headers: headers,
         mode: 'cors'
