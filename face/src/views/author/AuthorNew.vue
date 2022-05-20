@@ -65,8 +65,8 @@ function Register() {
 }
 
 function sendCaptcha(){
-  sendCaptchaPort(formData.value.email,(data)=>{
-    console.log(data);
+  sendCaptchaPort(formData.value.email,(d)=>{
+    alert("验证码发送成功!");
   })
 }
 </script>

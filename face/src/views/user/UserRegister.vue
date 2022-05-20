@@ -74,6 +74,7 @@ const router = useRouter();
 function register(data) {
   registerPort(registerData, (data) => {
     alert("注册成功，用户ID:" + data.userId);
+      gotoLogin();
   });
 }
 
