@@ -26,7 +26,7 @@ const volumes_on_book = UrlPatch("book_chapter/volumes/:1");
 //发送评论
 const send_comments = UrlPatch("book_comment");
 //获取章节信息
-const chapter_info = UrlPatch("book_chapter/id/:1")
+const chapter_info = UrlPatch("book_chapter/id/:1");
 
 
 /**

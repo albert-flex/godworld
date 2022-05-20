@@ -5,18 +5,18 @@
       <a-form :model="formData" :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-form-item label="名称">
           <a-input-search
-            v-model:value="value"
+            v-model:value="formData.name"
             placeholder="input search text"
             style="width: 200px"
-            @search="onSearch"
+            @search="searchByName"
           />
         </a-form-item>
         <a-form-item label="所属社团">
           <a-input-search
-            v-model:value="value2"
+            v-model:value="formData.social"
             placeholder="input search text"
             style="width: 200px"
-            @search="onSearch"
+            @search="searchBySocial"
           />
         </a-form-item>
         <a-divider></a-divider>
@@ -31,15 +31,22 @@
           <a-list-item key="item.id">
             <a-list-item-meta
               :description="
-                item.updateTime + ' ' + item.title + ' ' + item.updateChapter
+                item.bookName +
+                ' ' +
+                item.updateTime +
+                ' ' +
+                item.volumeName +
+                ' ' +
+                item.chapter
               "
             >
               <template #title>
-                <a :href="item.href">{{ item.author }}</a>
+                <a :href="item.href">{{ item.authorName }}</a>
               </template>
-              <template #avatar><a-avatar :src="item.avatar" /></template>
+              <template #avatar
+                ><a-avatar src="https://joeschmoe.io/api/v1/random"
+              /></template>
             </a-list-item-meta>
-            {{ item.content }}
           </a-list-item>
         </template>
       </a-list>
@@ -50,14 +57,14 @@
         <template #renderItem="{ item }">
           <a-list-item key="item.id">
             <a-list-item-meta
-              :description="
-                item.updateTime + ' ' + item.title + ' ' + item.updateChapter
-              "
+              :description="item.createTime + ' ' + item.bookName"
             >
               <template #title>
-                <a :href="item.href">{{ item.author }}</a>
+                <a :href="item.href">{{ item.name }}</a>
               </template>
-              <template #avatar><a-avatar :src="item.avatar" /></template>
+              <template #avatar
+                ><a-avatar src="https://joeschmoe.io/api/v1/random"
+              /></template>
             </a-list-item-meta>
           </a-list-item>
         </template>
@@ -68,13 +75,21 @@
           <a-list-item key="item.id">
             <a-list-item-meta
               :description="
-                item.updateTime + ' ' + item.title + ' ' + item.updateChapter
+                item.bookName +
+                ' ' +
+                item.updateTime +
+                ' ' +
+                item.volumeName +
+                ' ' +
+                item.chapter
               "
             >
               <template #title>
-                <a :href="item.href">{{ item.author }}</a>
+                <a :href="item.href">{{ item.authorName }}</a>
               </template>
-              <template #avatar><a-avatar :src="item.avatar" /></template>
+              <template #avatar
+                ><a-avatar src="https://joeschmoe.io/api/v1/random"
+              /></template>
             </a-list-item-meta>
           </a-list-item>
         </template>
@@ -85,47 +100,94 @@
 
 <script setup>
 import { ref } from "@vue/reactivity";
+import {
+  FetchNewestPage,
+  FetchUpdatePage,
+  QueryNamePage,
+  QuerySocialPage,
+} from "../../ports/author.js";
 
 const labelCol = { style: { width: "150px" } };
 const wrapperCol = { span: 14 };
-const value = ref("");
-const value2=ref("");
-const listData = [];
 
-for (let i = 0; i < 23; i++) {
-  listData.push({
-    href: "https://www.antdv.com/",
-    title: "火之异能者",
-    avatar: "https://joeschmoe.io/api/v1/random",
-    updateTime: "2022/05/13 12:30",
-    updateChapter: "第一卷/第三章",
-    author: "夏文纯一",
-    content:
-      "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure)...",
-  });
+const formData = ref({
+  name: "",
+  social: "",
+});
+
+function searchByName() {
+  if (formData.value.name !== "") {
+    QueryNamePage(
+      formData.value.name,
+      {
+        size: pagination.value.pageSize,
+        current: pagination.value.current,
+      },
+      (data) => {
+        listData.value = data.records;
+        filterList(listData.value);
+        pagination.value.current = Number.parseInt(data.current);
+        pagination.value.total = Number.parseInt(data.total);
+      }
+    );
+  }
 }
 
-const newBookAuthors = [];
-for (let i = 0; i < 5; ++i) {
-  newBookAuthors.push({
-    title: "火之异能者",
-    avatar: "https://joeschmoe.io/api/v1/random",
-    updateTime: "2022/05/13 12:30",
-    updateChapter: "第一卷/第三章",
-    author: "夏文纯一",
-    content:
-      "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure)...",
-  });
+function filterList(list) {
+  for (let i = 0; i != list.length; ++i) {
+    let ele = list[i];
+    if (ele.chapter == null) {
+      ele.chapter = "";
+    }
+    if (ele.volumeName == null) {
+      ele.volumeName = "";
+    }
+    if (ele.bookName == null) {
+      ele.bookName = "";
+    }
+    if (ele.updateTime == null) {
+      ele.updateTime = "";
+    }
+  }
 }
 
-const updateBookAuthors = newBookAuthors;
+function searchBySocial() {
+  if (formData.value.social !== "") {
+    QuerySocialPage(
+      formData.value.social,
+      {
+        size: pagination.value.pageSize,
+        current: pagination.value.current,
+      },
+      (data) => {
+        listData.value = data.records;
+        filterList(listData.value);
+        pagination.value.current = Number.parseInt(data.current);
+        pagination.value.total = Number.parseInt(data.total);
+      }
+    );
+  }
+}
 
-const pagination = {
+const listData = ref([]);
+const pagination = ref({
   onChange: (page) => {
     console.log(page);
   },
-  pageSize: 20,
-};
+  pageSize: 10,
+  current: 1,
+  total: 1,
+});
+
+const newBookAuthors = ref([]);
+FetchNewestPage({ size: 5, current: 1 }, (data) => {
+  newBookAuthors.value = data.records;
+});
+
+const updateBookAuthors = ref([]);
+FetchUpdatePage({ size: 5, current: 1 }, (data) => {
+  updateBookAuthors.value = data.records;
+});
 </script>
 
 <style scoped>
