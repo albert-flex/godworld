@@ -65,6 +65,7 @@ public class AuthorServiceSPI extends ServiceImpl<AuthorMapper, AuthorInfo>
     @Override
     public boolean checkAuthorNameAvailable(String name) {
         LambdaQueryWrapper<AuthorInfo> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.eq(AuthorInfo::getName,name);
         return super.getOne(queryWrapper)==null;
     }
 

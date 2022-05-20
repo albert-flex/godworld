@@ -1,14 +1,17 @@
 package com.albert.godworld.arm.resource.controller.user;
 
+import com.albert.godworld.arm.resource.domain.user.UGroups;
 import com.albert.godworld.arm.resource.dto.*;
 import com.albert.godworld.arm.resource.domain.social.SocialInfo;
 import com.albert.godworld.arm.resource.domain.user.User;
 import com.albert.godworld.arm.resource.service.author.AuthorService;
 import com.albert.godworld.arm.resource.service.other.CaptchaService;
 import com.albert.godworld.arm.resource.service.social.SocialInfoService;
+import com.albert.godworld.arm.resource.service.user.UGroupService;
 import com.albert.godworld.arm.resource.service.user.UserService;
 import com.albert.godworld.arm.resource.util.PrincipalConvert;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +21,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user")
+@AllArgsConstructor
 public class UserController {
 
     private final UserService userService;
+    private final UGroupService groupService;
     private final PrincipalConvert convert;
     private final AuthorService authorService;
     private final SocialInfoService socialInfoService;
@@ -28,17 +33,6 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
     private final CaptchaService captchaService;
 
-    @Autowired
-    public UserController(UserService userService, PrincipalConvert convert,
-                          AuthorService authorService, SocialInfoService socialInfoService,
-                          PasswordEncoder passwordEncoder, CaptchaService captchaService) {
-        this.userService = userService;
-        this.convert = convert;
-        this.authorService = authorService;
-        this.socialInfoService = socialInfoService;
-        this.passwordEncoder = passwordEncoder;
-        this.captchaService = captchaService;
-    }
 
     /**
      * 添加User，传入User： userName,password
@@ -151,6 +145,7 @@ public class UserController {
             return RVError.USER_INSERT_ERROR.to();
         }
 
+        groupService.addToUser(user.getId(), UGroups.READER.getCode());
         UserDTO userDTO=UserDTO.create(user);
         return RV.success(userDTO);
     }

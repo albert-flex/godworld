@@ -1,6 +1,7 @@
 <template>
   <div class="authorhome">
     <main>
+      <a-button type="primary" @click="toNew">成功作家!</a-button>
       <h2>查找作者</h2>
       <a-form :model="formData" :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-form-item label="名称">
@@ -106,6 +107,7 @@ import {
   QueryNamePage,
   QuerySocialPage,
 } from "../../ports/author.js";
+import { sendCaptchaPort } from "../../ports/user.js";
 import { useRouter } from "vue-router";
 
 const labelCol = { style: { width: "150px" } };
@@ -119,6 +121,10 @@ const formData = ref({
 
 function toAuthor(id) {
   router.push({ name: "authorPage", params: { id: id } });
+}
+
+function toNew(id) {
+  router.push({ name: "authorNew" });
 }
 
 function searchByName() {

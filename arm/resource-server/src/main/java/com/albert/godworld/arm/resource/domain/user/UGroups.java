@@ -14,14 +14,14 @@ public enum UGroups {
     SOCIAL(4,"社团成员"),
     SOCIAL_ADMIN(5,"社团管理员")
     ;
-    private final int code;
+    private final long code;
     private final String name;
 
     UGroups(int code, String name) {
         this.code = code;
         this.name = name;
     }
-    public int getCode(){
+    public long getCode(){
         return code;
     }
 
