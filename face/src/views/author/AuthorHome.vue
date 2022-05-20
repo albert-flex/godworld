@@ -41,7 +41,7 @@
               "
             >
               <template #title>
-                <a :href="item.href">{{ item.authorName }}</a>
+                <a @click="toAuthor(item.id)">{{ item.authorName }}</a>
               </template>
               <template #avatar
                 ><a-avatar src="https://joeschmoe.io/api/v1/random"
@@ -60,7 +60,7 @@
               :description="item.createTime + ' ' + item.bookName"
             >
               <template #title>
-                <a :href="item.href">{{ item.name }}</a>
+                <a @click="toAuthor(item.id)">{{ item.name }}</a>
               </template>
               <template #avatar
                 ><a-avatar src="https://joeschmoe.io/api/v1/random"
@@ -85,7 +85,7 @@
               "
             >
               <template #title>
-                <a :href="item.href">{{ item.authorName }}</a>
+                <a @click="toAuthor(item.id)">{{ item.authorName }}</a>
               </template>
               <template #avatar
                 ><a-avatar src="https://joeschmoe.io/api/v1/random"
@@ -106,14 +106,20 @@ import {
   QueryNamePage,
   QuerySocialPage,
 } from "../../ports/author.js";
+import { useRouter } from "vue-router";
 
 const labelCol = { style: { width: "150px" } };
 const wrapperCol = { span: 14 };
+const router = useRouter();
 
 const formData = ref({
   name: "",
   social: "",
 });
+
+function toAuthor(id) {
+  router.push({ name: "authorPage", params: { id: id } });
+}
 
 function searchByName() {
   if (formData.value.name !== "") {

@@ -27,7 +27,10 @@ const volumes_on_book = UrlPatch("book_chapter/volumes/:1");
 const send_comments = UrlPatch("book_comment");
 //获取章节信息
 const chapter_info = UrlPatch("book_chapter/id/:1");
-
+//获取作者的作品分页
+const book_on_author = UrlPatch("book/page/author/id/:1");
+//获取活动分页
+const book_on_activity_author=UrlPatch("social_activity_book/author/:1");
 
 /**
  * 
@@ -179,6 +182,20 @@ function FetchChapter(chapterId, successCall) {
     RequestGet(URLConcat(chapter_info, [chapterId], {}), 'GET', successCall);
 }
 
+/**
+ * 
+ * @param {String} authorId 
+ * @param {{size: Number, current: Number}} page 
+ * @param {(data)=>{}} successCall 
+ */
+function FetchBooksOnAuthor(authorId, page, successCall) {
+    RequestGet(URLConcat(book_on_author, [authorId], page), 'GET', successCall);
+}
+
+function FetchBooksOnActivityAuthor(authorId,successCall){
+    RequestGet(URLConcat(book_on_activity_author,[authorId]),'GET',successCall);
+}
+
 export {
     NewestBooksPort,
     AllBoardBooks,
@@ -193,4 +210,6 @@ export {
     FetchVolumesOnBook,
     PostComment,
     FetchChapter,
+    FetchBooksOnAuthor,
+    FetchBooksOnActivityAuthor,
 }
