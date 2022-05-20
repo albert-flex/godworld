@@ -8,6 +8,8 @@ import com.albert.godworld.arm.resource.dto.RV;
 import com.albert.godworld.arm.resource.dto.RVError;
 import com.albert.godworld.arm.resource.service.author.AuthorService;
 import com.albert.godworld.arm.resource.util.PrincipalConvert;
+import com.albert.godworld.arm.resource.vo.author.AuthorNewestVo;
+import com.albert.godworld.arm.resource.vo.author.AuthorUpdatedVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.AllArgsConstructor;
@@ -36,6 +38,26 @@ public class AuthorController {
             authorService.save(info);
         }
         return info;
+    }
+
+    @GetMapping("/page/update")
+    public Page<AuthorUpdatedVo> updatedList(Page<AuthorUpdatedVo> page,@RequestParam(value = "day",defaultValue = "7") Integer day){
+        return authorService.updateAuthors(page,day);
+    }
+
+    @GetMapping("/page/newest")
+    public Page<AuthorNewestVo> upNewestList(Page<AuthorNewestVo> page,@RequestParam(value = "day",defaultValue = "7") Integer day){
+        return authorService.newestAuthors(page,day);
+    }
+
+    @GetMapping("/page/name/{name}")
+    public Page<AuthorUpdatedVo> updatePageByName(Page<AuthorUpdatedVo> page,@PathVariable("name") String name){
+        return authorService.queryByName(page,name);
+    }
+
+    @GetMapping("/page/social/{name}")
+    public Page<AuthorUpdatedVo> updatePageBySocial(Page<AuthorUpdatedVo> page,@PathVariable("name") String name){
+        return authorService.queryBySocial(page,name);
     }
 
     @PutMapping
@@ -67,11 +89,6 @@ public class AuthorController {
     @GetMapping("/by/ids")
     public List<AuthorInfo> findByIds(List<Long> ids){
         return authorService.listByIds(ids);
-    }
-
-    @GetMapping("/query/name/{name}")
-    public Page<AuthorInfo> queryName(@PathVariable("name") String name, Page<AuthorInfo> page) {
-        return authorService.queryByName(page, name);
     }
 
     @GetMapping("/id/{id}")

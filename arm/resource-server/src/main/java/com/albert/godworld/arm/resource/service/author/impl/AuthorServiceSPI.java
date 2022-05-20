@@ -3,6 +3,8 @@ package com.albert.godworld.arm.resource.service.author.impl;
 import com.albert.godworld.arm.resource.domain.author.AuthorInfo;
 import com.albert.godworld.arm.resource.mapper.author.AuthorMapper;
 import com.albert.godworld.arm.resource.service.author.AuthorService;
+import com.albert.godworld.arm.resource.vo.author.AuthorNewestVo;
+import com.albert.godworld.arm.resource.vo.author.AuthorUpdatedVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -26,10 +28,23 @@ public class AuthorServiceSPI extends ServiceImpl<AuthorMapper, AuthorInfo>
     }
 
     @Override
-    public Page<AuthorInfo> queryByName(Page<AuthorInfo> page, String name) {
-        LambdaQueryWrapper<AuthorInfo> queryWrapper=new LambdaQueryWrapper<>();
-        queryWrapper.like(AuthorInfo::getName,name);
-        return super.page(page,queryWrapper);
+    public Page<AuthorUpdatedVo> queryByName(Page<AuthorUpdatedVo> page, String name) {
+        return super.baseMapper.queryByName(page,name);
+    }
+
+    @Override
+    public Page<AuthorUpdatedVo> queryBySocial(Page<AuthorUpdatedVo> page, String social) {
+        return super.baseMapper.queryBySocial(page,social);
+    }
+
+    @Override
+    public Page<AuthorNewestVo> newestAuthors(Page<AuthorNewestVo> page,Integer day) {
+        return super.baseMapper.pageNewestBookAuthors(page,day);
+    }
+
+    @Override
+    public Page<AuthorUpdatedVo> updateAuthors(Page<AuthorUpdatedVo> page, Integer day) {
+        return super.baseMapper.pageUpdateBookAuthors(page,day);
     }
 
     @Override

@@ -150,6 +150,7 @@ create table author_info(
     name varchar(30) not null,
     email varchar(30) not null,
     moto varchar(1024) not null,
+    present_book_id bigint not null default 0,
     create_time datetime not null default now(),
     primary key(id)
 );
@@ -187,7 +188,7 @@ create table social_member(
     social_id bigint not null,
     author_id bigint not null,
     member_name varchar(30) not null,
-    type varchar(30) not null,
+    type int not null,
     in_time datetime not null default now(),
     primary key(id)
 );

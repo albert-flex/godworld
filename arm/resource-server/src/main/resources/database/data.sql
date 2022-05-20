@@ -142,7 +142,7 @@ delete from book_volume;
 insert into book_volume(id,book_id,name) values
 (1,1,'第一卷 嗯，这个名字不错'),
 (2,2,'第一卷 起点'),
-(2,3,'第一卷 空间与时间');
+(3,3,'第一卷 空间与时间');
 
 delete from book_chapter;
 insert into book_chapter(id,book_id,volume_id,title,content,prev_chapter_id,next_chapter_id)values
@@ -155,3 +155,15 @@ insert into book_chapter(id,book_id,volume_id,title,content,prev_chapter_id,next
 (7,3,3,'第一章 新生报告会','众所周知，这里是一个十分友好的城市，在这个城市里...\n众所周知，这里是一个十分友好的城市，在这个城市里...\n',0,9),
 (8,3,3,'第三章 可爱的人是谁','众所周知，这里是一个十分友好的城市，在这个城市里...\n众所周知，这里是一个十分友好的城市，在这个城市里...\n',9,0),
 (9,3,3,'第二章 别想睡觉！','众所周知，这里是一个十分友好的城市，在这个城市里...、\n众所周知，这里是一个十分友好的城市，在这个城市里...\n',7,8);
+
+delete from social_info;
+insert into social_info(id,name,master_id) values
+(1,'玄沧阁',1);
+
+delete from social_member;
+insert into social_member(id,social_id,author_id,member_name,type) values
+(1,1,1,'AA',1),
+(2,1,2,'BB',2),
+(3,1,3,'CC',3),
+(4,1,4,'DD',2),
+(5,1,5,'EE',3);

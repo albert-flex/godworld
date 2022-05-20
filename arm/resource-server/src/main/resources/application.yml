@@ -61,3 +61,6 @@ logging:
     org.springframework.security: debug
   file:
     path: .cata_log
+
+mybatis-plus:
+  type-enum-package: com.albert.godworld.arm.resource.domain.social

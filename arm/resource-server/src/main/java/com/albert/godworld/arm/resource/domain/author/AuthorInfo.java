@@ -12,6 +12,6 @@ public class AuthorInfo {
     private String name;
     private String email;
     private String moto;
-
+    private Long presentBookId;
     private Date createTime;
 }
