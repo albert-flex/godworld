@@ -13,8 +13,7 @@ import java.util.List;
 @Mapper
 public interface BookInfoMapper extends BaseMapper<BookInfo> {
 
-    @Select("<script>\n" +
-            "select bi.id,bi.update_time,bb.name as boardName,bi.name,bi.word_count,\n" +
+    String bookVoPre = "select bi.id,bi.update_time,bb.name as boardName,bi.name,bi.word_count,\n" +
             "group_concat(bt.name separator ',') as tag_words,bc.title as update_chapter,\n" +
             "bi.description,ai.name as author,bi.create_time\n" +
             "from book_info bi\n" +
@@ -22,7 +21,10 @@ public interface BookInfoMapper extends BaseMapper<BookInfo> {
             "left join author_info ai on ai.id=bi.author_id\n" +
             "left join book_tag_bind btb on btb.book_id=bi.id\n" +
             "left join book_tag bt on bt.id=btb.tag_id\n" +
-            "left join book_chapter bc on bc.id=bi.update_chapter_id\n" +
+            "left join book_chapter bc on bc.id=bi.update_chapter_id\n";
+
+    @Select("<script>\n" +
+            bookVoPre +
             "where\n" +
             "bb.name=#{board}\n" +
             "and bt.name in " +
@@ -34,75 +36,42 @@ public interface BookInfoMapper extends BaseMapper<BookInfo> {
             "group by bi.id\n" +
             "order by bi.update_time desc\n" +
             "</script>")
-    Page<BookVo> query(Page<BookVo> page,@Param("tags") List<String> tags,@Param("board") String board,
-                       @Param("year") Integer year,@Param("month") Integer month);
+    Page<BookVo> query(Page<BookVo> page, @Param("tags") List<String> tags, @Param("board") String board,
+                       @Param("year") Integer year, @Param("month") Integer month);
 
-    @Select("select bi.id,bi.update_time,bb.name as boardName,bi.name,bi.word_count,\n" +
-            "group_concat(bt.name separator ',') as tag_words,bc.title as update_chapter,\n" +
-            "bi.description,ai.name as author,bi.create_time\n" +
-            "from book_info bi\n" +
-            "left join book_board bb on bb.id=bi.board_id\n" +
-            "left join author_info ai on ai.id=bi.author_id\n" +
-            "left join book_tag_bind btb on btb.book_id=bi.id\n" +
-            "left join book_tag bt on bt.id=btb.tag_id\n" +
-            "left join book_chapter bc on bc.id=bi.update_chapter_id\n" +
+    @Select(bookVoPre +
             "group by bi.id\n" +
             "order by bi.point desc\n" +
             "limit 0,10;")
     List<BookVo> queryOfPoint();
 
-    @Select("select bi.id,bi.update_time,bb.name as boardName,bi.name,bi.word_count,\n" +
-            "group_concat(bt.name separator ',') as tag_words,bc.title as update_chapter,\n" +
-            "bi.description,ai.name as author,bi.create_time\n" +
-            "from book_info bi\n" +
-            "left join book_board bb on bb.id=bi.board_id\n" +
-            "left join author_info ai on ai.id=bi.author_id\n" +
-            "left join book_tag_bind btb on btb.book_id=bi.id\n" +
-            "left join book_tag bt on bt.id=btb.tag_id\n" +
-            "left join book_chapter bc on bc.id=bi.update_chapter_id\n" +
+    @Select(bookVoPre +
             "where bb.name=#{board}\n" +
             "group by bi.id\n" +
             "order by bi.point desc\n" +
             "limit 0,10;")
     List<BookVo> queryOfPointAtBoard(@Param("board") String board);
 
-    @Select("select bi.id,bi.update_time,bb.name as boardName,bi.name,bi.word_count,\n" +
-            "group_concat(bt.name separator ',') as tag_words,bc.title as update_chapter,\n" +
-            "bi.description,ai.name as author,bi.create_time\n" +
-            "from book_info bi\n" +
-            "left join book_board bb on bb.id=bi.board_id\n" +
-            "left join author_info ai on ai.id=bi.author_id\n" +
-            "left join book_tag_bind btb on btb.book_id=bi.id\n" +
-            "left join book_tag bt on bt.id=btb.tag_id\n" +
-            "left join book_chapter bc on bc.id=bi.update_chapter_id\n" +
+    @Select(bookVoPre +
             "where ai.name=#{name}\n" +
             "group by bi.id\n" +
             "order by bi.create_time desc ")
     Page<BookVo> queryByAuthorName(Page<BookVo> page, @Param("name") String name);
 
-    @Select("select bi.id,bi.update_time,bb.name as boardName,bi.name,bi.word_count,\n" +
-            "group_concat(bt.name separator ',') as tag_words,bc.title as update_chapter,\n" +
-            "bi.description,ai.name as author,bi.create_time\n" +
-            "from book_info bi\n" +
-            "left join book_board bb on bb.id=bi.board_id\n" +
-            "left join author_info ai on ai.id=bi.author_id\n" +
-            "left join book_tag_bind btb on btb.book_id=bi.id\n" +
-            "left join book_tag bt on bt.id=btb.tag_id\n" +
-            "left join book_chapter bc on bc.id=bi.update_chapter_id\n" +
+    @Select(bookVoPre +
+            "where ai.id=#{authorId}\n" +
+            "group by bi.id\n" +
+            "order by bi.create_time desc ")
+    Page<BookVo> queryByAuthorId(Page<BookVo> page, @Param("authorId") Long authorId);
+
+    @Select(bookVoPre +
             "where bb.name=#{board}\n" +
             "group by bi.id\n" +
             "order by bi.create_time desc ")
-    Page<BookVo> queryByBoard(Page<BookVo> page,@Param("board") String board);
+    Page<BookVo> queryByBoard(Page<BookVo> page, @Param("board") String board);
+
     @Select("<script>" +
-            "select bi.id,bi.update_time,bb.name as boardName,bi.name,bi.word_count,\n" +
-            "group_concat(bt.name separator ',') as tag_words,bc.title as update_chapter,\n" +
-            "bi.description,ai.name as author,bi.create_time\n" +
-            "from book_info bi\n" +
-            "left join book_board bb on bb.id=bi.board_id\n" +
-            "left join author_info ai on ai.id=bi.author_id\n" +
-            "left join book_tag_bind btb on btb.book_id=bi.id\n" +
-            "left join book_tag bt on bt.id=btb.tag_id\n" +
-            "left join book_chapter bc on bc.id=bi.update_chapter_id\n" +
+            bookVoPre +
             "where bt.name in \n" +
             "<foreach collection='tags' item='item' open='(' separator=',' close=')'>\n" +
             "#{item}\n" +
@@ -112,42 +81,18 @@ public interface BookInfoMapper extends BaseMapper<BookInfo> {
             "</script>")
     Page<BookVo> queryByTags(Page<BookVo> page, @Param("tags") List<String> tags);
 
-    @Select("select bi.id,bi.update_time,bb.name as boardName,bi.name,bi.word_count,\n" +
-            "group_concat(bt.name separator ',') as tag_words,bc.title as update_chapter,\n" +
-            "bi.description,ai.name as author,bi.create_time\n" +
-            "from book_info bi\n" +
-            "left join book_board bb on bb.id=bi.board_id\n" +
-            "left join author_info ai on ai.id=bi.author_id\n" +
-            "left join book_tag_bind btb on btb.book_id=bi.id\n" +
-            "left join book_tag bt on bt.id=btb.tag_id\n" +
-            "left join book_chapter bc on bc.id=bi.update_chapter_id\n" +
+    @Select(bookVoPre +
             "where bi.name like concat('%',#{name},'%')\n" +
             "group by bi.id\n" +
             "order by bi.create_time desc ")
     Page<BookVo> queryByName(Page<BookVo> page, @Param("name") String name);
 
-    @Select("select bi.id,bi.update_time,bb.name as boardName,bi.name,bi.word_count,\n" +
-            "group_concat(bt.name separator ',') as tag_words,bc.title as update_chapter,\n" +
-            "bi.description,ai.name as author,bi.create_time\n" +
-            "from book_info bi\n" +
-            "left join book_board bb on bb.id=bi.board_id\n" +
-            "left join author_info ai on ai.id=bi.author_id\n" +
-            "left join book_tag_bind btb on btb.book_id=bi.id\n" +
-            "left join book_tag bt on bt.id=btb.tag_id\n" +
-            "left join book_chapter bc on bc.id=bi.update_chapter_id\n" +
+    @Select(bookVoPre +
             "where bi.id=#{id}\n" +
             "group by bi.id\n")
     BookVo getById(Long id);
 
-    @Select("select bi.id,bi.update_time,bb.name as boardName,bi.name,bi.word_count,\n" +
-            "group_concat(bt.name separator ',') as tag_words,bc.title as update_chapter,\n" +
-            "bi.description,ai.name as author,bi.create_time\n" +
-            "from book_info bi\n" +
-            "left join book_board bb on bb.id=bi.board_id\n" +
-            "left join author_info ai on ai.id=bi.author_id\n" +
-            "left join book_tag_bind btb on btb.book_id=bi.id\n" +
-            "left join book_tag bt on bt.id=btb.tag_id\n" +
-            "left join book_chapter bc on bc.id=bi.update_chapter_id\n" +
+    @Select(bookVoPre +
             "group by bi.id\n" +
             "order by bi.update_time desc")
     Page<BookVo> getUpdatePage(Page<BookVo> page);

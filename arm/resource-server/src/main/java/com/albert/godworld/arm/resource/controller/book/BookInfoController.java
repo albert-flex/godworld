@@ -53,6 +53,13 @@ public class BookInfoController {
         return bookInfoService.pageOfAuthor(page,authorName);
     }
 
+    @GetMapping("/page/author/id/{authorId}")
+    public Page<BookVo> pageOfAuthorId(@PathVariable("authorId") Long authorId,Page<BookVo> page){
+        return bookInfoService.pageOfAuthorId(page,authorId);
+    }
+
+
+
     @GetMapping("/page/board/{board}")
     public Page<BookVo> pageOfBoard(@PathVariable("board") String board,Page<BookVo> page){
         return bookInfoService.queryByBoard(page,board);

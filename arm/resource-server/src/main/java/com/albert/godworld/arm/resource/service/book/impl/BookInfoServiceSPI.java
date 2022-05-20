@@ -28,6 +28,11 @@ public class BookInfoServiceSPI extends ServiceImpl<BookInfoMapper, BookInfo>
     }
 
     @Override
+    public Page<BookVo> pageOfAuthorId(Page<BookVo> page, Long authorId) {
+        return super.baseMapper.queryByAuthorId(page,authorId);
+    }
+
+    @Override
     public Page<BookVo> pageOfUpdate(Page<BookVo> page) {
         return super.baseMapper.getUpdatePage(page);
     }

@@ -4,12 +4,16 @@ package com.albert.godworld.arm.resource.controller.author;
 import com.albert.godworld.arm.resource.domain.author.AuthorInfo;
 import com.albert.godworld.arm.resource.domain.user.Permissions;
 import com.albert.godworld.arm.resource.domain.user.User;
+import com.albert.godworld.arm.resource.dto.AuthorRegVo;
 import com.albert.godworld.arm.resource.dto.RV;
 import com.albert.godworld.arm.resource.dto.RVError;
 import com.albert.godworld.arm.resource.service.author.AuthorService;
+import com.albert.godworld.arm.resource.service.other.CaptchaService;
+import com.albert.godworld.arm.resource.service.user.UGroupService;
 import com.albert.godworld.arm.resource.util.PrincipalConvert;
 import com.albert.godworld.arm.resource.vo.author.AuthorNewestVo;
 import com.albert.godworld.arm.resource.vo.author.AuthorUpdatedVo;
+import com.albert.godworld.arm.resource.vo.author.AuthorVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.AllArgsConstructor;
@@ -27,17 +31,38 @@ public class AuthorController {
 
     private final AuthorService authorService;
     private final PrincipalConvert principalConvert;
-
+    private final CaptchaService captchaService;
     @GetMapping("/now")
     public Object now(Principal principal) {
         return principalConvert.convert(principal);
     }
+
     @PostMapping
-    public AuthorInfo create(@RequestBody AuthorInfo info) {
-        if (authorService.checkAuthorNameAvailable(info.getName())) {
-            authorService.save(info);
+    @PreAuthorize("hasAuthority('USER_PER')")
+    public RV<AuthorInfo> create(@RequestBody AuthorRegVo vo, Principal principal) {
+        User user=principalConvert.convert(principal);
+        Long authorId=authorService.getAuthorIdByUserId(user.getId());
+        if(authorId!=null){
+            return RVError.AUTHOR_ALREADY_BIND.to();
         }
-        return info;
+
+        if(!captchaService.checkCaptcha(vo.getCaptcha(),vo.getEmail())){
+            return RVError.CAPTCHA_NOT_CORRECT.to();
+        }
+
+        if (authorService.checkAuthorNameAvailable(vo.getName())) {
+            AuthorInfo info=new AuthorInfo();
+            info.setUserId(user.getId());
+            info.setEmail(vo.getEmail());
+            info.setName(vo.getName());
+            if(!authorService.registerAuthor(info)){
+                return RVError.DATABASE_ERROR.to();
+            }else {
+                return RV.success(info);
+            }
+        }else {
+            return RVError.AUTHOR_NAME_UNAVAILABLE.to();
+        }
     }
 
     @GetMapping("/page/update")
@@ -92,8 +117,8 @@ public class AuthorController {
     }
 
     @GetMapping("/id/{id}")
-    public AuthorInfo getById(@PathVariable("id") Long id) {
-        return authorService.getById(id);
+    public AuthorVo getById(@PathVariable("id") Long id) {
+        return authorService.getAuthorVo(id);
     }
 
     @DeleteMapping

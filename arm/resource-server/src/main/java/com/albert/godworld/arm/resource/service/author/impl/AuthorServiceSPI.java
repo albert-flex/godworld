@@ -1,22 +1,37 @@
 package com.albert.godworld.arm.resource.service.author.impl;
 
 import com.albert.godworld.arm.resource.domain.author.AuthorInfo;
+import com.albert.godworld.arm.resource.domain.user.UGroups;
 import com.albert.godworld.arm.resource.mapper.author.AuthorMapper;
 import com.albert.godworld.arm.resource.service.author.AuthorService;
+import com.albert.godworld.arm.resource.service.user.UGroupService;
 import com.albert.godworld.arm.resource.vo.author.AuthorNewestVo;
 import com.albert.godworld.arm.resource.vo.author.AuthorUpdatedVo;
+import com.albert.godworld.arm.resource.vo.author.AuthorVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@AllArgsConstructor
 public class AuthorServiceSPI extends ServiceImpl<AuthorMapper, AuthorInfo>
     implements AuthorService {
+
+    private final UGroupService groupService;
 
     @Override
     public Long getAuthorIdByUserId(Long userId) {
         return baseMapper.getAuthorIdByUserId(userId);
+    }
+
+    @Override
+    @Transactional
+    public boolean registerAuthor(AuthorInfo info) {
+        if(!save(info))return  false;
+        return groupService.addToUser(info.getUserId(), (long) UGroups.AUTHOR.getCode());
     }
 
     @Override
@@ -51,5 +66,10 @@ public class AuthorServiceSPI extends ServiceImpl<AuthorMapper, AuthorInfo>
     public boolean checkAuthorNameAvailable(String name) {
         LambdaQueryWrapper<AuthorInfo> queryWrapper=new LambdaQueryWrapper<>();
         return super.getOne(queryWrapper)==null;
+    }
+
+    @Override
+    public AuthorVo getAuthorVo(Long id) {
+        return super.baseMapper.getById(id);
     }
 }

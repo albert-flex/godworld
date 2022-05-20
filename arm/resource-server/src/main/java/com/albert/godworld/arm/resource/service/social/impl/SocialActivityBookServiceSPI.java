@@ -7,14 +7,15 @@ import com.albert.godworld.arm.resource.mapper.social.SocialActivityBookMapper;
 import com.albert.godworld.arm.resource.service.social.SocialActivityBookService;
 import com.albert.godworld.arm.resource.service.book.BookInfoService;
 import com.albert.godworld.arm.resource.service.social.SocialActivityService;
+import com.albert.godworld.arm.resource.vo.book.BookVo;
+import com.albert.godworld.arm.resource.vo.book.SocialActivityBookVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class SocialActivityBookServiceSPI extends ServiceImpl<SocialActivityBookMapper, SocialActivityBook>
@@ -50,6 +51,30 @@ public class SocialActivityBookServiceSPI extends ServiceImpl<SocialActivityBook
         page.setTotal(page1.getTotal());
         page.setRecords(result);
         return page;
+    }
+
+    @Override
+    public Page<BookVo> activityBookOfAuthor(Page<BookVo> page, Long activityId, Long authorId) {
+        return null;
+    }
+
+    @Override
+    public Map<String, List<SocialActivityBookVo>> activityBooksOfAuthor(Long authorId) {
+        List<SocialActivityBookVo> list=super.baseMapper.activityBookOfAuthor(authorId);
+        if(list==null||list.isEmpty())return new HashMap<>();
+
+        Map<String,List<SocialActivityBookVo>> data=new HashMap<>();
+        for(SocialActivityBookVo v:list){
+            if(data.containsKey(v.getActivityName())){
+                List<SocialActivityBookVo> li=data.get(v.getActivityName());
+                li.add(v);
+            }else{
+                List<SocialActivityBookVo> li=new ArrayList<>();
+                li.add(v);
+                data.put(v.getActivityName(),li);
+            }
+        }
+        return data;
     }
 
     private boolean checkBook(Long bookId,Long activityId){

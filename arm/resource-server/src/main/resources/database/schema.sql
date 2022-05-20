@@ -53,7 +53,7 @@ create table group_permission(
 drop table if exists book_board;
 create table book_board(
     id bigint not null auto_increment,
-    name varchar(30) not null,
+    name varchar(30) not null unique,
     primary key(id)
 );
 
@@ -61,7 +61,7 @@ drop table if exists book_info;
 create table book_info(
     id bigint not null auto_increment,
     author_id bigint not null,
-    name varchar(30) not null,
+    name varchar(30) not null unique,
     point bigint not null default 0,
     word_count bigint not null default 0,
     description varchar(512) not null default '',
@@ -76,7 +76,7 @@ drop table if exists book_volume;
 create table book_volume(
     id bigint not null auto_increment,
     book_id bigint not null,
-    name varchar(30) not null default "未命名",
+    name varchar(30) not null default "未命名" unique,
     prev_volume_id bigint not null default 0,
     next_volume_id bigint not null default 0,
     primary key(id)
@@ -87,7 +87,7 @@ create table book_chapter(
     id bigint not null auto_increment,
     book_id bigint not null,
     volume_id bigint not null,
-    title varchar(30) not null default "未命名",
+    title varchar(30) not null default "未命名" unique,
     content text not null,
     create_time datetime not null default now(),
     update_time datetime not null default now(),
@@ -128,7 +128,7 @@ create table book_shelf_book(
 drop table if exists book_tag;
 create table book_tag(
     id bigint not null auto_increment,
-    name varchar(30) not null,
+    name varchar(30) not null unique,
     primary key(id)
 );
 
@@ -147,7 +147,7 @@ drop table if exists author_info;
 create table author_info(
     id bigint not null auto_increment,
     user_id bigint not null,
-    name varchar(30) not null,
+    name varchar(30) not null unique,
     email varchar(30) not null,
     moto varchar(1024) not null,
     present_book_id bigint not null default 0,
@@ -162,7 +162,7 @@ create table author_info(
 drop table if exists file_resource;
 create table file_resource(
     id bigint not null auto_increment,
-    name varchar(256) not null,
+    name varchar(256) not null unique,
     format varchar(30) not null,
     lib varchar(256) not null,
     own_id bigint not null,
@@ -187,7 +187,7 @@ create table social_member(
     id bigint not null auto_increment,
     social_id bigint not null,
     author_id bigint not null,
-    member_name varchar(30) not null,
+    member_name varchar(30) not null unique,
     type int not null,
     in_time datetime not null default now(),
     primary key(id)
@@ -210,7 +210,7 @@ create table social_activity(
     id bigint not null auto_increment,
     social_id bigint not null,
     honer_author_id bigint not null,
-    name varchar(30) not null,
+    name varchar(30) not null unique,
     description varchar(256) not null,
     start_time datetime not null,
     end_time datetime not null,
