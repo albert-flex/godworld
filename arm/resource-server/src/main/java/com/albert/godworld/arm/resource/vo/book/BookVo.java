@@ -8,6 +8,7 @@ import java.util.Date;
 public class BookVo {
     private Long id;
     private String author;
+    private Boolean isPresent;
     private String name;
     private String tagWords;//1,2,3,4,5,6,7
     private String[] tags;

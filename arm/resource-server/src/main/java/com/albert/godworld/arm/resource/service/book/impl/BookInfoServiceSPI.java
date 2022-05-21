@@ -1,16 +1,26 @@
 package com.albert.godworld.arm.resource.service.book.impl;
 
+import com.albert.godworld.arm.resource.domain.author.AuthorInfo;
 import com.albert.godworld.arm.resource.domain.book.BookInfo;
+import com.albert.godworld.arm.resource.domain.book.BookTagBind;
+import com.albert.godworld.arm.resource.dto.BookDTO;
 import com.albert.godworld.arm.resource.mapper.book.BookInfoMapper;
 import com.albert.godworld.arm.resource.mapper.book.BookTagBindMapper;
+import com.albert.godworld.arm.resource.mapper.book.BookTagMapper;
 import com.albert.godworld.arm.resource.service.author.AuthorService;
 import com.albert.godworld.arm.resource.service.book.BookInfoService;
+import com.albert.godworld.arm.resource.service.book.BookTagBindService;
+import com.albert.godworld.arm.resource.service.book.BookTagService;
 import com.albert.godworld.arm.resource.vo.book.BookVo;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -20,7 +30,21 @@ public class BookInfoServiceSPI extends ServiceImpl<BookInfoMapper, BookInfo>
 
     private final AuthorService authorService;
 
-    private final BookTagBindMapper bookTagBindMapper;
+    private final BookTagBindService bookTagBindService;
+    private final BookTagService bookTagService;
+
+    @Override
+    @Transactional
+    public boolean create(BookDTO bookDTO) {
+        //Add BookInfo
+        bookDTO.setId(null);
+        super.baseMapper.create(bookDTO);
+        if(bookDTO.getId()==null)return false;
+
+        //Add TagBind
+        bookTagService.reAttachTags(bookDTO.getId(),Arrays.asList(bookDTO.getTags()));
+        return true;
+    }
 
     @Override
     public Page<BookVo> pageOfAuthor(Page<BookVo> page, String authorName) {
@@ -30,6 +54,20 @@ public class BookInfoServiceSPI extends ServiceImpl<BookInfoMapper, BookInfo>
     @Override
     public Page<BookVo> pageOfAuthorId(Page<BookVo> page, Long authorId) {
         return super.baseMapper.queryByAuthorId(page,authorId);
+    }
+
+    @Override
+    public boolean setPresentBook(Long authorId, Long bookId) {
+        AuthorInfo authorInfo=authorService.getById(authorId);
+        if(authorInfo==null)return false;
+
+        BookInfo info=super.getById(bookId);
+        if(!info.getAuthorId().equals(authorId)){
+            return false;
+        }
+
+        authorInfo.setPresentBookId(bookId);
+        return authorService.updateById(authorInfo);
     }
 
     @Override

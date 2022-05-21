@@ -107,7 +107,6 @@ import {
   QueryNamePage,
   QuerySocialPage,
 } from "../../ports/author.js";
-import { sendCaptchaPort } from "../../ports/user.js";
 import { useRouter } from "vue-router";
 
 const labelCol = { style: { width: "150px" } };

@@ -1,20 +1,27 @@
 package com.albert.godworld.arm.resource.mapper.book;
 
 import com.albert.godworld.arm.resource.domain.book.BookInfo;
+import com.albert.godworld.arm.resource.dto.BookDTO;
 import com.albert.godworld.arm.resource.vo.book.BookVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
 @Mapper
 public interface BookInfoMapper extends BaseMapper<BookInfo> {
 
+
+    @Insert("insert into book_info(name,author_id,description,board_id) values\n" +
+            "(#{book.name},#{book.authorId},#{book.description},\n" +
+            "(select b.id from book_board b where b.name=#{book.boardName}))")
+    @Options(useGeneratedKeys = true,keyProperty = "id",keyColumn = "id")
+    int create(@Param("book") BookDTO bookDTO);
+
     String bookVoPre = "select bi.id,bi.update_time,bb.name as boardName,bi.name,bi.word_count,\n" +
             "group_concat(bt.name separator ',') as tag_words,bc.title as update_chapter,\n" +
+            "(case when(bi.id=ai.present_book_id) then 1 else 0 end) as is_present,\n" +
             "bi.description,ai.name as author,bi.create_time\n" +
             "from book_info bi\n" +
             "left join book_board bb on bb.id=bi.board_id\n" +
