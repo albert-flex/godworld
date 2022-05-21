@@ -18,7 +18,7 @@
     </a-layout-header>
     <a-layout-content :style="{ padding: '0px 0px', marginTop: '64px' }">
       <div :style="{ background: '#fff', padding: '10px', minHeight: '380px' }">
-        <router-view v-slot="{ Component }">
+        <router-view v-slot="{ Component }" :key="route.fullPath">
           <transition>
             <component :is="Component" />
           </transition>

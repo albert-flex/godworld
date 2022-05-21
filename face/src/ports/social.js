@@ -16,6 +16,8 @@ const announce_list=UrlPatch("social_announce/page/social/:1");
 const activity_list=UrlPatch("social_activity_book/activities_info_with_book/:1");
 //获取社团成员信息
 const members=UrlPatch("social/member/page/member/:1/:2");
+//注册社团
+const register=UrlPatch("social");
 
 function QueryByName(name,page,successCall){
     RequestGet(URLConcat(query_by_name,[name],page),'GET',successCall);
@@ -45,6 +47,21 @@ function FetchMembers(sociaId,type,page,successCall){
     RequestGet(URLConcat(members,[sociaId,type],page),'GET',successCall);
 }
 
+function RegitserSocial(token,socialIfo,successCall){
+    let api = register;
+    let myHeader = new Headers();
+    myHeader.append('Content-Type', 'application/json');
+    myHeader.append('Authorization', 'bearer ' + token);
+    fetch(api, {
+        method: "POST",
+        headers: myHeader,
+        body: JSON.stringify(socialIfo),
+        mode: "cors"
+    }).then(res => res.json())
+        .then(data => successCall(data))
+        .catch(error => alert(error));
+}
+
 export {
     QueryByName,
     FetchMembers,
@@ -53,4 +70,5 @@ export {
     FetchNewAct,
     FetchNewAnn,
     FetchSocialInfo,
+    RegitserSocial,
 }

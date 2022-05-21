@@ -9,15 +9,12 @@ import com.albert.godworld.arm.resource.dto.RV;
 import com.albert.godworld.arm.resource.dto.RVError;
 import com.albert.godworld.arm.resource.service.author.AuthorService;
 import com.albert.godworld.arm.resource.service.other.CaptchaService;
-import com.albert.godworld.arm.resource.service.user.UGroupService;
 import com.albert.godworld.arm.resource.util.PrincipalConvert;
 import com.albert.godworld.arm.resource.vo.author.AuthorNewestVo;
 import com.albert.godworld.arm.resource.vo.author.AuthorUpdatedVo;
 import com.albert.godworld.arm.resource.vo.author.AuthorVo;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 

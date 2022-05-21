@@ -13,11 +13,12 @@ public enum RVError {
     AUTHOR_ALREADY_BIND(202,"账号已绑定了作者信息"),
     AUTHOR_NAME_UNAVAILABLE(203,"作者名字已存在"),
 
-    SOCIAL_REGISTER_DB_ERROR(301,"社团注册数据库操作权限"),
-
-
     UNKNOWN_ERROR(10001,"未知错误"),
     DATABASE_ERROR(10002,"数据库操作失败"),
+
+    SOCIAL_REGISTER_DB_ERROR(301,"创建社团数据库操作错误"),
+    SOCIAL_ALREADY_HAS(302,"已经加入了社团"),
+    SOCIAL_NAME_NOT_AVAIL(303,"社团名字已占用"),
     ;
     final int code;
     final String msg;

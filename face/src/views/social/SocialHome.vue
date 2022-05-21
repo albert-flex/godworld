@@ -1,6 +1,7 @@
 <template>
   <div class="socialhome">
     <main>
+      <a-button type="primary" @click="toSocialNew">创建社团!</a-button>
       <h2 style="text-indent: 2em">查询社团</h2>
       <a-form :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-form-item label="名称">
@@ -87,10 +88,11 @@
 <script setup>
 import { ref } from "@vue/reactivity";
 import { FetchNewAct, FetchNewAnn, QueryByName } from "../../ports/social.js";
-
+import { useRouter } from "vue-router";
 const labelCol = { style: { width: "150px" } };
 const wrapperCol = { span: 14 };
 
+const router = useRouter();
 const searchName = ref("");
 const result = ref([]);
 const pagination = ref({
@@ -115,6 +117,10 @@ function Query(name) {
       pagination.value.total = Number.parseInt(data.total);
     }
   );
+}
+
+function toSocialNew() {
+  router.push({ name: "socialNew" });
 }
 
 function Init() {

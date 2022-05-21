@@ -19,7 +19,7 @@ insert into u_group(id,name,description) values
 
 delete from user;
 insert into user(id,username,email) values
-(1,"A1","A1@godworld.com"),
+(1,"A1","natsufumij@yeah.net"),
 (2,"A2","A2@godworld.com"),
 (3,"A3","A3@godworld.com"),
 (4,"A4","A4@godworld.com"),
@@ -38,15 +38,18 @@ delete from user_group;
 insert into user_group(id,user_id,group_id) values
 (1,1,1),
 (2,1,2),
-(3,2,2),
-(4,3,2),
-(5,3,3),
-(6,3,4),
-(7,4,1),
-(8,4,2),
-(9,4,3),
-(10,4,4),
-(11,4,5);
+(3,1,3),
+(4,1,4),
+(5,1,5),
+(6,2,2),
+(7,3,2),
+(8,3,3),
+(9,3,4),
+(10,4,1),
+(11,4,2),
+(12,4,3),
+(13,4,4),
+(14,4,5);
 
 /**
  * Author
@@ -80,7 +83,7 @@ insert book_info(id,author_id,name,description,board_id,update_chapter_id) value
 (2,3,"谋杀者Z","我想要谋杀一个人，但是无论如何也成功不了。",3,5),
 (3,3,"被封印的魔力","每一个人都有一股被封印的魔力，他会让人发出强大的力量。",4,8),
 (4,4,"无界法魂","我会为你报仇，师傅",9,0),
-(5,6,"康德莱特街39号","见证人心与人心的隔阂与联系。",3,0),
+(5,3,"康德莱特街39号","见证人心与人心的隔阂与联系。",3,0),
 (6,2,"Spring EE的开发方式","笨重又无法舍弃的开发方式",7,0),
 (7,2,"Java EE的正确开发方式","古老又传统的方法",7,0);
 

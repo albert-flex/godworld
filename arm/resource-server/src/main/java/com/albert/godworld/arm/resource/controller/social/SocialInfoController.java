@@ -6,7 +6,9 @@ import com.albert.godworld.arm.resource.domain.user.Permissions;
 import com.albert.godworld.arm.resource.domain.user.User;
 import com.albert.godworld.arm.resource.dto.RV;
 import com.albert.godworld.arm.resource.dto.RVError;
+import com.albert.godworld.arm.resource.dto.SocialRegVo;
 import com.albert.godworld.arm.resource.service.author.AuthorService;
+import com.albert.godworld.arm.resource.service.other.CaptchaService;
 import com.albert.godworld.arm.resource.service.social.SocialInfoService;
 import com.albert.godworld.arm.resource.util.PrincipalConvert;
 import com.albert.godworld.arm.resource.vo.social.SocialInfoVo;
@@ -29,10 +31,11 @@ public class SocialInfoController {
     private final SocialInfoService socialInfoService;
     private final PrincipalConvert convert;
     private final AuthorService authorService;
+    private final CaptchaService captchaService;
 
     @PostMapping
     @PreAuthorize("hasAuthority('AUTHOR_PER')")
-    public RV<SocialInfo> create(@RequestBody SocialInfo socialInfo, Principal principal){
+    public RV<SocialInfo> create(@RequestBody SocialRegVo socialInfo, Principal principal){
         User user=convert.convert(principal);
 
         if(!Permissions.ADMIN_PER.hasIn(user)){
@@ -42,11 +45,17 @@ public class SocialInfoController {
             }
         }
 
-        if(socialInfoService.register(socialInfo)){
-            return RV.success(socialInfo);
-        }else {
-            return RVError.SOCIAL_REGISTER_DB_ERROR.to();
+        String email=user.getEmail();
+        if(!captchaService.checkCaptcha(socialInfo.getCaptcha(),email)){
+            return RVError.CAPTCHA_NOT_CORRECT.to();
         }
+
+        SocialInfo info=new SocialInfo();
+        info.setMasterId(user.getId());
+        info.setMoto("moto");
+        info.setName(socialInfo.getName());
+
+        return socialInfoService.register(info);
     }
 
     @PutMapping

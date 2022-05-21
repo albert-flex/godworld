@@ -5,7 +5,8 @@ import com.albert.godworld.arm.resource.domain.social.SocialInfo;
 import com.albert.godworld.arm.resource.domain.social.SocialMember;
 import com.albert.godworld.arm.resource.domain.social.SocialMemberType;
 import com.albert.godworld.arm.resource.domain.user.UGroups;
-import com.albert.godworld.arm.resource.domain.user.User;
+import com.albert.godworld.arm.resource.dto.RV;
+import com.albert.godworld.arm.resource.dto.RVError;
 import com.albert.godworld.arm.resource.mapper.social.SocialInfoMapper;
 import com.albert.godworld.arm.resource.service.author.AuthorService;
 import com.albert.godworld.arm.resource.service.social.SocialInfoService;
@@ -78,7 +79,7 @@ public class SocialInfoServiceSPI extends ServiceImpl<SocialInfoMapper, SocialIn
 
 
     @Override
-    public boolean register(SocialInfo social) {
+    public RV<SocialInfo> register(SocialInfo social) {
 
         //Check Master
         //如果已经是某个社团的成员就无法申请
@@ -88,14 +89,14 @@ public class SocialInfoServiceSPI extends ServiceImpl<SocialInfoMapper, SocialIn
         //Add Member Info
         //Add Social Admin Group To User
 
-        if(!checkMasterIdAvail(social.getMasterId()))return false;
-        if(!checkNameAvail(social.getName()))return false;
+        if(!checkMasterIdAvail(social.getMasterId()))return RVError.SOCIAL_ALREADY_HAS.to();
+        if(!checkNameAvail(social.getName()))return RVError.SOCIAL_NAME_NOT_AVAIL.to();
 
         super.save(social);
 
         AuthorInfo info=authorService.getById(social.getMasterId());
         if(info==null){
-            return false;
+            return RVError.USER_HAS_NO_PERMISSION.to();
         }
 
         SocialMember member=new SocialMember();
@@ -105,6 +106,7 @@ public class SocialInfoServiceSPI extends ServiceImpl<SocialInfoMapper, SocialIn
         member.setType(SocialMemberType.MASTER);
         memberService.save(member);
 
-        return uGroupService.addToUser(info.getUserId(), UGroups.SOCIAL_ADMIN.getCode());
+        uGroupService.addToUser(info.getUserId(), UGroups.SOCIAL_ADMIN.getCode());
+        return RV.success(social);
     }
 }
