@@ -9,6 +9,7 @@ public class SocialMemberSimpleVo {
     private Long socialId;
     private String memberName;
     private SocialMemberType type;
+    private Long authorId;
     private String authorName;
     private Long presetBookId;
     private String presentBookName;

@@ -52,7 +52,7 @@
                       </template>
                       <a-list-item-meta :description="item.authorName">
                         <template #title>
-                          <a :href="item.href">{{ item.name }}</a>
+                          <a @click="toBook(item.bookId)">{{ item.name }}</a>
                         </template>
                         <template #avatar
                           ><a-avatar
@@ -93,7 +93,7 @@
       <a-divider><h1 style="font-size: 2em">社团成员一览</h1></a-divider>
       <a-divider
         ><h2>
-          负责人: <a-button type="ghost">{{ members.master.name }}</a-button>
+          负责人: <a-button type="ghost" @click="toAuthor(members.master.id)">{{ members.master.name }}</a-button>
         </h2></a-divider
       >
       <a-divider><h2>管理员</h2></a-divider>
@@ -113,7 +113,7 @@
             </template>
             <a-list-item-meta :description="'代表作 ' + item.presentBookName">
               <template #title>
-                <a :href="item.href">{{ item.authorName }}</a>
+                <a @click="toAuthor(item.authorId)">{{ item.authorName }}</a>
               </template>
               <template #avatar><a-avatar :src="item.avatar" /></template>
             </a-list-item-meta>
@@ -137,7 +137,7 @@
             </template>
             <a-list-item-meta :description="'代表作 ' + item.presentBookName">
               <template #title>
-                <a :href="item.href">{{ item.authorName }}</a>
+                <a @click="toAuthor(item.authorId)">{{ item.authorName }}</a>
               </template>
               <template #avatar><a-avatar :src="item.avatar" /></template>
             </a-list-item-meta>
@@ -150,7 +150,7 @@
 
 <script setup>
 import { ref } from "@vue/reactivity";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import {
   FetchSocialInfo,
   FetchActList,
@@ -158,6 +158,7 @@ import {
   FetchMembers,
 } from "../../ports/social.js";
 
+const router = useRouter();
 const route = useRoute();
 const activeKey = ref("2");
 const acts = ref([]);
@@ -168,7 +169,8 @@ const socialId = route.params.id;
 
 const actPagi = ref({
   onChange: (page) => {
-    console.log(page);
+    actPagi.value.current = page;
+    QueryAct();
   },
   pageSize: 2,
   current: 1,
@@ -177,7 +179,8 @@ const actPagi = ref({
 
 const announcePagi = ref({
   onChange: (page) => {
-    console.log(page);
+    announcePagi.value.current = page;
+    QueryAnn();
   },
   pageSize: 10,
   current: 1,
@@ -186,7 +189,8 @@ const announcePagi = ref({
 
 const adminPagi = ref({
   onChange: (page) => {
-    console.log(page);
+    adminPagi.value.current = page;
+    QueryMemberAdmin();
   },
   pageSize: 30,
   current: 1,
@@ -195,7 +199,8 @@ const adminPagi = ref({
 
 const memPagi = ref({
   onChange: (page) => {
-    console.log(page);
+    memPagi.value.current = page;
+    QueryMember();
   },
   pageSize: 30,
   current: 1,
@@ -205,6 +210,79 @@ const memPagi = ref({
 function _re(data, pagi) {
   pagi.value.current = Number.parseInt(data.current);
   pagi.value.total = Number.parseInt(data.total);
+}
+
+function toAuthor(id) {
+  router.push({ name: "authorPage", params: { id: id } });
+}
+
+function toSocial(id) {
+  router.push({ name: "socialPage", params: { id: id } });
+}
+
+function toBook(id) {
+  router.push({ name: "book", params: { id: id } });
+}
+
+function QueryAct() {
+  FetchActList(
+    socialId,
+    {
+      size: actPagi.value.pageSize,
+      current: actPagi.value.current,
+    },
+    (data) => {
+      acts.value = [];
+      for (let v in data) {
+        acts.value.push(data[v]);
+      }
+      _re(data, actPagi);
+    }
+  );
+}
+
+function QueryAnn() {
+  FetchAnnList(
+    socialId,
+    {
+      size: announcePagi.value.pageSize,
+      current: announcePagi.value.current,
+    },
+    (data) => {
+      anns.value = data.records;
+      _re(data, announcePagi);
+    }
+  );
+}
+
+function QueryMemberAdmin() {
+  FetchMembers(
+    socialId,
+    "2",
+    {
+      size: adminPagi.value.pageSize,
+      current: adminPagi.value.current,
+    },
+    (data) => {
+      members.value.admins = data.records;
+      _re(data, adminPagi);
+    }
+  );
+}
+
+function QueryMember() {
+  FetchMembers(
+    socialId,
+    "3",
+    {
+      size: memPagi.value.pageSize,
+      current: memPagi.value.current,
+    },
+    (data) => {
+      members.value.members = data.records;
+      _re(data, memPagi);
+    }
+  );
 }
 
 function Init() {
@@ -222,57 +300,11 @@ function Init() {
       presentBookName: data.presentBookName,
     };
   });
-  FetchActList(
-    socialId,
-    {
-      size: actPagi.value.pageSize,
-      current: actPagi.value.current,
-    },
-    (data) => {
-      acts.value = [];
-      for(let v in data){
-        acts.value.push(data[v]);
-      }
-      _re(data, actPagi);
-    }
-  );
-  FetchAnnList(
-    socialId,
-    {
-      size: announcePagi.value.pageSize,
-      current: announcePagi.value.current,
-    },
-    (data) => {
-      anns.value = data.records;
-      _re(data, announcePagi);
-    }
-  );
-  FetchMembers(
-    socialId,
-    "2",
-    {
-      size: adminPagi.value.pageSize,
-      current: adminPagi.value.current,
-    },
-    (data) => {
-      members.value.admins = data.records;
-      _re(data, adminPagi);
-    }
-  );
-  FetchMembers(
-    socialId,
-    "3",
-    {
-      size: memPagi.value.pageSize,
-      current: memPagi.value.current,
-    },
-    (data) => {
-      members.value.members = data.records;
-      _re(data, memPagi);
-    }
-  );
+  QueryAct();
+  QueryAnn();
+  QueryMemberAdmin();
+  QueryMember();
 }
-
 
 Init();
 </script>

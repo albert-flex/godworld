@@ -12,7 +12,7 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface SocialMemberMapper extends BaseMapper<SocialMember> {
 
-    @Select("select ai.id,sm.social_id,sm.member_name,sm.type,ai.name as author_name,\n" +
+    @Select("select ai.id,sm.social_id,sm.member_name,sm.type,ai.name as author_name,ai.id as author_id,\n" +
             "ai.present_book_id,bi.name as present_book_name\n" +
             "from social_member sm\n" +
             "left join author_info ai on ai.id=sm.author_id\n" +

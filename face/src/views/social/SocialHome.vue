@@ -31,7 +31,7 @@
               </template>
               <a-list-item-meta :description="'负责人 ' + item.masterName">
                 <template #title>
-                  <a :href="item.href">{{ item.name }}</a>
+                  <a @click="toSocial(item.id)">{{ item.name }}</a>
                 </template>
               </a-list-item-meta>
               {{ item.moto }}
@@ -54,7 +54,7 @@
             </template>
             <a-list-item-meta :description="item.actName">
               <template #title>
-                <a :href="item.href">{{ item.name }}</a>
+                <a @click="toSocial(item.id)">{{ item.name }}</a>
               </template>
             </a-list-item-meta>
             {{ item.actDesc }}
@@ -74,7 +74,7 @@
             </template>
             <a-list-item-meta :description="item.announceName">
               <template #title>
-                <a :href="item.href">{{ item.name }}</a>
+                <a @click="toSocial(item.id)">{{ item.name }}</a>
               </template>
             </a-list-item-meta>
             {{ item.announceContent }}
@@ -121,6 +121,10 @@ function Query(name) {
 
 function toSocialNew() {
   router.push({ name: "socialNew" });
+}
+
+function toSocial(id) {
+  router.push({ name: "socialPage", params: { id: id } });
 }
 
 function Init() {

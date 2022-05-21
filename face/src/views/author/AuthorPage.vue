@@ -1,7 +1,7 @@
 <template>
   <div class="authorpage">
     <main>
-      <h2>{{ author.name }}</h2>
+      <h2>{{ author.authorName }}</h2>
       <div style="display: flex">
         <a-image
           :width="200"

@@ -92,7 +92,7 @@ public class SocialInfoServiceSPI extends ServiceImpl<SocialInfoMapper, SocialIn
         if(!checkMasterIdAvail(social.getMasterId()))return RVError.SOCIAL_ALREADY_HAS.to();
         if(!checkNameAvail(social.getName()))return RVError.SOCIAL_NAME_NOT_AVAIL.to();
 
-        super.save(social);
+        if(!super.save(social))return RVError.DATABASE_ERROR.to();
 
         AuthorInfo info=authorService.getById(social.getMasterId());
         if(info==null){

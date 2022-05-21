@@ -35,8 +35,6 @@ import { ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 const router = useRouter();
 const route = useRoute();
-const transition = "slide-right";
-
 const selectedKeys = ref(["2"]);
 function selectMenu(e) {
   if (e.key == "1") {
