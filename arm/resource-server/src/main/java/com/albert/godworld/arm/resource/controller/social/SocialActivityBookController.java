@@ -3,6 +3,7 @@ package com.albert.godworld.arm.resource.controller.social;
 import com.albert.godworld.arm.resource.domain.book.BookInfo;
 import com.albert.godworld.arm.resource.service.social.SocialActivityBookService;
 import com.albert.godworld.arm.resource.vo.book.SocialActivityBookVo;
+import com.albert.godworld.arm.resource.vo.social.ActivityVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,11 @@ public class SocialActivityBookController {
     public Map<String, List<SocialActivityBookVo>> activityBooksOfAuthor(
             @PathVariable("authorId") Long authorId) {
         return socialActivityBookService.activityBooksOfAuthor(authorId);
+    }
+
+    @GetMapping("/activities_info_with_book/{socialId}")
+    public Map<String, ActivityVo> activityBooksOfSocial(@PathVariable("socialId")Long socialId){
+        return socialActivityBookService.activityBookOfSocial(socialId);
     }
 
     @PostMapping("/add/{bookId}/{activityId}")

@@ -11,11 +11,11 @@ insert into permission(id,name,description) values
 
 delete from u_group;
 insert into u_group(id,name,description) values
-(1,"Admin","管理员"),
-(2,"Reader","读者"),
-(3,"Author","作者"),
-(4,"Social","社员"),
-(5,"SocialAdmin","社团管理员");
+(1,"ADMIN","管理员"),
+(2,"READER","读者"),
+(3,"AUTHOR","作者"),
+(4,"SOCIAL","社员"),
+(5,"SOCIAL_ADMIN","社团管理员");
 
 delete from user;
 insert into user(id,username,email) values
@@ -29,35 +29,24 @@ insert into user(id,username,email) values
 delete from group_permission;
 insert into group_permission(id,group_id,permission_id) values
 (1,1,1),
-(2,1,2),
-(3,1,3),
-(4,1,4),
-(5,1,5),
-(6,2,2),
-(7,3,2),
-(8,3,3),
-(9,4,2),
-(10,4,3),
-(11,4,4),
-(12,5,2),
-(13,5,3),
-(14,5,4),
-(15,5,5);
+(2,2,2),
+(3,3,3),
+(4,4,4),
+(5,5,5);
 
 delete from user_group;
 insert into user_group(id,user_id,group_id) values
 (1,1,1),
 (2,1,2),
-(3,1,3),
-(4,2,2),
-(5,3,2),
-(6,3,3),
-(7,3,4),
-(8,4,1),
-(9,4,2),
-(10,4,3),
-(11,4,4),
-(12,4,5);
+(3,2,2),
+(4,3,2),
+(5,3,3),
+(6,3,4),
+(7,4,1),
+(8,4,2),
+(9,4,3),
+(10,4,4),
+(11,4,5);
 
 /**
  * Author

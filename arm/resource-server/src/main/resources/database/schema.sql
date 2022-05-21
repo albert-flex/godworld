@@ -149,7 +149,7 @@ create table author_info(
     user_id bigint not null,
     name varchar(30) not null unique,
     email varchar(30) not null,
-    moto varchar(1024) not null,
+    moto varchar(1024) not null default '',
     present_book_id bigint not null default 0,
     create_time datetime not null default now(),
     primary key(id)

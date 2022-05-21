@@ -25,7 +25,6 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final UGroupService groupService;
     private final PrincipalConvert convert;
     private final AuthorService authorService;
     private final SocialInfoService socialInfoService;
@@ -141,11 +140,9 @@ public class UserController {
 
         User user=require.convert();
         user.setPassword(passwordEncoder.encode(require.getPassword()));
-        if(!userService.save(user)){
+        if(!userService.insert(user)){
             return RVError.USER_INSERT_ERROR.to();
         }
-
-        groupService.addToUser(user.getId(), UGroups.READER.getCode());
         UserDTO userDTO=UserDTO.create(user);
         return RV.success(userDTO);
     }

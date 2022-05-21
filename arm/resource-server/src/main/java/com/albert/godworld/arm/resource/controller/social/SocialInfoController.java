@@ -2,6 +2,10 @@ package com.albert.godworld.arm.resource.controller.social;
 
 import com.albert.godworld.arm.resource.domain.social.SocialInfo;
 import com.albert.godworld.arm.resource.service.social.SocialInfoService;
+import com.albert.godworld.arm.resource.vo.social.SocialInfoVo;
+import com.albert.godworld.arm.resource.vo.social.SocialNewActVo;
+import com.albert.godworld.arm.resource.vo.social.SocialNewAnnVo;
+import com.albert.godworld.arm.resource.vo.social.SocialReVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +35,26 @@ public class SocialInfoController {
     @GetMapping("/id/{id}")
     public SocialInfo getById(@PathVariable("id") Long id){
         return socialInfoService.getById(id);
+    }
+
+    @GetMapping("/info/{id}")
+    public SocialInfoVo getInfo(@PathVariable("id") Long id){
+        return socialInfoService.getInfoById(id);
+    }
+
+    @GetMapping("/new_ann")
+    public Page<SocialNewAnnVo> newAnn(Page<SocialNewAnnVo> page){
+        return socialInfoService.newAnnPage(page);
+    }
+
+    @GetMapping("/new_act")
+    public Page<SocialNewActVo> newAct(Page<SocialNewActVo> page){
+        return socialInfoService.newActPage(page);
+    }
+
+    @GetMapping("/query/{name}")
+    public Page<SocialReVo> query(Page<SocialReVo> page,@PathVariable("name") String name){
+        return socialInfoService.query(page,name);
     }
 
     @GetMapping("/page/all")

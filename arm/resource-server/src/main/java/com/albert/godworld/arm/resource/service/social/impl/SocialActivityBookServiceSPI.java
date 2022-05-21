@@ -9,6 +9,7 @@ import com.albert.godworld.arm.resource.service.book.BookInfoService;
 import com.albert.godworld.arm.resource.service.social.SocialActivityService;
 import com.albert.godworld.arm.resource.vo.book.BookVo;
 import com.albert.godworld.arm.resource.vo.book.SocialActivityBookVo;
+import com.albert.godworld.arm.resource.vo.social.ActivityVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -75,6 +76,14 @@ public class SocialActivityBookServiceSPI extends ServiceImpl<SocialActivityBook
             }
         }
         return data;
+    }
+
+    @Override
+    public Map<String, ActivityVo> activityBookOfSocial(Long socialId) {
+        List<SocialActivityBookVo> list=super.baseMapper.activityBookOfSocial(socialId);
+        if(list==null||list.isEmpty())return new HashMap<>();
+
+        return ActivityVo.parse(list);
     }
 
     private boolean checkBook(Long bookId,Long activityId){

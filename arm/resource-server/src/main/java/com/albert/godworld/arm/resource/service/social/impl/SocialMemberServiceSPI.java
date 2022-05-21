@@ -4,6 +4,7 @@ import com.albert.godworld.arm.resource.domain.social.SocialMember;
 import com.albert.godworld.arm.resource.domain.social.SocialMemberType;
 import com.albert.godworld.arm.resource.mapper.social.SocialMemberMapper;
 import com.albert.godworld.arm.resource.service.social.SocialMemberService;
+import com.albert.godworld.arm.resource.vo.social.SocialMemberSimpleVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -15,8 +16,8 @@ public class SocialMemberServiceSPI extends ServiceImpl<SocialMemberMapper, Soci
     implements SocialMemberService {
 
     @Override
-    public Page<SocialMember> membersAll(Page<SocialMember> page) {
-        return super.page(page);
+    public Page<SocialMemberSimpleVo> membersOf(Page<SocialMemberSimpleVo> page, Long socialId, SocialMemberType type) {
+        return super.baseMapper.memberOfType(page,socialId,type);
     }
 
     @Override
@@ -44,7 +45,7 @@ public class SocialMemberServiceSPI extends ServiceImpl<SocialMemberMapper, Soci
     }
 
     @Override
-    public boolean in(Long authorId, String name) {
+    public boolean in(Long authorId,Long socialId, String name) {
         LambdaQueryWrapper<SocialMember> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.eq(SocialMember::getAuthorId,authorId);
         SocialMember socialMember=super.getOne(queryWrapper);
