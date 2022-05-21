@@ -18,9 +18,11 @@
     </a-layout-header>
     <a-layout-content :style="{ padding: '0px 0px', marginTop: '64px' }">
       <div :style="{ background: '#fff', padding: '10px', minHeight: '380px' }">
-        <transition :name="transition">
-          <router-view :key="route.fullPath" />
-        </transition>
+        <router-view v-slot="{ Component }">
+          <transition>
+            <component :is="Component" />
+          </transition>
+        </router-view>
       </div>
     </a-layout-content>
     <a-layout-footer :style="{ textAlign: 'center' }">

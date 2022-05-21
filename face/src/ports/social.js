@@ -11,7 +11,7 @@ const new_act = UrlPatch("social/new_act");
 //获取社团信息
 const social_info =UrlPatch("social/info/:1");
 //获取社团公告列表
-const announce_list=UrlPatch("social/page/social/:1");
+const announce_list=UrlPatch("social_announce/page/social/:1");
 //获取社团活动列表
 const activity_list=UrlPatch("social_activity_book/activities_info_with_book/:1");
 //获取社团成员信息
@@ -41,13 +41,13 @@ function FetchActList(socialId,page,successCall){
     RequestGet(URLConcat(activity_list,[socialId],page),'GET',successCall);
 }
 
-function FetcMembers(sociaId,type,page,successCall){
+function FetchMembers(sociaId,type,page,successCall){
     RequestGet(URLConcat(members,[sociaId,type],page),'GET',successCall);
 }
 
 export {
     QueryByName,
-    FetcMembers,
+    FetchMembers,
     FetchActList,
     FetchAnnList,
     FetchNewAct,

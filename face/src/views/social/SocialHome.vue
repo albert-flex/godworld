@@ -2,13 +2,13 @@
   <div class="socialhome">
     <main>
       <h2 style="text-indent: 2em">查询社团</h2>
-      <a-form :model="formData" :label-col="labelCol" :wrapper-col="wrapperCol">
+      <a-form :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-form-item label="名称">
           <a-input-search
-            v-model:value="value"
+            v-model:value="searchName"
             placeholder="input search text"
             style="width: 200px"
-            @search="onSearch"
+            @search="Query(searchName)"
           />
         </a-form-item>
       </a-form>
@@ -28,7 +28,7 @@
                   src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
                 />
               </template>
-              <a-list-item-meta :description="'负责人 ' + item.master">
+              <a-list-item-meta :description="'负责人 ' + item.masterName">
                 <template #title>
                   <a :href="item.href">{{ item.name }}</a>
                 </template>
@@ -51,12 +51,12 @@
                 src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
               />
             </template>
-            <a-list-item-meta :description="item.newAct">
+            <a-list-item-meta :description="item.actName">
               <template #title>
                 <a :href="item.href">{{ item.name }}</a>
               </template>
             </a-list-item-meta>
-            {{ item.newActContent }}
+            {{ item.actDesc }}
           </a-list-item>
         </template>
       </a-list>
@@ -71,12 +71,12 @@
                 src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
               />
             </template>
-            <a-list-item-meta :description="item.newAnnounce">
+            <a-list-item-meta :description="item.announceName">
               <template #title>
                 <a :href="item.href">{{ item.name }}</a>
               </template>
             </a-list-item-meta>
-            {{ item.newAnnounceContent }}
+            {{ item.announceContent }}
           </a-list-item>
         </template>
       </a-list>
@@ -86,56 +86,47 @@
 
 <script setup>
 import { ref } from "@vue/reactivity";
+import { FetchNewAct, FetchNewAnn, QueryByName } from "../../ports/social.js";
 
 const labelCol = { style: { width: "150px" } };
 const wrapperCol = { span: 14 };
 
-const result = ref([
-  { id: "101", name: "玄沧阁", master: "夏文纯一", moto: "快乐地写作" },
-  { id: "101", name: "玄沧阁", master: "夏文纯一", moto: "快乐地写作" },
-  { id: "101", name: "玄沧阁", master: "夏文纯一", moto: "快乐地写作" },
-  { id: "101", name: "玄沧阁", master: "夏文纯一", moto: "快乐地写作" },
-  { id: "101", name: "玄沧阁", master: "夏文纯一", moto: "快乐地写作" },
-  { id: "101", name: "玄沧阁", master: "夏文纯一", moto: "快乐地写作" },
-  { id: "101", name: "玄沧阁", master: "夏文纯一", moto: "快乐地写作" },
-  { id: "101", name: "玄沧阁", master: "夏文纯一", moto: "快乐地写作" },
-  { id: "101", name: "玄沧阁", master: "夏文纯一", moto: "快乐地写作" },
-  { id: "101", name: "玄沧阁", master: "夏文纯一", moto: "快乐地写作" },
-  { id: "101", name: "玄沧阁", master: "夏文纯一", moto: "快乐地写作" },
-  { id: "101", name: "玄沧阁", master: "夏文纯一", moto: "快乐地写作" },
-  { id: "101", name: "玄沧阁", master: "夏文纯一", moto: "快乐地写作" },
-  { id: "101", name: "玄沧阁", master: "夏文纯一", moto: "快乐地写作" },
-  { id: "101", name: "玄沧阁", master: "夏文纯一", moto: "快乐地写作" },
-]);
-
-const newActSocials = [];
-for (let i = 0; i != 5; ++i) {
-  newActSocials.push({
-    id: "101",
-    name: "玄沧阁",
-    master: "夏文纯一",
-    newAct: "活动" + i,
-    newActContent: "这是一个互动内容，我们有更多内容，请点击...",
-  });
-}
-
-const newAnnounceSocials = [];
-for (let i = 0; i != 5; ++i) {
-  newAnnounceSocials.push({
-    id: "101",
-    name: "玄沧阁",
-    master: "夏文纯一",
-    newAnnounce: "公告" + i,
-    newAnnounceContent: "这是一个公告，我们没有很多内容...",
-  });
-}
-
-const pagination = {
+const searchName = ref("");
+const result = ref([]);
+const pagination = ref({
   onChange: (page) => {
-    console.log(page);
+    pagination.value.current = page;
+    Query(searchName.value);
   },
   pageSize: 20,
-};
+  current: 1,
+  total: 1,
+});
+const newActSocials = ref([]);
+const newAnnounceSocials = ref([]);
+
+function Query(name) {
+  QueryByName(
+    name,
+    { size: pagination.value.pageSize, current: pagination.value.current },
+    (data) => {
+      result.value = data.records;
+      pagination.value.current = Number.parseInt(data.current);
+      pagination.value.total = Number.parseInt(data.total);
+    }
+  );
+}
+
+function Init() {
+  FetchNewAct({ size: 5, current: 1 }, (data) => {
+    newActSocials.value = data.records;
+  });
+  FetchNewAnn({ size: 5, current: 1 }, (data) => {
+    newAnnounceSocials.value = data.records;
+  });
+}
+
+Init();
 </script>
 
 <style scoped>
