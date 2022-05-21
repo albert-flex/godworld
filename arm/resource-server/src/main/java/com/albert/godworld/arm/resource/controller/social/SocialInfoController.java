@@ -1,30 +1,52 @@
 package com.albert.godworld.arm.resource.controller.social;
 
+import com.albert.godworld.arm.resource.domain.author.AuthorInfo;
 import com.albert.godworld.arm.resource.domain.social.SocialInfo;
+import com.albert.godworld.arm.resource.domain.user.Permissions;
+import com.albert.godworld.arm.resource.domain.user.User;
+import com.albert.godworld.arm.resource.dto.RV;
+import com.albert.godworld.arm.resource.dto.RVError;
+import com.albert.godworld.arm.resource.service.author.AuthorService;
 import com.albert.godworld.arm.resource.service.social.SocialInfoService;
+import com.albert.godworld.arm.resource.util.PrincipalConvert;
 import com.albert.godworld.arm.resource.vo.social.SocialInfoVo;
 import com.albert.godworld.arm.resource.vo.social.SocialNewActVo;
 import com.albert.godworld.arm.resource.vo.social.SocialNewAnnVo;
 import com.albert.godworld.arm.resource.vo.social.SocialReVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/social")
+@AllArgsConstructor
 public class SocialInfoController {
 
     private final SocialInfoService socialInfoService;
-
-    @Autowired
-    public SocialInfoController(SocialInfoService socialInfoService) {
-        this.socialInfoService = socialInfoService;
-    }
+    private final PrincipalConvert convert;
+    private final AuthorService authorService;
 
     @PostMapping
-    public SocialInfo create(@RequestBody SocialInfo socialInfo){
-        socialInfoService.save(socialInfo);
-        return socialInfo;
+    @PreAuthorize("hasAuthority('AUTHOR_PER')")
+    public RV<SocialInfo> create(@RequestBody SocialInfo socialInfo, Principal principal){
+        User user=convert.convert(principal);
+
+        if(!Permissions.ADMIN_PER.hasIn(user)){
+            AuthorInfo author=authorService.getById(socialInfo.getMasterId());
+            if(!author.getUserId().equals(user.getId())){
+                RVError.AUTHOR_USER_NOT_SAME.to();
+            }
+        }
+
+        if(socialInfoService.register(socialInfo)){
+            return RV.success(socialInfo);
+        }else {
+            return RVError.SOCIAL_REGISTER_DB_ERROR.to();
+        }
     }
 
     @PutMapping

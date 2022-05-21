@@ -8,5 +8,5 @@ public class SocialNewActVo {
     private Long id;
     private String name;
     private String actName;
-    private String moto;
+    private String actDesc;
 }

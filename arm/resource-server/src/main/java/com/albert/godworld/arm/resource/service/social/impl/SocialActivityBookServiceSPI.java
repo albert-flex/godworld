@@ -89,7 +89,7 @@ public class SocialActivityBookServiceSPI extends ServiceImpl<SocialActivityBook
     private boolean checkBook(Long bookId,Long activityId){
         LambdaQueryWrapper<SocialActivityBook> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(SocialActivityBook::getActivityId, activityId);
-        queryWrapper.eq(SocialActivityBook::getBookId, bookId);
+        queryWrapper.eq(SocialActivityBook::getBookId, bookId).last("limit 1");
         SocialActivityBook book = super.getOne(queryWrapper);
         return book!=null;
     }

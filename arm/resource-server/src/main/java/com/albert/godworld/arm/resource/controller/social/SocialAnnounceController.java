@@ -2,6 +2,7 @@ package com.albert.godworld.arm.resource.controller.social;
 
 import com.albert.godworld.arm.resource.domain.social.SocialAnnounce;
 import com.albert.godworld.arm.resource.service.social.SocialAnnounceService;
+import com.albert.godworld.arm.resource.vo.social.AnnounceVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,7 @@ public class SocialAnnounceController {
     }
 
     @GetMapping("/page/social/{socialId}")
-    public Page<SocialAnnounce> ofSocial(@PathVariable("socialId") Long socialId,Page<SocialAnnounce> page){
+    public Page<AnnounceVo> ofSocial(@PathVariable("socialId") Long socialId, Page<AnnounceVo> page){
         return socialAnnounceService.ofSocial(page,socialId);
     }
 }

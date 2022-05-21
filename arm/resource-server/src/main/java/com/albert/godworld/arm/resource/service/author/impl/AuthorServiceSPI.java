@@ -31,14 +31,14 @@ public class AuthorServiceSPI extends ServiceImpl<AuthorMapper, AuthorInfo>
     @Transactional
     public boolean registerAuthor(AuthorInfo info) {
         if(!save(info))return  false;
-        return groupService.addToUser(info.getUserId(), (long) UGroups.AUTHOR.getCode());
+        return groupService.addToUser(info.getUserId(), UGroups.AUTHOR.getCode());
     }
 
     @Override
     public boolean checkUserIdAndAuthorCorrect(Long userId, Long authorId) {
         LambdaQueryWrapper<AuthorInfo> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.eq(AuthorInfo::getUserId,userId);
-        queryWrapper.eq(AuthorInfo::getId,authorId);
+        queryWrapper.eq(AuthorInfo::getId,authorId).last("limit 1");
         return super.getOne(queryWrapper)!=null;
     }
 
@@ -65,7 +65,7 @@ public class AuthorServiceSPI extends ServiceImpl<AuthorMapper, AuthorInfo>
     @Override
     public boolean checkAuthorNameAvailable(String name) {
         LambdaQueryWrapper<AuthorInfo> queryWrapper=new LambdaQueryWrapper<>();
-        queryWrapper.eq(AuthorInfo::getName,name);
+        queryWrapper.eq(AuthorInfo::getName,name).last("limit 1");
         return super.getOne(queryWrapper)==null;
     }
 

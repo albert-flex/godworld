@@ -22,15 +22,15 @@ public interface SocialInfoMapper extends BaseMapper<SocialInfo> {
             "where sm.author_id=#{authorId}\n")
     SocialInfo byAuthorId(Long authorId);
 
-    @Select("select l.* from(select si.id,si.name,si.moto,sa.name as act_name\n" +
+    @Select("select l.* from(select si.id,si.name,sa.description as act_desc,sa.name as act_name\n" +
             "from social_info si\n" +
-            "left join social_activity sa on sa.social_id=si.id\n" +
+            "join social_activity sa on sa.social_id=si.id\n" +
             "order by sa.start_time desc limit 1000) l group by l.id\n")
     Page<SocialNewActVo> newActPage(Page<SocialNewActVo> page);
 
-    @Select("select l.* from(select si.id,si.name,si.moto,sa.title as announce_name\n" +
+    @Select("select l.* from(select si.id,si.name,sa.content as announce_content,sa.title as announce_name\n" +
             "from social_info si\n" +
-            "left join social_announce sa on sa.social_id=si.id\n" +
+            "join social_announce sa on sa.social_id=si.id\n" +
             "order by sa.publish_time limit 10000) l group by l.id")
     Page<SocialNewAnnVo> newAnnPage(Page<SocialNewAnnVo> page);
 
@@ -48,5 +48,5 @@ public interface SocialInfoMapper extends BaseMapper<SocialInfo> {
             "where si.id=#{id}\n" +
             "order by sa.start_time desc limit 10000) \n" +
             "l group by l.id")
-    SocialInfoVo getById(@Param("1id") Long id);
+    SocialInfoVo getById(@Param("id") Long id);
 }

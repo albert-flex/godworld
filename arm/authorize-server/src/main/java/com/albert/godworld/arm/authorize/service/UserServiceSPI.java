@@ -27,7 +27,7 @@ public class UserServiceSPI extends ServiceImpl<UserMapper, User>
     @Override
     public User getByName(String name) {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(User::getUsername, name);
+        queryWrapper.eq(User::getUsername, name).last("limit 1");
         return super.getOne(queryWrapper);
     }
 

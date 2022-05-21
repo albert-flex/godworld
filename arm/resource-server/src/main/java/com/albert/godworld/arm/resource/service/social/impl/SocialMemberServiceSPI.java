@@ -47,7 +47,7 @@ public class SocialMemberServiceSPI extends ServiceImpl<SocialMemberMapper, Soci
     @Override
     public boolean in(Long authorId,Long socialId, String name) {
         LambdaQueryWrapper<SocialMember> queryWrapper=new LambdaQueryWrapper<>();
-        queryWrapper.eq(SocialMember::getAuthorId,authorId);
+        queryWrapper.eq(SocialMember::getAuthorId,authorId).last("limit 1");
         SocialMember socialMember=super.getOne(queryWrapper);
         if(socialMember!=null)return false;
 

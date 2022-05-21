@@ -1,6 +1,7 @@
 package com.albert.godworld.arm.resource.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
@@ -19,6 +20,7 @@ public class JacksonConf {
         return jacksonObjectMapperBuilder -> {
             jacksonObjectMapperBuilder.serializerByType(Long.class, ToStringSerializer.instance)
                     .serializerByType(Long.TYPE, ToStringSerializer.instance);
+            jacksonObjectMapperBuilder.featuresToEnable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
         };
     }
 

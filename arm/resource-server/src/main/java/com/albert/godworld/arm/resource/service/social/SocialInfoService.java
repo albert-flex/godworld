@@ -18,4 +18,5 @@ public interface SocialInfoService extends IService<SocialInfo> {
     Page<SocialNewAnnVo> newAnnPage(Page<SocialNewAnnVo> page);
     Page<SocialReVo> query(Page<SocialReVo> page,@Param("name") String name);
     SocialInfoVo getInfoById(Long id);
+    boolean register(SocialInfo social);
 }

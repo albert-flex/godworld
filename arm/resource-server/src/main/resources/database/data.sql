@@ -151,11 +151,11 @@ insert into social_info(id,name,master_id) values
 
 delete from social_member;
 insert into social_member(id,social_id,author_id,member_name,type) values
-(1,1,1,'AA',1),
-(2,1,2,'BB',2),
-(3,1,3,'CC',3),
-(4,1,4,'DD',2),
-(5,1,5,'EE',3);
+(1,1,1,'AA','MASTER'),
+(2,1,2,'BB','NORMAL'),
+(3,1,3,'CC','ADMIN'),
+(4,1,4,'DD','NORMAL'),
+(5,1,5,'EE','ADMIN');
 
 delete from social_activity;
 insert into social_activity(id,social_id,honer_author_id,name,description,start_time,end_time) values
@@ -166,4 +166,11 @@ delete from social_activity_book;
 insert into social_activity_book(id,social_id,activity_id,book_id) values
 (1,1,1,1),
 (2,1,1,2),
-(3,1,1,3);
+(3,1,1,3),
+(5,1,2,1),
+(6,1,2,2);
+
+delete from social_announce;
+insert into social_announce(id,social_id,publish_author_id,title,content) values
+(1,1,1,"关于2022文集...","关于2022年的文集，有消息说..."),
+(2,1,1,"关于2020文集...","关于2020年的文集，有消息说...");

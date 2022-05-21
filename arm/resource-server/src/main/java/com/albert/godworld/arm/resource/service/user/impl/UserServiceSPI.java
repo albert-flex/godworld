@@ -36,21 +36,21 @@ public class UserServiceSPI extends ServiceImpl<UserMapper, User>
     @Override
     public boolean checkNameAvail(String name) {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(User::getUsername, name);
+        queryWrapper.eq(User::getUsername, name).last("limit 1");
         return super.getOne(queryWrapper) == null;
     }
 
     @Override
     public boolean checkEmailAvail(String email) {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(User::getEmail, email);
+        queryWrapper.eq(User::getEmail, email).last("limit 1");
         return super.getOne(queryWrapper) == null;
     }
 
     @Override
     public User getByName(String name) {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(User::getUsername, name);
+        queryWrapper.eq(User::getUsername, name).last("limit 1");
         return super.getOne(queryWrapper);
     }
 

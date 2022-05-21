@@ -188,7 +188,7 @@ create table social_member(
     social_id bigint not null,
     author_id bigint not null,
     member_name varchar(30) not null unique,
-    type int not null,
+    type varchar(64) not null,
     in_time datetime not null default now(),
     primary key(id)
 );

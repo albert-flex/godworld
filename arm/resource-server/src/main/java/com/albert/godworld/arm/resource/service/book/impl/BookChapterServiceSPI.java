@@ -35,7 +35,7 @@ public class BookChapterServiceSPI extends ServiceImpl<BookChapterMapper, BookCh
     public BookChapter newestChapter(Long bookId) {
         LambdaQueryWrapper<BookChapter> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.eq(BookChapter::getBookId,bookId);
-        queryWrapper.orderByDesc(BookChapter::getCreateTime);
+        queryWrapper.orderByDesc(BookChapter::getCreateTime).last("limit 1");
         return super.getOne(queryWrapper);
     }
 

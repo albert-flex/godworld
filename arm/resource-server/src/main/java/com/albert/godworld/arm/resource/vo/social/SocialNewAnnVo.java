@@ -8,5 +8,5 @@ public class SocialNewAnnVo {
     private Long id;
     private String name;
     private String announceName;
-    private String moto;
+    private String announceContent;
 }
