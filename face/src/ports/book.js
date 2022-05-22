@@ -393,15 +393,15 @@ function addChapter(token, chapter, successCall) {
  * @param {{id:String, title: String,content:String,prevChapterId: String}} volume 
  * @param {(data)=>{}} successCall 
  */
-function modifyChapter(token, volume, successCall) {
+function modifyChapter(token, chapter, successCall) {
     let api = modify_chapter;
     let myHeader = new Headers();
     myHeader.append('Authorization', 'bearer ' + token);
     myHeader.append('Content-Type', 'application/json');
-    fetch(URLConcat(api, [], volume), {
+    fetch(URLConcat(api), {
         method: "PUT",
         headers: myHeader,
-        body: JSON.stringify(volume),
+        body: JSON.stringify(chapter),
         mode: "cors"
     }).then(res => res.json())
         .then(data => successCall(data))
