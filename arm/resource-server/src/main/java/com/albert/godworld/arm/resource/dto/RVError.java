@@ -22,6 +22,7 @@ public enum RVError {
 
     BOOK_MODIFY_FAIL(401,"书籍编辑失败"),
     BOOK_VOLUME_NOT_FOUND(402,"卷目找不到"),
+    BOOK_CHAPTER_NOT_FOUND(403,"章节找不到"),
     ;
     final int code;
     final String msg;

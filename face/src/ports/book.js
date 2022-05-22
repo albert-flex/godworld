@@ -322,7 +322,7 @@ function addVolume(token, volume, successCall) {
 /**
  * 
  * @param {String} token 
- * @param {(id:String, name: String,prevVolumeId: String)} volume 
+ * @param {{id:String, name: String,prevVolumeId: String}} volume 
  * @param {(data)=>{}} successCall 
  */
 function modifyVolume(token, volume, successCall) {
@@ -352,8 +352,17 @@ function listVolume(bookId, successCall) {
  * @param {String} volumeId 
  * @param {(data)=>{}} successCall 
  */
-function removeVolume(volumeId, successCall) {
-    RequestGet(URLConcat(remove_volume, [volumeId]), "DELETE", successCall);
+function removeVolume(token,volumeId, successCall) {
+    let api = remove_volume;
+    let myHeader = new Headers();
+    myHeader.append('Authorization', 'bearer ' + token);
+    fetch(URLConcat(api,[volumeId]), {
+        method: "DELETE",
+        headers: myHeader,
+        mode: "cors"
+    }).then(res => res.json())
+        .then(data => successCall(data))
+        .catch(e => alert(e));
 }
 
 
@@ -381,7 +390,7 @@ function addChapter(token, chapter, successCall) {
 /**
  * 
  * @param {String} token 
- * @param {(id:String, title: String,content:String,prevChapterId: String)} volume 
+ * @param {{id:String, title: String,content:String,prevChapterId: String}} volume 
  * @param {(data)=>{}} successCall 
  */
 function modifyChapter(token, volume, successCall) {
@@ -413,8 +422,17 @@ function listChapter(volumeId, page, successCall) {
  * @param {String} volumeId 
  * @param {(data)=>{}} successCall 
  */
-function removeChapter(chapterId, successCall) {
-    RequestGet(URLConcat(remove_chapter, [chapterId]), "DELETE", successCall);
+function removeChapter(token,chapterId, successCall) {
+    let api = remove_chapter;
+    let myHeader = new Headers();
+    myHeader.append('Authorization', 'bearer ' + token);
+    fetch(URLConcat(api,[chapterId]), {
+        method: "DELETE",
+        headers: myHeader,
+        mode: "cors"
+    }).then(res => res.json())
+        .then(data => successCall(data))
+        .catch(e => alert(e));
 }
 
 export {

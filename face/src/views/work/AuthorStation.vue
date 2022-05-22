@@ -102,13 +102,14 @@
       <a-space>
         <a-button type="primary" @click="showNewVolume">新增卷目</a-button>
         <a-button type="primary" @click="showEditVolume">修改卷目</a-button>
-        <a-button type="danger">删除卷目</a-button>
+        <a-button type="danger" @click="deleteVol">删除卷目</a-button>
       </a-space>
       <div style="padding: 10px">
         <a-radio-group v-model:value="volumeSelect">
           <a-radio-button
             v-for="item in volumes"
             :value="item.id"
+            @click="selectVolume(item)"
             :key="item.id"
             >{{ item.name }}</a-radio-button
           >
@@ -118,7 +119,7 @@
       <a-space>
         <a-button type="primary" @click="showNewChapter">新增章节</a-button>
         <a-button type="primary" @click="showEditChapter">修改章节</a-button>
-        <a-button type="danger">删除章节</a-button>
+        <a-button type="danger" @click="deleteChapter">删除章节</a-button>
       </a-space>
       <div style="padding: 10px">
         <a-radio-group v-model:value="chapterSelect">
@@ -126,7 +127,8 @@
             v-for="item in chapters"
             :value="item.id"
             :key="item.id"
-            >{{ item.name }}</a-radio-button
+            @click="selectChapter(item)"
+            >{{ item.title }}</a-radio-button
           >
         </a-radio-group>
       </div>
@@ -143,6 +145,7 @@
         :model="newVolume"
         :label-col="labelCol"
         :wrapper-col="wrapperCol"
+        @finish="postVolume"
       >
         <a-form-item label="名称">
           <a-input v-model:value="newVolume.name" placeholder="名字" />
@@ -150,8 +153,12 @@
         <a-form-item label="上一卷目">
           <a-select
             v-model:value="newVolume.preVolume"
-            :options="preVolumeList"
           >
+            <a-select-option
+              v-for="item in volumes"
+              :key="item.id"
+              :value="item.id"
+            >{{item.name}}</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
@@ -170,15 +177,18 @@
         :model="editVolume"
         :label-col="labelCol"
         :wrapper-col="wrapperCol"
+        @finish="editVol"
       >
         <a-form-item label="名称">
           <a-input v-model:value="editVolume.name" placeholder="名字" />
         </a-form-item>
         <a-form-item label="上一卷目">
-          <a-select
-            v-model:value="editVolume.preVolume"
-            :options="preVolumeList"
-          >
+          <a-select v-model:value="editVolume.preVolume">
+            <a-select-option
+              v-for="item in volumes"
+              :key="item.id"
+              :value="item.id"
+            >{{item.name}}</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
@@ -198,16 +208,18 @@
         :model="newChapter"
         :label-col="labelCol"
         :wrapper-col="wrapperCol"
+        @finish="postChapter"
       >
         <a-form-item label="标题">
           <a-input v-model:value="newChapter.title" placeholder="名字" />
         </a-form-item>
         <a-form-item label="所属卷目">
           <a-select v-model:value="newChapter.volumeId" style="width: 120px">
-            <a-select-option value="1">第一卷</a-select-option>
-            <a-select-option value="2">第二卷</a-select-option>
-            <a-select-option value="3">第三卷</a-select-option>
-            <a-select-option value="4">第四卷</a-select-option>
+            <a-select-option
+              v-for="item in volumes"
+              :key="item.id"
+              :value="item.id"
+            >{{item.name}}</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item label="上一章节">
@@ -217,7 +229,11 @@
           ></a-select>
         </a-form-item>
         <a-divider><h2>文章正文</h2></a-divider>
-        <a-textarea :rows="20" style="overflow: scroll"></a-textarea>
+        <a-textarea
+          :rows="20"
+          style="overflow: scroll"
+          v-model:value="newChapter.content"
+        ></a-textarea>
         <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
           <a-button type="primary" html-type="submit">发布</a-button>
         </a-form-item>
@@ -235,20 +251,38 @@
         :model="editChapter"
         :label-col="labelCol"
         :wrapper-col="wrapperCol"
+        @finish="editCha"
       >
         <a-form-item label="标题">
-          <a-input v-model:value="newChapter.title" placeholder="名字" />
+          <a-input v-model:value="editChapter.title" placeholder="名字" />
         </a-form-item>
         <a-form-item label="所属卷目">
+          <a-select v-model:value="editChapter.volumeId" style="width: 120px">
+            <a-select-option
+              v-for="item in volumes"
+              :key="item.id"
+              :value="item.id"
+            >{{item.name}}</a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item label="上一章节">
           <a-select
-            v-model:value="newChapter.volumeId"
+            v-model:value="editChapter.prevChapterId"
             style="width: 120px"
-            :options="volumeList"
           >
+            <a-select-option
+              v-for="item in chapters"
+              :key="item.id"
+              :value="item.title"
+            ></a-select-option>
           </a-select>
         </a-form-item>
         <a-divider><h2>文章正文</h2></a-divider>
-        <a-textarea :rows="20" style="overflow: scroll"></a-textarea>
+        <a-textarea
+          :rows="20"
+          style="overflow: scroll"
+          v-model:value="editChapter.content"
+        ></a-textarea>
         <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
           <a-button type="primary" html-type="submit">发布</a-button>
         </a-form-item>
@@ -287,7 +321,8 @@
             mode="tags"
             placeholder="Please select"
             style="width: 200px"
-          ></a-select>
+          >
+          </a-select>
         </a-form-item>
         <a-form-item label="Description">
           <a-textarea v-model:value="newBook.description"></a-textarea>
@@ -345,6 +380,14 @@ import {
   modifyBook,
   setPresent,
   erasePresent,
+  addChapter,
+  addVolume,
+  modifyChapter,
+  modifyVolume,
+  listChapter,
+  listVolume,
+  removeChapter,
+  removeVolume,
 } from "../../ports/book.js";
 import { ref } from "@vue/reactivity";
 import { useRoute, useRouter } from "vue-router";
@@ -473,7 +516,8 @@ function bookSelect(id) {
     editBookInfo.value.boardName = data.boardName;
     editBookInfo.value.tags = data.tags;
     editBookInfo.value.description = data.description;
-    editBookInfo.value.isPresent=data.isPresent;
+    editBookInfo.value.isPresent = data.isPresent;
+    listVolumes();
   });
   FetchVolumesOnBook(id, (data) => {
     catalog.value = data;
@@ -597,7 +641,105 @@ function showNewVolume() {
 }
 
 function showEditVolume() {
+  
   editVolumeVisi.value = true;
+}
+
+function postVolume() {
+  const access = loadAccess();
+  addVolume(access.access_token, newVolume.value, (data) => {
+    alert(data.success);
+  });
+}
+
+function postChapter() {
+  const access = loadAccess();
+  addChapter(access.access_token, newChapter.value, (data) => {
+    if (data.success) {
+      alert("成功");
+    } else {
+      alert(data.error);
+    }
+  });
+}
+
+function editVol() {
+  const access = loadAccess();
+  modifyVolume(access.access_token, editVolume.value, (data) => {
+    if (data.success) {
+      alert("成功");
+    } else {
+      alert(data.error);
+    }
+  });
+}
+
+function editCha() {
+  const access = loadAccess();
+  modifyChapter(access.access_token, editChapter.value, (data) => {
+    if (data.success) {
+      alert("成功");
+    } else {
+      alert(data.error);
+    }
+  });
+}
+
+function listVolumes() {
+  listVolume(editBookInfo.value.id, (data) => {
+    volumes.value = [];
+    for (let i = 0; i != data.length; ++i) {
+      volumes.value.push({
+        id: data[i].id,
+        name: data[i].name,
+      });
+    }
+  });
+}
+
+function pageChapter(id) {
+  listChapter(id, { size: 10000, current: 1 }, (data) => {
+    chapters.value = data.records;
+  });
+}
+
+function selectVolume(item){
+  console.log("volumeSelect:"+volumeSelect.value);
+  editVolume.value=item;
+  pageChapter(item.id);  
+}
+
+function selectChapter(item){
+  chapterSelect.value=item.id;
+  editChapter.value=item;
+}
+
+function deleteVol() {
+  const access = loadAccess();
+  removeVolume(access.access_token, volumeSelect.value, (data) => {
+    if (data.success) {
+      alert("成功");
+    } else {
+      alert(data.error);
+    }
+  });
+}
+
+function deleteChapter() {
+  const access = loadAccess();
+  removeChapter(access.access_token, chapterSelect.value, (data) => {
+    if (data.success) {
+      alert("成功");
+    } else {
+      alert(data.error);
+    }
+  });
+}
+
+function changeV(newV) {
+  console.log("new Volume:" + newV);
+  volumeSelect = newV;
+  pageChapter();
 }
 
 function Init() {

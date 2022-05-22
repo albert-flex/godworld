@@ -88,7 +88,16 @@ public class BookChapterController {
     }
 
     @DeleteMapping("/{id}")
-    public Boolean remove(@PathVariable("id") Long id) {
-        return bookChapterService.removeById(id);
+    @PreAuthorize("hasAuthority('AUTHOR_PER')")
+    public RV<Boolean> remove(@PathVariable("id") Long id,Principal principal) {
+        User user = convert.convert(principal);
+        Long authorId = authorService.getAuthorIdByUserId(user.getId());
+        BookChapter chapter=bookChapterService.getById(id);
+        if(chapter==null)return RVError.BOOK_CHAPTER_NOT_FOUND.to();
+
+        BookInfo info = bookInfoService.getById(chapter.getBookId());
+        if (!info.getAuthorId().equals(authorId)) return RVError.AUTHOR_USER_NOT_SAME.to();
+
+        return RV.success(bookChapterService.removeById(id));
     }
 }
