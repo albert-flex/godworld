@@ -9,4 +9,5 @@ public class ChapterDTO {
     private Long volumeId;
     private String title;
     private String content;
+    private Long prevChapterId;
 }

@@ -14,6 +14,6 @@ public class BookChapter {
     private String content;
     private Date createTime;
     private Date updateTime;
-    private Long prev_chapter_id;
-    private Long next_chapter_id;
+    private Long prevChapterId;
+    private Long nextChapterId;
 }

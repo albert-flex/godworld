@@ -12,6 +12,7 @@ import java.util.List;
 public interface BookChapterService extends IService<BookChapter> {
 
     Page<BookChapter> chapterOfVolume(Page<BookChapter> page, Long volumeId);
+    boolean modifyChapter(BookChapter bookChapter);
     long countChapter(Long bookId);
     BookChapter newestChapter(Long bookId);
     boolean insertChapter(ChapterDTO dto);

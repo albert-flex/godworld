@@ -2,6 +2,7 @@ package com.albert.godworld.arm.resource.controller.book;
 
 import com.albert.godworld.arm.resource.domain.book.BookChapter;
 import com.albert.godworld.arm.resource.domain.book.BookInfo;
+import com.albert.godworld.arm.resource.domain.book.BookVolume;
 import com.albert.godworld.arm.resource.domain.user.User;
 import com.albert.godworld.arm.resource.dto.ChapterDTO;
 import com.albert.godworld.arm.resource.dto.RV;
@@ -12,6 +13,7 @@ import com.albert.godworld.arm.resource.service.book.BookInfoService;
 import com.albert.godworld.arm.resource.util.PrincipalConvert;
 import com.albert.godworld.arm.resource.vo.book.BookChapterInfoVo;
 import com.albert.godworld.arm.resource.vo.book.BookVolumeVo;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,50 +33,62 @@ public class BookChapterController {
     private final BookInfoService bookInfoService;
 
 
-    @PostMapping
+    @PostMapping("create")
     @PreAuthorize("hasAuthority('AUTHOR_PER')")
-    public RV<Boolean> create(@RequestBody ChapterDTO chapterDTO, Principal principal){
-        User user=convert.convert(principal);
-        Long authorId=authorService.getAuthorIdByUserId(user.getId());
-        BookInfo info=bookInfoService.getById(chapterDTO.getBookId());
-        if(!info.getAuthorId().equals(authorId))return RVError.AUTHOR_USER_NOT_SAME.to();
+    public RV<Boolean> create(@RequestBody ChapterDTO chapterDTO, Principal principal) {
+        User user = convert.convert(principal);
+        Long authorId = authorService.getAuthorIdByUserId(user.getId());
+        BookInfo info = bookInfoService.getById(chapterDTO.getBookId());
+        if (!info.getAuthorId().equals(authorId)) return RVError.AUTHOR_USER_NOT_SAME.to();
 
-        boolean result=bookChapterService.insertChapter(chapterDTO);
-        if(!result){
+        boolean result = bookChapterService.insertChapter(chapterDTO);
+        if (!result) {
             return RVError.DATABASE_ERROR.to();
-        }else {
+        } else {
             return RV.success();
         }
     }
 
     @PutMapping
-    public Boolean update(@RequestBody BookChapter bookChapter){
+    public Boolean update(@RequestBody BookChapter bookChapter) {
         return bookChapterService.updateById(bookChapter);
     }
 
     @GetMapping("/page/volume/{volumeId}")
-    public Page<BookChapter> chapterOfVolume(@PathVariable("volumeId")Long volumeId,Page<BookChapter> page){
-        return bookChapterService.chapterOfVolume(page,volumeId);
+    public Page<BookChapter> chapterOfVolume(@PathVariable("volumeId") Long volumeId, Page<BookChapter> page) {
+        return bookChapterService.chapterOfVolume(page, volumeId);
     }
 
     @GetMapping("/volumes/{bookId}")
-    public List<BookVolumeVo> volumeVos(@PathVariable("bookId") Long bookId){
+    public List<BookVolumeVo> volumeVos(@PathVariable("bookId") Long bookId) {
         return bookChapterService.volumeOfBook(bookId);
     }
 
+
+    @PutMapping("/modify")
+    @PreAuthorize("hasAuthority('AUTHOR_PER')")
+    public RV<Boolean> modify(@RequestBody BookChapter bookChapter, Principal principal) {
+        User user = convert.convert(principal);
+        Long authorId = authorService.getAuthorIdByUserId(user.getId());
+        BookInfo bookInfo = bookInfoService.getById(bookChapter.getBookId());
+        if (!authorId.equals(bookInfo.getAuthorId())) return RVError.AUTHOR_USER_NOT_SAME.to();
+
+        return RV.success(bookChapterService.modifyChapter(bookChapter));
+    }
+
     @GetMapping("/id/{id}")
-    public BookChapterInfoVo getInfoByChapter(@PathVariable("id") Long id){
+    public BookChapterInfoVo getInfoByChapter(@PathVariable("id") Long id) {
         return bookChapterService.getChapter(id);
     }
 
 
     @GetMapping("/newest/{bookId}")
-    public BookChapter newestChapter(@PathVariable("bookId") Long bookId){
+    public BookChapter newestChapter(@PathVariable("bookId") Long bookId) {
         return bookChapterService.newestChapter(bookId);
     }
 
     @DeleteMapping("/{id}")
-    public Boolean remove(@PathVariable("id") Long id){
+    public Boolean remove(@PathVariable("id") Long id) {
         return bookChapterService.removeById(id);
     }
 }

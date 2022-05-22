@@ -39,6 +39,22 @@ const book_set_present = UrlPatch("book/set_present/:1/:2");
 const book_erase_present = UrlPatch("book/erase_present/:1");
 //修改book信息
 const book_modify = UrlPatch("book/modify");
+//新增卷目
+const add_volume = UrlPatch("book_volume/create");
+//修改卷目
+const modify_volume = UrlPatch("book_volume/modify");
+//获取卷目列表
+const list_volumes_in = UrlPatch("book_volume/of/:1");
+//删除卷目
+const remove_volume = UrlPatch("book_volume/:1");
+//新增章节
+const add_chapter = UrlPatch("book_chapter/create");
+//修改章节
+const modify_chapter = UrlPatch("book_chapter/modify");
+//获取章节列表
+const list_chapter_in_volume = UrlPatch("book_chapter/page/volume/:1");
+//删除章节
+const remove_chapter = UrlPatch("book_chapter/:1");
 
 /**
  * 
@@ -284,6 +300,123 @@ function modifyBook(token, bookInfo, successCall) {
         .catch(e => alert(e));
 }
 
+/**
+ * 
+ * @param {String} token 
+ * @param {{name: String, prevVolumeId: String}} volume 
+ * @param {(data)=>{}} successCall 
+ */
+function addVolume(token, volume, successCall) {
+    let api = add_volume;
+    let myHeader = new Headers();
+    myHeader.append('Authorization', 'bearer ' + token);
+    fetch(URLConcat(api, [], volume), {
+        method: "POST",
+        headers: myHeader,
+        mode: "cors"
+    }).then(res => res.json())
+        .then(data => successCall(data))
+        .catch(e => alert(e));
+}
+
+/**
+ * 
+ * @param {String} token 
+ * @param {(id:String, name: String,prevVolumeId: String)} volume 
+ * @param {(data)=>{}} successCall 
+ */
+function modifyVolume(token, volume, successCall) {
+    let api = modify_volume;
+    let myHeader = new Headers();
+    myHeader.append('Authorization', 'bearer ' + token);
+    fetch(URLConcat(api, [], volume), {
+        method: "POST",
+        headers: myHeader,
+        mode: "cors"
+    }).then(res => res.json())
+        .then(data => successCall(data))
+        .catch(e => alert(e));
+}
+
+/**
+ * 
+ * @param {String} bookId 
+ * @param {(data)=>{}} successCall 
+ */
+function listVolume(bookId, successCall) {
+    RequestGet(URLConcat(list_volumes_in, [bookId]), "GET", successCall);
+}
+
+/**
+ * 
+ * @param {String} volumeId 
+ * @param {(data)=>{}} successCall 
+ */
+function removeVolume(volumeId, successCall) {
+    RequestGet(URLConcat(remove_volume, [volumeId]), "DELETE", successCall);
+}
+
+
+/**
+ * 
+ * @param {String} token 
+ * @param {{bookId:String,volumeId:String,title:String,content:String,prevChapterId: String}} chapter 
+ * @param {(data)=>{}} successCall 
+ */
+function addChapter(token, chapter, successCall) {
+    let api = add_chapter;
+    let myHeader = new Headers();
+    myHeader.append('Authorization', 'bearer ' + token);
+    myHeader.append('Content-Type', 'application/json');
+    fetch(URLConcat(api), {
+        method: "POST",
+        headers: myHeader,
+        body: JSON.stringify(chapter),
+        mode: "cors"
+    }).then(res => res.json())
+        .then(data => successCall(data))
+        .catch(e => alert(e));
+}
+
+/**
+ * 
+ * @param {String} token 
+ * @param {(id:String, title: String,content:String,prevChapterId: String)} volume 
+ * @param {(data)=>{}} successCall 
+ */
+function modifyChapter(token, volume, successCall) {
+    let api = modify_volume;
+    let myHeader = new Headers();
+    myHeader.append('Authorization', 'bearer ' + token);
+    myHeader.append('Content-Type', 'application/json');
+    fetch(URLConcat(api, [], volume), {
+        method: "POST",
+        headers: myHeader,
+        body: JSON.stringify(volume),
+        mode: "cors"
+    }).then(res => res.json())
+        .then(data => successCall(data))
+        .catch(e => alert(e));
+}
+
+/**
+ * @param {{size:Number,current: Number}} page
+ * @param {String} volumeId 
+ * @param {(data)=>{}} successCall 
+ */
+function listChapter(volumeId, page, successCall) {
+    RequestGet(URLConcat(list_chapter_in_volume, [volumeId], page), "GET", successCall);
+}
+
+/**
+ * 
+ * @param {String} volumeId 
+ * @param {(data)=>{}} successCall 
+ */
+function removeChapter(chapterId, successCall) {
+    RequestGet(URLConcat(remove_chapter, [chapterId]), "DELETE", successCall);
+}
+
 export {
     NewestBooksPort,
     AllBoardBooks,
@@ -303,5 +436,13 @@ export {
     postBooK,
     setPresent,
     erasePresent,
-    modifyBook
+    modifyBook,
+    addChapter,
+    addVolume,
+    modifyChapter,
+    modifyVolume,
+    listChapter,
+    listVolume,
+    removeChapter,
+    removeVolume
 }

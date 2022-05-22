@@ -21,6 +21,7 @@ public enum RVError {
     SOCIAL_NAME_NOT_AVAIL(303,"社团名字已占用"),
 
     BOOK_MODIFY_FAIL(401,"书籍编辑失败"),
+    BOOK_VOLUME_NOT_FOUND(402,"卷目找不到"),
     ;
     final int code;
     final String msg;
