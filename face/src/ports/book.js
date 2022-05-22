@@ -303,7 +303,7 @@ function modifyBook(token, bookInfo, successCall) {
 /**
  * 
  * @param {String} token 
- * @param {{name: String, prevVolumeId: String}} volume 
+ * @param {{bookId:String,name: String, prevVolumeId: String}} volume 
  * @param {(data)=>{}} successCall 
  */
 function addVolume(token, volume, successCall) {
@@ -322,7 +322,7 @@ function addVolume(token, volume, successCall) {
 /**
  * 
  * @param {String} token 
- * @param {{id:String, name: String,prevVolumeId: String}} volume 
+ * @param {{id:String,bookId:String, name: String,prevVolumeId: String}} volume 
  * @param {(data)=>{}} successCall 
  */
 function modifyVolume(token, volume, successCall) {
@@ -394,12 +394,12 @@ function addChapter(token, chapter, successCall) {
  * @param {(data)=>{}} successCall 
  */
 function modifyChapter(token, volume, successCall) {
-    let api = modify_volume;
+    let api = modify_chapter;
     let myHeader = new Headers();
     myHeader.append('Authorization', 'bearer ' + token);
     myHeader.append('Content-Type', 'application/json');
     fetch(URLConcat(api, [], volume), {
-        method: "POST",
+        method: "PUT",
         headers: myHeader,
         body: JSON.stringify(volume),
         mode: "cors"

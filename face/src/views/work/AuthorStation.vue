@@ -152,7 +152,7 @@
         </a-form-item>
         <a-form-item label="上一卷目">
           <a-select
-            v-model:value="newVolume.preVolume"
+            v-model:value="newVolume.prevVolumeId"
           >
             <a-select-option
               v-for="item in volumes"
@@ -183,7 +183,7 @@
           <a-input v-model:value="editVolume.name" placeholder="名字" />
         </a-form-item>
         <a-form-item label="上一卷目">
-          <a-select v-model:value="editVolume.preVolume">
+          <a-select v-model:value="editVolume.prevVolumeId">
             <a-select-option
               v-for="item in volumes"
               :key="item.id"
@@ -430,14 +430,16 @@ const newBook = ref({
 });
 
 const newVolume = ref({
+  bookId:"",
   name: "",
-  preVolume: "",
+  prevVolumeId: "",
 });
 
 const editVolume = ref({
   id: "",
+  bookId:"",
   name: "",
-  preVolume: "",
+  prevVolumeId: "",
 });
 
 const newContent = ref("");
@@ -647,6 +649,7 @@ function showEditVolume() {
 
 function postVolume() {
   const access = loadAccess();
+  newVolume.value.bookId=editBookInfo.value.id;
   addVolume(access.access_token, newVolume.value, (data) => {
     alert(data.success);
   });
@@ -654,6 +657,7 @@ function postVolume() {
 
 function postChapter() {
   const access = loadAccess();
+  newChapter.value.bookId=editBookInfo.value.id;
   addChapter(access.access_token, newChapter.value, (data) => {
     if (data.success) {
       alert("成功");
