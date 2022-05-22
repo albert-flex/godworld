@@ -30,7 +30,15 @@ const chapter_info = UrlPatch("book_chapter/id/:1");
 //获取作者的作品分页
 const book_on_author = UrlPatch("book/page/author/id/:1");
 //获取活动分页
-const book_on_activity_author=UrlPatch("social_activity_book/author/:1");
+const book_on_activity_author = UrlPatch("social_activity_book/author/:1");
+//新增一个book
+const book_create = UrlPatch("book");
+//设book为代表作
+const book_set_present = UrlPatch("book/set_present/:1/:2");
+//取消book为代表作
+const book_erase_present = UrlPatch("book/erase_present/:1");
+//修改book信息
+const book_modify = UrlPatch("book/modify");
 
 /**
  * 
@@ -192,8 +200,88 @@ function FetchBooksOnAuthor(authorId, page, successCall) {
     RequestGet(URLConcat(book_on_author, [authorId], page), 'GET', successCall);
 }
 
-function FetchBooksOnActivityAuthor(authorId,successCall){
-    RequestGet(URLConcat(book_on_activity_author,[authorId]),'GET',successCall);
+function FetchBooksOnActivityAuthor(authorId, successCall) {
+    RequestGet(URLConcat(book_on_activity_author, [authorId]), 'GET', successCall);
+}
+
+
+/**
+ * 
+ * @param {String} token 
+ * @param {{name:String,boardName:String,tags:[String],description:String}} bookDTO 
+ * @param {(data)=>{}} successCall 
+ */
+function postBooK(token, bookDTO, successCall) {
+    let api = book_create;
+    let myHeader = new Headers();
+    myHeader.append('Content-Type', 'application/json');
+    myHeader.append('Authorization', 'bearer ' + token);
+    fetch(api, {
+        method: "POST",
+        headers: myHeader,
+        body: JSON.stringify(bookDTO),
+        mode: "cors"
+    }).then(res => res.json())
+        .then(data => successCall(data))
+        .catch(error => alert(error));
+}
+
+/**
+ * 
+ * @param {String} token
+ * @param {String} authorId 
+ * @param {String} bookId 
+ * @param {(data)=>{}} successCall 
+ */
+function setPresent(token, authorId, bookId, successCall) {
+    let api = book_set_present;
+    let myHeader = new Headers();
+    myHeader.append('Authorization', 'bearer ' + token);
+    fetch(URLConcat(api, [authorId, bookId]), {
+        method: "PUT",
+        mode: "cors"
+    }).then(res => res.json())
+        .then(data => successCall(data))
+        .catch(e => alert(e));
+}
+
+/**
+ * 
+ * @param {String} token 
+ * @param {String} authorId 
+ * @param {(data)=>{}} successCall 
+ */
+function erasePresent(token, authorId, successCall) {
+    let api = book_erase_present;
+    let myHeader = new Headers();
+    myHeader.append('Authorization', 'bearer ' + token);
+    fetch(URLConcat(api, [authorId]), {
+        method: "PUT",
+        mode: "cors"
+    }).then(res => res.json())
+        .then(data => successCall(data))
+        .catch(e => alert(e));
+}
+
+/**
+ * 
+ * @param {String} token 
+ * @param {{authorId:String,name:String,boardName:String,description:String,tags:[String],id:String}} bookInfo 
+ * @param {(data)=>{}} successCall 
+ */
+function modifyBook(token, bookInfo, successCall) {
+    let api = book_modify;
+    let myHeader = new Headers();
+    myHeader.append('Authorization', 'bearer ' + token);
+    myHeader.append('Content-Type', 'application/json');
+    fetch(URLConcat(api), {
+        method: "PUT",
+        headers: myHeader,
+        body: JSON.stringify(bookInfo),
+        mode: "cors",
+    }).then(res => res.json())
+        .then(data => successCall(data))
+        .catch(e => alert(e));
 }
 
 export {
@@ -212,4 +300,8 @@ export {
     FetchChapter,
     FetchBooksOnAuthor,
     FetchBooksOnActivityAuthor,
+    postBooK,
+    setPresent,
+    erasePresent,
+    modifyBook
 }

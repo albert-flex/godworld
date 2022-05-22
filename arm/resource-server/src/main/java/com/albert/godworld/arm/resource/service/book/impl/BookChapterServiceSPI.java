@@ -1,6 +1,7 @@
 package com.albert.godworld.arm.resource.service.book.impl;
 
 import com.albert.godworld.arm.resource.domain.book.BookChapter;
+import com.albert.godworld.arm.resource.dto.ChapterDTO;
 import com.albert.godworld.arm.resource.mapper.book.BookChapterMapper;
 import com.albert.godworld.arm.resource.service.book.BookChapterService;
 import com.albert.godworld.arm.resource.vo.book.BookChapterInfoVo;
@@ -37,6 +38,11 @@ public class BookChapterServiceSPI extends ServiceImpl<BookChapterMapper, BookCh
         queryWrapper.eq(BookChapter::getBookId,bookId);
         queryWrapper.orderByDesc(BookChapter::getCreateTime).last("limit 1");
         return super.getOne(queryWrapper);
+    }
+
+    @Override
+    public boolean insertChapter(ChapterDTO dto) {
+        return false;
     }
 
     @Override

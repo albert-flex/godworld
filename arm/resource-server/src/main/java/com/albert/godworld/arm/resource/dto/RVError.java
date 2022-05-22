@@ -19,6 +19,8 @@ public enum RVError {
     SOCIAL_REGISTER_DB_ERROR(301,"创建社团数据库操作错误"),
     SOCIAL_ALREADY_HAS(302,"已经加入了社团"),
     SOCIAL_NAME_NOT_AVAIL(303,"社团名字已占用"),
+
+    BOOK_MODIFY_FAIL(401,"书籍编辑失败"),
     ;
     final int code;
     final String msg;
@@ -30,4 +32,5 @@ public enum RVError {
     public <T> RV<T> to(){
         return RV.error(this);
     }
+
 }

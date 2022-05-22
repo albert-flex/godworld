@@ -7,6 +7,7 @@ import java.util.Date;
 @Data
 public class AuthorVo {
     private Long id;
+    private String email;
     private String authorName;
     private Long presentBookId;
     private String presentBookName;

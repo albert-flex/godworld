@@ -11,7 +11,7 @@
           <h2>作者: {{ authorInfo.authorName }}</h2>
           <h2>创建时间: {{ authorInfo.inTime }}</h2>
           <h2>代表作: 《{{ authorInfo.presentBookName }}》</h2>
-          <h2>更新书籍: {{ authorInfo.updateBookName }}</h2>
+          <h2>官方邮箱: {{ authorInfo.email }}</h2>
         </div>
       </div>
       <div>
@@ -57,17 +57,18 @@
     </main>
     <aside>
       <a-divider
-        ><h2>{{ selectBook.name }}</h2></a-divider
+        ><h2>{{ editBookInfo.name }}</h2></a-divider
       >
       <a-form
         :model="editBookInfo"
         :label-col="labelCol"
         :wrapper-col="wrapperCol"
+        @finish="modifyBookInfo"
       >
         <a-form-item label="板块">
           <a-input
             v-model:value="editBookInfo.boardName"
-            disabled="true"
+            :disabled="true"
           ></a-input>
         </a-form-item>
         <a-form-item label="标签">
@@ -77,7 +78,6 @@
             style="width: 100%"
             placeholder="Please select"
             :options="options"
-            @change="handleChange"
           ></a-select>
         </a-form-item>
         <a-form-item label="简介">
@@ -92,6 +92,7 @@
             v-model:checked="editBookInfo.isPresent"
             checked-children="开"
             un-checked-children="关"
+            @change="presentToggle"
           />
         </a-form-item>
         <a-form-item :wrapper-col="{ span: 14, offset: 10 }">
@@ -125,7 +126,6 @@
       style="color: red"
       title="新建章节"
       placement="right"
-      @after-visible-change="afterVisibleChange"
     >
       <a-form
         :model="newChapter"
@@ -140,8 +140,6 @@
             ref="select"
             v-model:value="newChapter.volumeId"
             style="width: 120px"
-            @focus="focus"
-            @change="handleChange"
           >
             <a-select-option value="1">第一卷</a-select-option>
             <a-select-option value="2">第二卷</a-select-option>
@@ -163,7 +161,6 @@
       style="color: red"
       title="修改章节"
       placement="right"
-      @after-visible-change="afterVisibleChange"
     >
       <a-form
         :model="editChapter"
@@ -178,8 +175,6 @@
             ref="select"
             v-model:value="newChapter.volumeId"
             style="width: 120px"
-            @focus="focus"
-            @change="handleChange"
           >
             <a-select-option value="1">第一卷</a-select-option>
             <a-select-option value="2">第二卷</a-select-option>
@@ -201,20 +196,22 @@
       style="color: red"
       title="New Book"
       placement="right"
-      @after-visible-change="afterVisibleChange"
     >
-      <a-form :model="newBook" :label-col="labelCol" :wrapper-col="wrapperCol">
+      <a-form
+        :model="newBook"
+        :label-col="labelCol"
+        :wrapper-col="wrapperCol"
+        @finish="postNewBook"
+      >
         <a-form-item label="title">
-          <a-input v-model:value="newBook.title" />
+          <a-input v-model:value="newBook.name" />
         </a-form-item>
         <a-form-item label="board">
           <a-select
             ref="select"
-            v-model:value="newBook.board"
+            v-model:value="newBook.boardName"
             :options="boards"
             style="width: 120px"
-            @focus="focus"
-            @change="handleChange"
           >
           </a-select>
         </a-form-item>
@@ -229,7 +226,7 @@
           ></a-select>
         </a-form-item>
         <a-form-item label="Description">
-          <a-textarea></a-textarea>
+          <a-textarea v-model:value="newBook.description"></a-textarea>
         </a-form-item>
         <a-form-item :wrapper-col="{ offset: 10, span: 20 }">
           <a-button type="primary" html-type="submit">发布</a-button>
@@ -242,12 +239,12 @@
       style="color: red"
       title="Edit Author"
       placement="right"
-      @after-visible-change="afterVisibleChange"
     >
       <a-form
         :model="authorInfo"
         :label-col="labelCol"
         :wrapper-col="wrapperCol"
+        @finish="changeProfile"
       >
         <a-form-item label="头像">
           <a-avatar shape="square" :size="64">
@@ -255,22 +252,13 @@
           </a-avatar>
         </a-form-item>
         <a-form-item label="名字">
-          <a-input v-model:value="authorInfo.name" />
+          <a-input v-model:value="authorInfo.authorName" />
         </a-form-item>
         <a-form-item label="邮箱">
           <a-input v-model:value="authorInfo.email" />
         </a-form-item>
         <a-form-item label="签名">
-          <a-textarea :row="4"></a-textarea>
-        </a-form-item>
-        <a-form-item label="代表作">
-          <a-select
-            v-model:value="authorInfo.present"
-            :options="options"
-            :size="size"
-            placeholder="Please select"
-            style="width: 200px"
-          ></a-select>
+          <a-textarea :row="4" v-model:value="authorInfo.moto"></a-textarea>
         </a-form-item>
         <a-form-item :wrapper-col="{ offset: 10, span: 20 }">
           <a-button type="primary" html-type="submit">修改</a-button>
@@ -282,18 +270,23 @@
 <script setup>
 import { UserOutlined } from "@ant-design/icons-vue";
 import { loadAccess, loadUser } from "../../config/stores.js";
-import { FetchAuthor } from "../../ports/author.js";
+import { FetchAuthor,ModifyAuthor } from "../../ports/author.js";
 import {
   FetchBooksOnAuthor,
   FetchBookVo,
   FetchVolumesOnBook,
   FetchTagList,
   FetchBoardList,
+  postBooK,
+  modifyBook,
+  setPresent,
+  erasePresent,
 } from "../../ports/book.js";
 import { ref } from "@vue/reactivity";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 const route = useRoute();
+const router = useRouter();
 const editVolumeVisi = ref(false);
 const newChapterVisi = ref(false);
 const editChapterVisi = ref(false);
@@ -301,19 +294,16 @@ const editBookInfo = ref({});
 const editAuthorVisi = ref(false);
 const authorInfo = ref({});
 const selectBook = ref({});
+const hasBooks=ref([]);
 
 const boards = ref([]);
-const options = ref([
-  { value: "战斗" },
-  { value: "异世界" },
-  { value: "女仆" },
-  { value: "组队" },
-  { value: "异世界" },
-]);
+const options = ref([]);
+
 const newBookVisi = ref(false);
 const newBook = ref({
-  title: "",
-  board: "",
+  authorId: "",
+  name: "",
+  boardName: "",
   tags: [],
   description: ``,
 });
@@ -354,12 +344,14 @@ function fetchA() {
   const access = loadAccess();
   if (!access.logined()) {
     alert("未登录，请先登录");
+    router.push({ name: "login" });
     return;
   }
 
   const user = loadUser();
   if (user.authorId == null) {
     alert("非作者，请先成为作者");
+    router.push({ name: "authorNew" });
     return;
   }
 
@@ -375,11 +367,6 @@ function _re(page, data) {
 
 function QueryBooks() {
   const user = loadUser();
-  if (user.authorId == null) {
-    alert("非作者，请先成为作者");
-    return;
-  }
-
   FetchBooksOnAuthor(
     user.authorId,
     {
@@ -397,11 +384,11 @@ function bookSelect(id) {
   FetchBookVo(id, (data) => {
     selectBook.value = data;
     editBookInfo.value.id = data.id;
+    editBookInfo.value.authorId = data.authorId;
     editBookInfo.value.name = data.name;
-    editBookInfo.value.tags = data.tags;
     editBookInfo.value.boardName = data.boardName;
+    editBookInfo.value.tags = data.tags;
     editBookInfo.value.description = data.description;
-    editBookInfo.value.isPresent = data.isPresent;
   });
   FetchVolumesOnBook(id, (data) => {
     catalog.value = data;
@@ -420,8 +407,8 @@ function fetchTags() {
   });
 }
 
-function fetchBoards(){
-  FetchBoardList((data)=>{
+function fetchBoards() {
+  FetchBoardList((data) => {
     boards.value = [];
     for (let i = 0; i < data.length; ++i) {
       boards.value.push({
@@ -432,16 +419,72 @@ function fetchBoards(){
   });
 }
 
-for (let i = 0; i != 10; ++i) {
-  books.value.push({
-    id: "101",
-    name: "火之异能者",
-    updateTime: i + "小时前",
-    updateChapter: "第七章",
-    updateVolume: "第一卷",
-    description: `中原区望洋县研究所出现了暴乱，主角夏宇轩和秋淼汐带上刘杰戈很快掌握了信息，
-        夏宇轩和秋淼汐获得了异能的力量，并且一连三次突破重围找到了暂时可以适合居住的敌方，
-        半途遇到程辰和林残月...`,
+function postNewBook() {
+  const access = loadAccess();
+  const user = loadUser();
+  newBook.value.authorId = user.authorId;
+  postBooK(access.access_token, newBook.value, (data) => {
+    if (!data.success) {
+      alert(data.error);
+    } else {
+      alert("创建成功，id:" + data.obj.id);
+    }
+  });
+}
+
+function presentToggle(present) {
+  if (editBookInfo.value.id == null) return;
+  const user = loadUser();
+  const access = loadAccess();
+
+  if (present) {
+    setPresent(
+      access.access_token,
+      user.authorId,
+      editBookInfo.value.id,
+      (data) => {
+        alert("设置成功");
+      }
+    );
+  } else {
+    erasePresent(access.access_token, user.authorId, (data) => {
+      alert("取消成功");
+    });
+  }
+}
+
+function modifyBookInfo() {
+  if (editBookInfo.value.id == null) return;
+
+  const access = loadAccess();
+  const user = loadUser();
+  try {
+    editBookInfo.value.authorId = user.authorId;
+    modifyBook(access.access_token, editBookInfo.value, (data) => {
+      if (!data.success) {
+        alert(data.error);
+      } else {
+        alert("修改成功");
+      }
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function changeProfile(){
+  const access = loadAccess();
+  ModifyAuthor(access.access_token,{
+    id: authorInfo.value.id,
+    name: authorInfo.value.authorName,
+    email: authorInfo.value.email,
+    moto: authorInfo.value.moto
+  },(data)=>{
+    if(!data.success){
+      alert(data.error);
+    }else{
+      alert("修改成功!");
+    }
   });
 }
 
@@ -474,10 +517,10 @@ function Init() {
   fetchBoards();
 }
 
-const labelCol = { style: { width: "150px" } };
+const labelCol = { span: 7 };
 const wrapperCol = { span: 14 };
 
-const labelCol2 = { style: { width: "100px" } };
+const labelCol2 = { span: 7 };
 const wrapperCol2 = { span: 14 };
 
 const catalog = ref([]);

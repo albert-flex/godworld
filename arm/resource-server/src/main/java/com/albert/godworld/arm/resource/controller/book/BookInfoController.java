@@ -1,8 +1,8 @@
 package com.albert.godworld.arm.resource.controller.book;
 
 
-import com.albert.godworld.arm.resource.domain.author.AuthorInfo;
 import com.albert.godworld.arm.resource.domain.book.BookInfo;
+import com.albert.godworld.arm.resource.domain.user.Permissions;
 import com.albert.godworld.arm.resource.domain.user.User;
 import com.albert.godworld.arm.resource.dto.BookDTO;
 import com.albert.godworld.arm.resource.dto.BookQueryDTO;
@@ -14,9 +14,7 @@ import com.albert.godworld.arm.resource.service.book.BookRankService;
 import com.albert.godworld.arm.resource.util.PrincipalConvert;
 import com.albert.godworld.arm.resource.vo.book.BookVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,15 +35,36 @@ public class BookInfoController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('AUTHOR_PER')")
-    public RV<BookInfo> create(@RequestBody BookDTO book, Principal principal) {
+    public RV<BookDTO> create(@RequestBody BookDTO book, Principal principal) {
         User user = convert.convert(principal);
-        Long authorId = authorService.getAuthorIdByUserId(user.getId());
-        if (authorId == null || !authorId.equals(book.getAuthorId())) {
-            return RVError.AUTHOR_USER_NOT_SAME.to();
+        if(!Permissions.ADMIN_PER.hasIn(user)){
+            Long authorId = authorService.getAuthorIdByUserId(user.getId());
+            if (authorId == null || !authorId.equals(book.getAuthorId())) {
+                return RVError.AUTHOR_USER_NOT_SAME.to();
+            }
         }
 
         if(!bookInfoService.create(book))return RVError.DATABASE_ERROR.to();
-        return RV.success(null);
+        return RV.success(book);
+    }
+
+    @PutMapping("/modify")
+    @PreAuthorize("hasAuthority('AUTHOR_PER')")
+    public RV<Boolean> updateBook(@RequestBody BookDTO book, Principal principal){
+        User user = convert.convert(principal);
+        if(!Permissions.ADMIN_PER.hasIn(user)){
+            Long authorId = authorService.getAuthorIdByUserId(user.getId());
+            if (authorId == null || !authorId.equals(book.getAuthorId())) {
+                return RVError.AUTHOR_USER_NOT_SAME.to();
+            }
+        }
+
+        boolean result=bookInfoService.modify(book);
+        if(!result){
+            return RVError.BOOK_MODIFY_FAIL.to();
+        }else {
+            return RV.success(true);
+        }
     }
 
     @PutMapping
@@ -86,7 +105,7 @@ public class BookInfoController {
 
     @GetMapping("/get/id/{id}")
     public BookVo getById(@PathVariable("id") Long id) {
-        return bookInfoService.getById(id);
+        return bookInfoService.getOnId(id);
     }
 
     @GetMapping("/page/update")
@@ -114,6 +133,12 @@ public class BookInfoController {
     public Boolean setPresentBook(@PathVariable("authorId") Long authorId, @PathVariable("bookId") Long bookId) {
         return bookInfoService.setPresentBook(authorId, bookId);
     }
+
+    @PutMapping("/erase_present/{authorId}")
+    public Boolean erasePresentBook(@PathVariable("authorId") Long authorId) {
+        return bookInfoService.erasePresentBook(authorId);
+    }
+
 
     @GetMapping("/page/all")
     public Page<BookInfo> all(Page<BookInfo> page) {

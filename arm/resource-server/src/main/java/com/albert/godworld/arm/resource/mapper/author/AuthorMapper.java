@@ -54,7 +54,7 @@ public interface AuthorMapper extends BaseMapper<AuthorInfo> {
             "group by ai.id order by bc.update_time desc")
     Page<AuthorUpdatedVo> queryBySocial(Page<AuthorUpdatedVo> page,@Param("social") String social);
 
-    @Select("select ai.id,ai.name as author_name,si.id as social_id,si.name as social_name,bi.id as update_book_id,\n" +
+    @Select("select ai.id,ai.email,ai.name as author_name,si.id as social_id,si.name as social_name,bi.id as update_book_id,\n" +
             "bi.name as update_book_name,ai.present_book_id,pbi.name as present_book_name,ai.create_time as in_time,\n" +
             "bi.update_time,bc.id as update_chapter_id,bc.title as update_chapter,bv.name update_volume,ai.moto\n" +
             "from author_info ai\n" +

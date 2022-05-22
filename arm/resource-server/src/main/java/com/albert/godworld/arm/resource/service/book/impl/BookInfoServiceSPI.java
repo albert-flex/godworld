@@ -13,6 +13,7 @@ import com.albert.godworld.arm.resource.service.book.BookTagBindService;
 import com.albert.godworld.arm.resource.service.book.BookTagService;
 import com.albert.godworld.arm.resource.vo.book.BookVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
@@ -47,6 +48,17 @@ public class BookInfoServiceSPI extends ServiceImpl<BookInfoMapper, BookInfo>
     }
 
     @Override
+    public boolean modify(BookDTO bookDTO) {
+        LambdaUpdateWrapper<BookInfo> updateWrapper=new LambdaUpdateWrapper<>();
+        updateWrapper.eq(BookInfo::getId,bookDTO.getId());
+        updateWrapper.set(BookInfo::getDescription,bookDTO.getDescription());
+        if(!super.update(updateWrapper)) return  false;
+
+        bookTagService.reAttachTags(bookDTO.getId(),Arrays.asList(bookDTO.getTags()));
+        return true;
+    }
+
+    @Override
     public Page<BookVo> pageOfAuthor(Page<BookVo> page, String authorName) {
         return super.baseMapper.queryByAuthorName(page,authorName);
     }
@@ -68,6 +80,14 @@ public class BookInfoServiceSPI extends ServiceImpl<BookInfoMapper, BookInfo>
 
         authorInfo.setPresentBookId(bookId);
         return authorService.updateById(authorInfo);
+    }
+
+    @Override
+    public boolean erasePresentBook(Long authorId) {
+        LambdaUpdateWrapper<AuthorInfo> updateWrapper=new LambdaUpdateWrapper<>();
+        updateWrapper.eq(AuthorInfo::getId,authorId);
+        updateWrapper.set(AuthorInfo::getPresentBookId,0);
+        return authorService.update(updateWrapper);
     }
 
     @Override
@@ -101,7 +121,7 @@ public class BookInfoServiceSPI extends ServiceImpl<BookInfoMapper, BookInfo>
     }
 
     @Override
-    public BookVo getById(Long id) {
+    public BookVo getOnId(Long id) {
         return super.baseMapper.getById(id);
     }
 

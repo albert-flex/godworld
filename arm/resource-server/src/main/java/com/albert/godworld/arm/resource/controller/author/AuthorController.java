@@ -4,6 +4,7 @@ package com.albert.godworld.arm.resource.controller.author;
 import com.albert.godworld.arm.resource.domain.author.AuthorInfo;
 import com.albert.godworld.arm.resource.domain.user.Permissions;
 import com.albert.godworld.arm.resource.domain.user.User;
+import com.albert.godworld.arm.resource.dto.AuthorCDTO;
 import com.albert.godworld.arm.resource.dto.AuthorRegVo;
 import com.albert.godworld.arm.resource.dto.RV;
 import com.albert.godworld.arm.resource.dto.RVError;
@@ -32,6 +33,18 @@ public class AuthorController {
     @GetMapping("/now")
     public Object now(Principal principal) {
         return principalConvert.convert(principal);
+    }
+
+    @PutMapping("/update/vo")
+    public RV<Boolean> updateContent(@RequestBody AuthorCDTO authorCDTO,Principal principal){
+        User user=principalConvert.convert(principal);
+        Long authorId=authorService.getAuthorIdByUserId(user.getId());
+        if(authorCDTO.getId()==null||!authorCDTO.getId().equals(authorId))
+            return RVError.AUTHOR_USER_NOT_SAME.to();
+
+        boolean result=authorService.updateVo(authorCDTO.getId(),authorCDTO.getName(), authorCDTO.getEmail(), authorCDTO.getMoto());
+        if(!result)return RVError.DATABASE_ERROR.to();
+        else return RV.success();
     }
 
     @PostMapping

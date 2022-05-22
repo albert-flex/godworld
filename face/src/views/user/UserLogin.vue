@@ -44,8 +44,8 @@ function login(data) {
     access.set(da.access_token);
     userinfoPort(access.access_token, (d) => {
       info.set(d);
-      alert("登录成功！用户Id:" + info.userId);
-      router.push({name:"site"});
+      alert("登录成功！用户Id:" + d.userId);
+      router.back();
     });
   });
 }

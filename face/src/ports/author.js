@@ -14,6 +14,8 @@ const query_by_social = UrlPatch("author/page/social/:1");
 const author_vo = UrlPatch("author/id/:1");
 //注册作者
 const reister_author = UrlPatch("author");
+//修改作者信息
+const modify_author = UrlPatch("author/update/vo");
 
 /**
  * 
@@ -86,11 +88,33 @@ function RegisterAuthor(token, author, successCall) {
         .catch(error => alert(error));
 }
 
+/**
+ * 
+ * @param {String} token 
+ * @param {{id:String,name:String,email:String,moto:String}} author 
+ * @param {(data)=>{}} successCall 
+ */
+function ModifyAuthor(token, author, successCall) {
+    let api = modify_author;
+    let myHeader = new Headers();
+    myHeader.append('Content-Type', 'application/json');
+    myHeader.append('Authorization', 'bearer ' + token);
+    fetch(api, {
+        method: "PUT",
+        headers: myHeader,
+        body: JSON.stringify(author),
+        mode: "cors"
+    }).then(res => res.json())
+        .then(data => successCall(data))
+        .catch(error => alert(error));
+}
+
 export {
     FetchUpdatePage,
     FetchNewestPage,
     QueryNamePage,
     QuerySocialPage,
     FetchAuthor,
-    RegisterAuthor
+    RegisterAuthor,
+    ModifyAuthor
 }

@@ -23,4 +23,5 @@ public interface AuthorService extends IService<AuthorInfo> {
     boolean checkAuthorNameAvailable(String name);
 
     AuthorVo getAuthorVo(Long id);
+    boolean updateVo(Long id,String name,String email,String description);
 }

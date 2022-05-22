@@ -9,6 +9,7 @@ import com.albert.godworld.arm.resource.vo.author.AuthorNewestVo;
 import com.albert.godworld.arm.resource.vo.author.AuthorUpdatedVo;
 import com.albert.godworld.arm.resource.vo.author.AuthorVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
@@ -72,5 +73,15 @@ public class AuthorServiceSPI extends ServiceImpl<AuthorMapper, AuthorInfo>
     @Override
     public AuthorVo getAuthorVo(Long id) {
         return super.baseMapper.getById(id);
+    }
+
+    @Override
+    public boolean updateVo(Long id, String name, String email, String moto) {
+        LambdaUpdateWrapper<AuthorInfo> wrapper=new LambdaUpdateWrapper<>();
+        wrapper.eq(AuthorInfo::getId,id);
+        wrapper.set(AuthorInfo::getName,name);
+        wrapper.set(AuthorInfo::getEmail,email);
+        wrapper.set(AuthorInfo::getMoto,moto);
+        return super.update(wrapper);
     }
 }
