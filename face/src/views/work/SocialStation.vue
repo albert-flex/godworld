@@ -9,17 +9,18 @@
           fallback="data:image/png;base64,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"
         />
         <div>
-          <h2>社团: 玄沧阁</h2>
+          <h2>社团: {{ socialInfo.name }}</h2>
           <h2>
             负责人:
-            <a-avatar src="https://joeschmoe.io/api/v1/random" />夏文纯一
+            <a-avatar src="https://joeschmoe.io/api/v1/random" />{{socialInfo.masterName}}
           </h2>
-          <h2>代表活动: 《2020文集——逆转季节》</h2>
+          <h2>最新活动: 《{{socialInfo.newestAct}}》</h2>
+          <h2>最新公告: 《{{socialInfo.newestAnnounce}}》</h2>
         </div>
       </div>
       <div>
         <h2>社团简介:</h2>
-        <p>这是一个轻松的文学社团，在这里我们大家都可以获得感悟。</p>
+        <p>{{socialInfo.moto}}</p>
       </div>
       <div>
         <h2 style="">社团组成:</h2>
@@ -36,7 +37,7 @@
               <a-tooltip
                 v-for="item in admins"
                 :key="item.id"
-                :title="item.name"
+                :title="item.authorName"
                 placement="top"
               >
                 <a-avatar
@@ -65,7 +66,7 @@
               <a-tooltip
                 v-for="item in members"
                 :key="item.id"
-                :title="item.name"
+                :title="item.authorName"
                 placement="top"
               >
                 <a-avatar
@@ -96,15 +97,16 @@
                     <a-button type="danger">删除</a-button>
                   </template>
                   <a-skeleton :title="false" :loading="!!item.loading" active>
-                    <a-list-item-meta :description="item.description">
+                    <a-list-item-meta :description="item.title">
                       <template #title>
-                        <a href="https://www.antdv.com/">{{ item.admin }}</a>
+                        <a href="https://www.antdv.com/">{{ item.authorName }}</a>
                       </template>
                       <template #avatar>
                         <a-avatar>A</a-avatar>
                       </template>
                     </a-list-item-meta>
                   </a-skeleton>
+                  {{item.content}}
                 </a-list-item>
               </template>
             </a-list>
@@ -122,10 +124,7 @@
                   <div>
                     <div>
                       <h2>
-                        发布人
-                        <a-avatar src="https://joeschmoe.io/api/v1/random" />{{
-                          item.admin
-                        }}, 标题 《{{ item.name }}》
+                        标题 《{{ item.name }}》
                       </h2>
                       <div style="display: flex">
                         <a-image
@@ -133,9 +132,7 @@
                           :src="'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png?${random}'"
                         />
                         <p style="margin-left: 1em; text-indent: 2em">
-                          与蓝色短发的莉莉丝不同，她留着到胸口长度的金色头发，平时都是散落下来，不过现在是两边扎起来的，应该是为了不沾到多余的灰尘吗？
-                          不过那副模样，很像一个贤淑的妻子呢——除了她看起来是个十二三岁的模样以外。
-                        </p>
+                          {{item.description}}</p>
                       </div>
                       <div style="margin: 10px">
                         <a-space>
@@ -165,7 +162,7 @@
                                   src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
                                 />
                               </a-card>
-                              {{ item.name }}
+                              {{item.name}}
                             </a-list-item>
                           </template>
                         </a-list>
@@ -342,6 +339,10 @@ import {
   editAnnounce,
   removeAct,
   removeAnn,
+  FetchSocialInfo,
+  confirmRequest,
+  refuseRequest,
+  PageRequest,
 } from "../../ports/social.js";
 import { loadAccess, loadUser } from "../../config/stores.js";
 import { ref } from "@vue/reactivity";
@@ -372,7 +373,7 @@ const anns = ref([
 
 const annPagi = ref({
   onChange: (page) => {
-    annPagi.value.current=page;
+    annPagi.value.current = page;
     QueryAnn();
   },
   pageSize: 20,
@@ -382,7 +383,7 @@ const annPagi = ref({
 
 const actPagi = ref({
   onChange: (page) => {
-    actPagi.value.current=page;
+    actPagi.value.current = page;
     QueryAct();
   },
   pageSize: 2,
@@ -392,12 +393,15 @@ const actPagi = ref({
 
 const requestPagi = ref({
   onChange: (page) => {
-    console.log(page);
+    requestPagi.value.current = page;
+    RequestPage();
   },
   pageSize: 20,
+  current: 1,
+  total: 1,
 });
 
-const acts = [];
+const acts = ref([]);
 for (let i = 0; i != 10; ++i) {
   let act = {
     id: "101",
@@ -415,12 +419,12 @@ for (let i = 0; i != 10; ++i) {
       author: "玄沧阁",
     });
   }
-  acts.push(act);
+  acts.value.push(act);
 }
 
-const requests = [];
+const requests = ref([]);
 for (let i = 0; i != 10; ++i) {
-  requests.push({
+  requests.value.push({
     id: "101",
     author: "秋月",
     message: "想成为管理员",
@@ -473,6 +477,15 @@ function postAct() {
     } else {
       alert("失败");
     }
+  });
+}
+
+function QueryMember(){
+  FetchMembers(socialInfo.value.id,2,{size:1000,current:1},(data)=>{
+    admins.value=data.records;
+  });
+  FetchMembers(socialInfo.value.id,3,{size:1000,current:1},(data)=>{
+    members.value=data.records;
   });
 }
 
@@ -544,16 +557,61 @@ function QueryAct() {
       current: actPagi.value.current,
     },
     (data) => {
-      acts.value = data.records;
-      fishit(actPagi, data);
+      acts.value = [];
+      for(let key in data){
+        acts.value.push(data[key]);
+      }
     }
   );
+}
+
+function getSocial() {
+  const user = loadUser();
+  FetchSocialInfo(user.socialId, (data) => {
+    socialInfo.value = data;
+    QueryMember();
+  });
 }
 
 function fishit(page, data) {
   page.value.current = Number(data.current);
   page.value.total = Number(data.total);
 }
+
+function RequestPage() {
+  const user = loadUser();
+  PageRequest(
+    user.socialId,
+    {
+      size: requestPagi.value.pageSize,
+      current: requestPagi.value.current,
+    },
+    (data) => {
+      requests.value = data.records;
+      fishit(requestPagi, data);
+    }
+  );
+}
+
+function Init() {
+  const access = loadAccess();
+  if (!access.logined()) {
+    alert("未登录，请先登录");
+    return;
+  }
+
+  const user = loadUser();
+  if (user.socialId == null) {
+    alert("没有管理的社团");
+    return;
+  }
+
+  getSocial();
+  QueryAnn();
+  QueryAct();
+  RequestPage();
+}
+Init();
 </script>
 
 <style scoped>

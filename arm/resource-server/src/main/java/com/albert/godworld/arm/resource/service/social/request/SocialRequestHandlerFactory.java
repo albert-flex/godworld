@@ -16,7 +16,7 @@ public class SocialRequestHandlerFactory {
 
     private RequestHandler find(SocialRequestType type){
         Optional<RequestHandler> optional=handlerList.stream().filter(t->t.type()==type).findFirst();
-        return optional.orElseThrow(()->null);
+        return optional.orElse(null);
     }
 
     public boolean confirm(SocialRequest request,Long adminMemberId){

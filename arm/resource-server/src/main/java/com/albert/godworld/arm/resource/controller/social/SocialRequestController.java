@@ -9,6 +9,7 @@ import com.albert.godworld.arm.resource.util.PrincipalConvert;
 import com.albert.godworld.arm.resource.vo.social.SocialRequestVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -28,12 +29,31 @@ public class SocialRequestController {
     }
 
     @PutMapping("/confirm/{requestId}/{adminMemId}")
+    @PreAuthorize("hasAuthority('SOCIAL_ADMIN_PER')")
     public RV<Boolean> confirm(@RequestParam("adminMemId") Long adminMemId, Long requestId, Principal principal) {
-        boolean result = socialRequestService.requestConfirm(requestId, adminMemId);
+        boolean result=socialRequestService.isSocialAdmin(adminMemId,principal);
+        if(!result)return RVError.AUTHOR_USER_NOT_SAME.to();
+
+        result = socialRequestService.requestConfirm(requestId, adminMemId);
         if (result) {
             return RV.success();
         } else {
             return RVError.SOCIAL_REQUEST_HANDLE_FAIL.to();
         }
     }
+
+    @PutMapping("/refuse/{requestId}/{adminMemId}")
+    @PreAuthorize("hasAuthority('SOCIAL_ADMIN_PER')")
+    public RV<Boolean> refuse(@RequestParam("adminMemId") Long adminMemId, Long requestId, Principal principal) {
+        boolean result=socialRequestService.isSocialAdmin(adminMemId,principal);
+        if(!result)return RVError.AUTHOR_USER_NOT_SAME.to();
+
+        result = socialRequestService.requestRefuse(requestId, adminMemId);
+        if (result) {
+            return RV.success();
+        } else {
+            return RVError.SOCIAL_REQUEST_HANDLE_FAIL.to();
+        }
+    }
+
 }

@@ -29,11 +29,11 @@ const remove_ann=UrlPatch("social_announce/:1");
 //编辑公告
 const edit_ann=UrlPatch("social_announce");
 //获取请求列表
-const request_list=UrlPatch("social_request/list/:1");
+const request_list=UrlPatch("social_request/page/:1");
 //确认请求
-const request_ok=UrlPatch("social_request/ok/:1/:2");
+const request_ok=UrlPatch("social_request/confirm/:1/:2");
 //拒绝请求
-const request_refuse=UrlPatch("social_request/no/:1/:2");
+const request_refuse=UrlPatch("social_request/refuse/:1/:2");
 
 function QueryByName(name,page,successCall){
     RequestGet(URLConcat(query_by_name,[name],page),'GET',successCall);
@@ -151,7 +151,33 @@ function RegitserSocial(token,socialIfo,successCall){
 }
 
 function PageRequest(socialId,page,successCall){
-    
+    RequestGet(URLConcat(request_list,[socialId],page),'GET',successCall);
+}
+
+function confirmRequest(adminMemId,requestId,successCall){
+    let api = request_ok;
+    let myHeader = new Headers();
+    myHeader.append('Authorization', 'bearer ' + token);
+    fetch(URLConcat(api,[adminMemId,requestId]), {
+        method: "PUT",
+        headers: myHeader,
+        mode: "cors"
+    }).then(res => res.json())
+        .then(data => successCall(data))
+        .catch(error => alert(error));
+}
+
+function refuseRequest(adminMemId,requestId,successCall){
+    let api = request_refuse;
+    let myHeader = new Headers();
+    myHeader.append('Authorization', 'bearer ' + token);
+    fetch(URLConcat(api,[adminMemId,requestId]), {
+        method: "PUT",
+        headers: myHeader,
+        mode: "cors"
+    }).then(res => res.json())
+        .then(data => successCall(data))
+        .catch(error => alert(error));
 }
 
 export {
@@ -168,4 +194,7 @@ export {
     editAnnounce,
     removeAct,
     removeAnn,
+    PageRequest,
+    confirmRequest,
+    refuseRequest
 }
