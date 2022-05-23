@@ -13,6 +13,10 @@
           <h2>官方邮箱: {{ authorInfo.email }}</h2>
         </div>
       </div>
+      <a-space>
+        <a-button type="primary" @click="openAuthorEdit">修改信息</a-button>
+        <a-button type="primary" @click="toSocial">社团工作台</a-button>
+      </a-space>
       <div>
         <h2>签名:</h2>
         <p>{{ authorInfo.moto }}</p>
@@ -133,7 +137,6 @@
         </a-radio-group>
       </div>
     </aside>
-    <a-button type="primary" @click="showAuthor">Open</a-button>
 
     <a-drawer
       v-model:visible="newVolumeVisi"
@@ -151,14 +154,13 @@
           <a-input v-model:value="newVolume.name" placeholder="名字" />
         </a-form-item>
         <a-form-item label="上一卷目">
-          <a-select
-            v-model:value="newVolume.prevVolumeId"
-          >
+          <a-select v-model:value="newVolume.prevVolumeId">
             <a-select-option
               v-for="item in volumes"
               :key="item.id"
               :value="item.id"
-            >{{item.name}}</a-select-option>
+              >{{ item.name }}</a-select-option
+            >
           </a-select>
         </a-form-item>
         <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
@@ -188,7 +190,8 @@
               v-for="item in volumes"
               :key="item.id"
               :value="item.id"
-            >{{item.name}}</a-select-option>
+              >{{ item.name }}</a-select-option
+            >
           </a-select>
         </a-form-item>
         <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
@@ -219,14 +222,22 @@
               v-for="item in volumes"
               :key="item.id"
               :value="item.id"
-            >{{item.name}}</a-select-option>
+              >{{ item.name }}</a-select-option
+            >
           </a-select>
         </a-form-item>
         <a-form-item label="上一章节">
           <a-select
             v-model:value="newChapter.prevChapterId"
             :options="prevChapterLists"
-          ></a-select>
+          >
+            <a-select-option
+              v-for="item in chapters"
+              :key="item.id"
+              :value="item.id"
+              >{{ item.title }}</a-select-option
+            >
+          </a-select>
         </a-form-item>
         <a-divider><h2>文章正文</h2></a-divider>
         <a-textarea
@@ -262,7 +273,8 @@
               v-for="item in volumes"
               :key="item.id"
               :value="item.id"
-            >{{item.name}}</a-select-option>
+              >{{ item.name }}</a-select-option
+            >
           </a-select>
         </a-form-item>
         <a-form-item label="上一章节">
@@ -273,8 +285,9 @@
             <a-select-option
               v-for="item in chapters"
               :key="item.id"
-              :value="item.title"
-            ></a-select-option>
+              :value="item.id"
+              >{{ item.title }}</a-select-option
+            >
           </a-select>
         </a-form-item>
         <a-divider><h2>文章正文</h2></a-divider>
@@ -306,22 +319,29 @@
           <a-input v-model:value="newBook.name" />
         </a-form-item>
         <a-form-item label="board">
-          <a-select
-            v-model:value="newBook.boardName"
-            :options="boards"
-            style="width: 120px"
-          >
+          <a-select v-model:value="newBook.boardId" style="width: 120px">
+            <a-select-option
+              v-for="item in boards"
+              :key="item.id"
+              :value="item.id"
+              >{{ item.value }}</a-select-option
+            >
           </a-select>
         </a-form-item>
         <a-form-item label="tags">
           <a-select
             v-model:value="newBook.tags"
-            :options="options"
             :size="size"
             mode="tags"
             placeholder="Please select"
             style="width: 200px"
           >
+            <a-select-option
+              v-for="item in options"
+              :key="item.id"
+              :value="item.id"
+              >{{ item.value }}</a-select-option
+            >
           </a-select>
         </a-form-item>
         <a-form-item label="Description">
@@ -424,22 +444,22 @@ const newBookVisi = ref(false);
 const newBook = ref({
   authorId: "",
   name: "",
-  boardName: "",
+  boardId: "",
   tags: [],
   description: ``,
 });
 
 const newVolume = ref({
-  bookId:"",
+  bookId: "",
   name: "",
-  prevVolumeId: "",
+  prevVolumeId: "0",
 });
 
 const editVolume = ref({
   id: "",
-  bookId:"",
+  bookId: "",
   name: "",
-  prevVolumeId: "",
+  prevVolumeId: "0",
 });
 
 const newContent = ref("");
@@ -630,7 +650,7 @@ function showNewChapter() {
 function showEditChapter() {
   editChapterVisi.value = true;
 }
-function showAuthor() {
+function openAuthorEdit() {
   editAuthorVisi.value = true;
 }
 
@@ -643,13 +663,12 @@ function showNewVolume() {
 }
 
 function showEditVolume() {
-  
   editVolumeVisi.value = true;
 }
 
 function postVolume() {
   const access = loadAccess();
-  newVolume.value.bookId=editBookInfo.value.id;
+  newVolume.value.bookId = editBookInfo.value.id;
   addVolume(access.access_token, newVolume.value, (data) => {
     alert(data.success);
   });
@@ -657,7 +676,7 @@ function postVolume() {
 
 function postChapter() {
   const access = loadAccess();
-  newChapter.value.bookId=editBookInfo.value.id;
+  newChapter.value.bookId = editBookInfo.value.id;
   addChapter(access.access_token, newChapter.value, (data) => {
     if (data.success) {
       alert("成功");
@@ -665,6 +684,10 @@ function postChapter() {
       alert(data.error);
     }
   });
+}
+
+function toSocial() {
+  router.push({ name: "socialStation" });
 }
 
 function editVol() {
@@ -707,15 +730,15 @@ function pageChapter(id) {
   });
 }
 
-function selectVolume(item){
-  console.log("volumeSelect:"+volumeSelect.value);
-  editVolume.value=item;
-  pageChapter(item.id);  
+function selectVolume(item) {
+  console.log("volumeSelect:" + volumeSelect.value);
+  editVolume.value = item;
+  pageChapter(item.id);
 }
 
-function selectChapter(item){
-  chapterSelect.value=item.id;
-  editChapter.value=item;
+function selectChapter(item) {
+  chapterSelect.value = item.id;
+  editChapter.value = item;
 }
 
 function deleteVol() {
