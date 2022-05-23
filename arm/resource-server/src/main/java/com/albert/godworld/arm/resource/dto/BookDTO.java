@@ -8,7 +8,7 @@ public class BookDTO {
     private Long id;
     private String name;
     private Long authorId;
-    private String boardName;
-    private String[] tags;
+    private Long boardId;
+    private Long[] tags;
     private String description;
 }

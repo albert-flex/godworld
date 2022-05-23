@@ -32,7 +32,7 @@ public class BookVolumeController {
     @PostMapping("/create")
     @PreAuthorize("hasAuthority('AUTHOR_PER')")
     public RV<Boolean> create(@RequestParam("bookId") Long bookId, @RequestParam("name") String name, @RequestParam
-            ("prevVolumeId") Long prevVolumeId, Principal principal) {
+            (value = "prevVolumeId",defaultValue = "0") Long prevVolumeId, Principal principal) {
         User user = convert.convert(principal);
         Long authorId = authorService.getAuthorIdByUserId(user.getId());
         BookInfo bookInfo = bookInfoService.getById(bookId);

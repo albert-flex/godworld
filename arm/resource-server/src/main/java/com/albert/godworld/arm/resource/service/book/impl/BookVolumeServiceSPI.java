@@ -42,6 +42,13 @@ public class BookVolumeServiceSPI extends ServiceImpl<BookVolumeMapper, BookVolu
         BookVolume preV = super.getById(prevVolumeId);
         if (bookVolume == null || preV == null) return false;
 
+        //volume->prev->next=0
+        if(bookVolume.getPrevVolumeId()!=null&&bookVolume.getPrevVolumeId()!=0){
+            BookVolume volumePre=super.getById(bookVolume.getPrevVolumeId());
+            volumePre.setNextVolumeId(0L);
+            super.updateById(volumePre);
+        }
+
         if (preV.getNextVolumeId() != null && preV.getNextVolumeId() != 0) {
             BookVolume next = super.getById(preV.getNextVolumeId());
             //prev->next=p

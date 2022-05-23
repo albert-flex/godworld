@@ -14,8 +14,7 @@ public interface BookInfoMapper extends BaseMapper<BookInfo> {
 
 
     @Insert("insert into book_info(name,author_id,description,board_id) values\n" +
-            "(#{book.name},#{book.authorId},#{book.description},\n" +
-            "(select b.id from book_board b where b.name=#{book.boardName}))")
+            "(#{book.name},#{book.authorId},#{book.description},#{book.boardId})\n")
     @Options(useGeneratedKeys = true,keyProperty = "id",keyColumn = "id")
     int create(@Param("book") BookDTO bookDTO);
 

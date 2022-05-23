@@ -39,7 +39,7 @@ public class BookChapterServiceSPI extends ServiceImpl<BookChapterMapper, BookCh
             return false;
         }
 
-        if(bookChapter.getPrevChapterId()==null||bookChapter.getPrevChapterId()!=0){
+        if(bookChapter.getPrevChapterId()==null||bookChapter.getPrevChapterId()==0){
             return true;
         }
 
@@ -51,6 +51,13 @@ public class BookChapterServiceSPI extends ServiceImpl<BookChapterMapper, BookCh
         BookChapter chapter=super.getById(chapterId);
         BookChapter prevC=super.getById(preChapterId);
         if(chapter==null||prevC==null)return;
+
+        //chapter->prev->next=0
+        if(chapter.getPrevChapterId()!=null&&chapter.getPrevChapterId()!=0){
+            BookChapter chapterPre=super.getById(chapter.getPrevChapterId());
+            chapterPre.setNextChapterId(0L);
+            super.updateById(chapterPre);
+        }
 
         if(prevC.getNextChapterId()!=null&&prevC.getNextChapterId()!=0){
             BookChapter next=super.getById(prevC.getNextChapterId());

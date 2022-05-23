@@ -49,13 +49,12 @@ public class BookTagServiceSPI extends ServiceImpl<BookTagMapper,BookTag> implem
     }
 
     @Override
-    public void reAttachTags(Long bookId, List<String> tags) {
+    public void reAttachTags(Long bookId, List<Long> tags) {
         LambdaQueryWrapper<BookTagBind> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.eq(BookTagBind::getBookId,bookId);
         bookTagBindService.remove(queryWrapper);
 
-        List<Long> ids=tagIdListOf(tags);
-        addTags(ids,bookId);
+        addTags(tags,bookId);
     }
 
     @Override

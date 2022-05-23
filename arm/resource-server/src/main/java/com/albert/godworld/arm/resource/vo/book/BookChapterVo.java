@@ -13,6 +13,6 @@ public class BookChapterVo {
     private Date updateTime;
     private String volumeTitle;
     private Long volumeId;
-    private Long prev_chapter_id;
-    private Long next_chapter_id;
+    private Long prevChapterId;
+    private Long nextChapterId;
 }
