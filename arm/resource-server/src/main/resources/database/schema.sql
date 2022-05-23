@@ -226,3 +226,18 @@ create table social_activity_book(
     book_id bigint not null,
     primary key(id)
 );
+
+drop table if exists social_request;
+create table social_request(
+    id bigint not null auto_increment,
+    social_id bigint not null,
+    author_id bigint not null,
+    type int not null,
+    message varchar(256) not null,
+    content varchar(256) not null,
+    create_time datetime not null default now(),
+    handled boolean not null default false,
+    handle_member_id bigint not null default 0,
+    confirm boolean not null default false,
+    primary key(id)
+);

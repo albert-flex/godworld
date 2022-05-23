@@ -4,6 +4,7 @@ import com.albert.godworld.arm.resource.domain.social.SocialActivity;
 import com.albert.godworld.arm.resource.service.social.SocialActivityService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -39,6 +40,7 @@ public class SocialActivityController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('SOCIAL_ADMIN_PER')")
     public SocialActivity create(@RequestBody SocialActivity activity){
         socialActivityService.save(activity);
         return activity;
@@ -50,6 +52,7 @@ public class SocialActivityController {
     }
 
     @PutMapping("/on/{id}")
+    @PreAuthorize("hasAuthority('SOCIAL_ADMIN_PER')")
     public Boolean on(@PathVariable("id") Long id){
         return socialActivityService.actOn(id);
     }

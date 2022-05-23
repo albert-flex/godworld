@@ -90,7 +90,9 @@
               <template #renderItem="{ item }">
                 <a-list-item>
                   <template #actions>
-                    <a-button type="primary" @click="openEditAnn(item)">编辑</a-button>
+                    <a-button type="primary" @click="openEditAnn(item)"
+                      >编辑</a-button
+                    >
                     <a-button type="danger">删除</a-button>
                   </template>
                   <a-skeleton :title="false" :loading="!!item.loading" active>
@@ -163,7 +165,7 @@
                                   src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
                                 />
                               </a-card>
-                              {{item.name}}
+                              {{ item.name }}
                             </a-list-item>
                           </template>
                         </a-list>
@@ -205,9 +207,16 @@
         cancel-text="取消"
         @ok="hideModal"
       >
-        <a-form :label-col="labelCol" :label-wrap="wrapperCol" :model="editSocialInfo">
+        <a-form
+          :label-col="labelCol"
+          :label-wrap="wrapperCol"
+          :model="editSocialInfo"
+        >
           <a-form-item label="名称">
-            <a-input v-model:value="editSocialInfo.name" placeholder="输入名称" />
+            <a-input
+              v-model:value="editSocialInfo.name"
+              placeholder="输入名称"
+            />
           </a-form-item>
           <a-form-item label="简介">
             <a-textarea
@@ -228,12 +237,14 @@
             </a-upload>
           </a-form-item>
           <a-form-item label="代表活动">
-            <a-select v-model:value="editSocialInfo.present" :options="presentAct">
+            <a-select
+              v-model:value="editSocialInfo.present"
+              :options="presentAct"
+            >
             </a-select>
           </a-form-item>
         </a-form>
       </a-modal>
-      
     </main>
     <aside>
       <div>
@@ -322,66 +333,69 @@
 
 <script setup>
 import { UserOutlined } from "@ant-design/icons-vue";
+import {
+  FetchMembers,
+  FetchAnnList,
+  FetchActList,
+  addAct,
+  addAnn,
+  editAnnounce,
+  removeAct,
+  removeAnn,
+} from "../../ports/social.js";
+import { loadAccess, loadUser } from "../../config/stores.js";
 import { ref } from "@vue/reactivity";
 
 const labelCol = { span: 8 };
 const wrapperCol = { span: 10 };
 
-const admins = [
-  { id: "101", name: "汄汄" },
-  { id: "101", name: "仄仄" },
-  { id: "101", name: "瑾安" },
-];
+const admins = ref([]);
 
-const members = [
-  { id: "101", name: "秋月" },
-  { id: "101", name: "流浪" },
-  { id: "101", name: "枫华夜" },
-  { id: "101", name: "包子蜜茶" },
-];
+const members = ref([]);
 
-const socialInfo=ref({
-  id:"101",
-  name:"玄沧阁",
-  master:"夏文纯一",
-  present:"2020文集-逆转季节",
+const socialInfo = ref({
+  id: "101",
+  name: "玄沧阁",
+  master: "夏文纯一",
+  present: "2020文集-逆转季节",
 });
 
-const presentAct=[
-  {key:'1',value:"2018文集"},
-  {key:'2',value:"2020文集"},
-  {key:'3',value:"2021文集"},
-  {key:'4',value:"2022文集"},
-];
+const presentAct = ref([]);
 
-const anns = [
+const anns = ref([
   { admin: "夏文纯一", title: "关于2022文集", description: "关于2022文集..." },
   { admin: "夏文纯一", title: "关于2022文集", description: "关于2022文集..." },
   { admin: "夏文纯一", title: "关于2022文集", description: "关于2022文集..." },
   { admin: "夏文纯一", title: "关于2022文集", description: "关于2022文集..." },
   { admin: "夏文纯一", title: "关于2022文集", description: "关于2022文集..." },
-];
+]);
 
-const annPagi = {
+const annPagi = ref({
+  onChange: (page) => {
+    annPagi.value.current=page;
+    QueryAnn();
+  },
+  pageSize: 20,
+  current: 1,
+  total: 1,
+});
+
+const actPagi = ref({
+  onChange: (page) => {
+    actPagi.value.current=page;
+    QueryAct();
+  },
+  pageSize: 2,
+  current: 1,
+  total: 1,
+});
+
+const requestPagi = ref({
   onChange: (page) => {
     console.log(page);
   },
   pageSize: 20,
-};
-
-const actPagi = {
-  onChange: (page) => {
-    console.log(page);
-  },
-  pageSize: 20,
-};
-
-const requestPagi = {
-  onChange: (page) => {
-    console.log(page);
-  },
-  pageSize: 20,
-};
+});
 
 const acts = [];
 for (let i = 0; i != 10; ++i) {
@@ -419,35 +433,127 @@ const newAct = ref({
   autoStart: false,
 });
 
+const newAnn = ref({
+  publishAuthorId: "",
+  title: "",
+  content: "",
+});
+
 const editAnn = ref({
   id: "101",
   title: "",
   start: false,
-  description:""
+  description: "",
 });
 
-const editSocialInfo=ref({
-  id:"101",
-  name:"玄沧阁",
-  master:"夏文纯一",
-  present:"2020文集-逆转季节"
-})
+const editSocialInfo = ref({
+  id: "101",
+  name: "玄沧阁",
+  master: "夏文纯一",
+  present: "2020文集-逆转季节",
+});
 
 const editAnnVisible = ref(false);
-const editSocialInfoVisi=ref(false);
-function openEditAnn(item){
-  editAnn.value=item;
-  editAnnVisible.value=true;
+const editSocialInfoVisi = ref(false);
+
+function openEditAnn(item) {
+  editAnn.value = item;
+  editAnnVisible.value = true;
 }
-function openEditSocialInfo(){
-  editSocialInfo.value=socialInfo.value;
-  editSocialInfoVisi.value=true;
+function openEditSocialInfo() {
+  editSocialInfo.value = socialInfo.value;
+  editSocialInfoVisi.value = true;
 }
 
-const newAnn = ref({
-  title: "",
-  content: "",
-});
+function postAct() {
+  const access = loadAccess();
+  addAct(access.access_token, newAct.value, (data) => {
+    if (data.success) {
+      alert("成功");
+    } else {
+      alert("失败");
+    }
+  });
+}
+
+function postAnn() {
+  const access = loadAccess();
+  addAnn(access.access_token, newAnn.value, (data) => {
+    if (data.success) {
+      alert("成功");
+    } else {
+      alert("失败");
+    }
+  });
+}
+
+function modifyAnn() {
+  const access = loadAccess();
+  editAnnounce(access.access_token, editAnn.value, (data) => {
+    if (data.success) {
+      alert("成功");
+    } else {
+      alert("失败");
+    }
+  });
+}
+
+function deleteAct(id) {
+  const access = loadAccess();
+  removeAct(access.access_token, id, (data) => {
+    if (data.success) {
+      alert("成功");
+    } else {
+      alert("失败");
+    }
+  });
+}
+
+function deleteAnn(id) {
+  const access = loadAccess();
+  removeAnn(access.access_token, id, (data) => {
+    if (data.success) {
+      alert("成功");
+    } else {
+      alert("失败");
+    }
+  });
+}
+
+function QueryAnn() {
+  const user = loadUser();
+  FetchAnnList(
+    user.socialId,
+    {
+      size: annPagi.value.pageSize,
+      current: annPagi.value.current,
+    },
+    (data) => {
+      anns.value = data.records;
+      fishit(annPagi, data);
+    }
+  );
+}
+
+function QueryAct() {
+  const user = loadUser();
+  FetchActList(
+    user.socialId,
+    {
+      size: actPagi.value.pageSize,
+      current: actPagi.value.current,
+    },
+    (data) => {
+      acts.value = data.records;
+      fishit(actPagi, data);
+    }
+  );
+}
+
+function fishit(page, data) {
+  page.value.current = Number(data.current);
+  page.value.total = Number(data.total);
+}
 </script>
 
 <style scoped>

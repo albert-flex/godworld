@@ -1,74 +1,115 @@
 package com.albert.godworld.arm.resource.service.social.impl;
 
+import com.albert.godworld.arm.resource.domain.author.AuthorInfo;
 import com.albert.godworld.arm.resource.domain.social.SocialMember;
 import com.albert.godworld.arm.resource.domain.social.SocialMemberType;
+import com.albert.godworld.arm.resource.domain.user.UGroups;
 import com.albert.godworld.arm.resource.mapper.social.SocialMemberMapper;
+import com.albert.godworld.arm.resource.service.author.AuthorService;
 import com.albert.godworld.arm.resource.service.social.SocialMemberService;
+import com.albert.godworld.arm.resource.service.user.UGroupService;
 import com.albert.godworld.arm.resource.vo.social.SocialMemberSimpleVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@AllArgsConstructor
 public class SocialMemberServiceSPI extends ServiceImpl<SocialMemberMapper, SocialMember>
-    implements SocialMemberService {
+        implements SocialMemberService {
+
+    private final UGroupService uGroupService;
+    private final AuthorService authorService;
 
     @Override
     public Page<SocialMemberSimpleVo> membersOf(Page<SocialMemberSimpleVo> page, Long socialId, SocialMemberType type) {
-        return super.baseMapper.memberOfType(page,socialId,type);
+        return super.baseMapper.memberOfType(page, socialId, type);
     }
 
     @Override
     public Page<SocialMember> memberOfSocial(Page<SocialMember> page, Long socialId) {
-        LambdaQueryWrapper<SocialMember> queryWrapper=new LambdaQueryWrapper<>();
-        queryWrapper.eq(SocialMember::getSocialId,socialId);
+        LambdaQueryWrapper<SocialMember> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SocialMember::getSocialId, socialId);
         queryWrapper.orderByAsc(SocialMember::getType);
-        return super.page(page,queryWrapper);
+        return super.page(page, queryWrapper);
     }
 
     @Override
     public boolean changeType(Long memberId, SocialMemberType newType) {
-        LambdaUpdateWrapper<SocialMember> updateWrapper=new LambdaUpdateWrapper<>();
-        updateWrapper.eq(SocialMember::getId,memberId);
-        updateWrapper.set(SocialMember::getType,newType);
-        return super.update(updateWrapper);
+        LambdaQueryWrapper<SocialMember> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SocialMember::getId, memberId).last("limit 1");
+        SocialMember member = super.getOne(queryWrapper);
+        if (member == null || member.getType() == SocialMemberType.MASTER) return false;
+
+        LambdaUpdateWrapper<SocialMember> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.eq(SocialMember::getId, memberId);
+        updateWrapper.set(SocialMember::getType, newType);
+        boolean result = super.update(updateWrapper);
+        if (!result) return false;
+
+        AuthorInfo authorInfo = authorService.getById(member.getAuthorId());
+        if (newType == SocialMemberType.ADMIN) {
+            if (authorInfo == null) return false;
+            return uGroupService.addToUser(authorInfo.getUserId(), UGroups.SOCIAL_ADMIN.getCode());
+        } else if (newType == SocialMemberType.NORMAL) {
+            if (authorInfo == null) return false;
+            return uGroupService.removeFromUser(authorInfo.getUserId(), UGroups.SOCIAL_ADMIN.getCode());
+        }
+        return true;
     }
 
     @Override
     public boolean changeName(Long memberId, String newMemberName) {
-        LambdaUpdateWrapper<SocialMember> updateWrapper=new LambdaUpdateWrapper<>();
-        updateWrapper.eq(SocialMember::getId,memberId);
-        updateWrapper.set(SocialMember::getMemberName,newMemberName);
+        LambdaUpdateWrapper<SocialMember> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.eq(SocialMember::getId, memberId);
+        updateWrapper.set(SocialMember::getMemberName, newMemberName);
         return super.update(updateWrapper);
     }
 
     @Override
-    public boolean in(Long authorId,Long socialId, String name) {
-        LambdaQueryWrapper<SocialMember> queryWrapper=new LambdaQueryWrapper<>();
-        queryWrapper.eq(SocialMember::getAuthorId,authorId).last("limit 1");
-        SocialMember socialMember=super.getOne(queryWrapper);
-        if(socialMember!=null)return false;
+    public boolean in(Long authorId, Long socialId, String name) {
+        AuthorInfo authorInfo = authorService.getById(authorId);
+        if (authorInfo == null) return false;
 
-        SocialMember member=new SocialMember();
+        LambdaQueryWrapper<SocialMember> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SocialMember::getAuthorId, authorId).last("limit 1");
+        SocialMember socialMember = super.getOne(queryWrapper);
+        if (socialMember != null) return false;
+
+        SocialMember member = new SocialMember();
         member.setMemberName(name);
         member.setType(SocialMemberType.NORMAL);
-        return super.save(member);
+
+        boolean result = super.save(member);
+        if (!result) return false;
+
+        return uGroupService.addToUser(authorInfo.getUserId(), UGroups.SOCIAL.getCode());
     }
 
     @Override
     public boolean out(Long authorId) {
-        LambdaQueryWrapper<SocialMember> queryWrapper=new LambdaQueryWrapper<>();
-        queryWrapper.eq(SocialMember::getAuthorId,authorId);
-        return super.remove(queryWrapper);
+        AuthorInfo authorInfo = authorService.getById(authorId);
+        if (authorInfo == null) return false;
+
+        LambdaQueryWrapper<SocialMember> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SocialMember::getAuthorId, authorId);
+        boolean result = super.remove(queryWrapper);
+        if (!result) return false;
+
+        result = uGroupService.removeFromUser(authorInfo.getUserId(), UGroups.SOCIAL.getCode());
+        if (!result) return false;
+        return uGroupService.removeFromUser(authorInfo.getUserId(), UGroups.SOCIAL_ADMIN.getCode());
     }
 
     @Override
     public Page<SocialMember> memberOfType(Page<SocialMember> page, Long socialId, SocialMemberType type) {
-        LambdaQueryWrapper<SocialMember> queryWrapper=new LambdaQueryWrapper<>();
-        queryWrapper.eq(SocialMember::getSocialId,socialId);
-        queryWrapper.eq(SocialMember::getType,type);
-        return super.page(page,queryWrapper);
+        LambdaQueryWrapper<SocialMember> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SocialMember::getSocialId, socialId);
+        queryWrapper.eq(SocialMember::getType, type);
+        return super.page(page, queryWrapper);
     }
 }

@@ -19,6 +19,7 @@ public enum RVError {
     SOCIAL_REGISTER_DB_ERROR(301,"创建社团数据库操作错误"),
     SOCIAL_ALREADY_HAS(302,"已经加入了社团"),
     SOCIAL_NAME_NOT_AVAIL(303,"社团名字已占用"),
+    SOCIAL_REQUEST_HANDLE_FAIL(304,"社团请求处理失败"),
 
     BOOK_MODIFY_FAIL(401,"书籍编辑失败"),
     BOOK_VOLUME_NOT_FOUND(402,"卷目找不到"),

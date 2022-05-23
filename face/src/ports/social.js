@@ -18,6 +18,22 @@ const activity_list=UrlPatch("social_activity_book/activities_info_with_book/:1"
 const members=UrlPatch("social/member/page/member/:1/:2");
 //注册社团
 const register=UrlPatch("social");
+//发布社团活动
+const add_act=UrlPatch("social_activity");
+//发布社团公告
+const add_ann=UrlPatch("social_announce");
+//删除活动
+const remove_act=UrlPatch("social_activity/:1");
+//删除公告
+const remove_ann=UrlPatch("social_announce/:1");
+//编辑公告
+const edit_ann=UrlPatch("social_announce");
+//获取请求列表
+const request_list=UrlPatch("social_request/list/:1");
+//确认请求
+const request_ok=UrlPatch("social_request/ok/:1/:2");
+//拒绝请求
+const request_refuse=UrlPatch("social_request/no/:1/:2");
 
 function QueryByName(name,page,successCall){
     RequestGet(URLConcat(query_by_name,[name],page),'GET',successCall);
@@ -47,6 +63,78 @@ function FetchMembers(sociaId,type,page,successCall){
     RequestGet(URLConcat(members,[sociaId,type],page),'GET',successCall);
 }
 
+function addAnn(token,ann,successCall){
+    let api=add_ann;
+    let myHeader = new Headers();
+    myHeader.append('Content-Type', 'application/json');
+    myHeader.append('Authorization', 'bearer ' + token);
+    fetch(URLConcat(api), {
+        method: "POST",
+        headers: myHeader,
+        body: JSON.stringify(ann),
+        mode: "cors"
+    }).then(res => res.json())
+        .then(data => successCall(data))
+        .catch(error => alert(error));
+}
+
+function addAct(token,act,successCall){
+    let api=add_act;
+    let myHeader = new Headers();
+    myHeader.append('Content-Type', 'application/json');
+    myHeader.append('Authorization', 'bearer ' + token);
+    fetch(URLConcat(api), {
+        method: "POST",
+        headers: myHeader,
+        body: JSON.stringify(act),
+        mode: "cors"
+    }).then(res => res.json())
+        .then(data => successCall(data))
+        .catch(error => alert(error));
+}
+
+function removeAnn(token,id,successCall){
+    let api=remove_ann;
+    let myHeader = new Headers();
+    myHeader.append('Authorization', 'bearer ' + token);
+    fetch(URLConcat(api,[id]), {
+        method: "DELETE",
+        headers: myHeader,
+        mode: "cors"
+    }).then(res => res.json())
+        .then(data => successCall(data))
+        .catch(error => alert(error));
+}
+
+function removeAct(token,id,successCall){
+    let api=remove_act;
+    let myHeader = new Headers();
+    myHeader.append('Authorization', 'bearer ' + token);
+    fetch(URLConcat(api,[id]), {
+        method: "DELETE",
+        headers: myHeader,
+        mode: "cors"
+    }).then(res => res.json())
+        .then(data => successCall(data))
+        .catch(error => alert(error));
+}
+
+function editAnnounce(token,act,successCall){
+    let api=edit_ann;
+    let myHeader = new Headers();
+    myHeader.append('Content-Type', 'application/json');
+    myHeader.append('Authorization', 'bearer ' + token);
+    fetch(URLConcat(api), {
+        method: "PUT",
+        headers: myHeader,
+        body: JSON.stringify(act),
+        mode: "cors"
+    }).then(res => res.json())
+        .then(data => successCall(data))
+        .catch(error => alert(error));
+}
+
+
 function RegitserSocial(token,socialIfo,successCall){
     let api = register;
     let myHeader = new Headers();
@@ -62,6 +150,10 @@ function RegitserSocial(token,socialIfo,successCall){
         .catch(error => alert(error));
 }
 
+function PageRequest(socialId,page,successCall){
+    
+}
+
 export {
     QueryByName,
     FetchMembers,
@@ -71,4 +163,9 @@ export {
     FetchNewAnn,
     FetchSocialInfo,
     RegitserSocial,
+    addAct,
+    addAnn,
+    editAnnounce,
+    removeAct,
+    removeAnn,
 }
