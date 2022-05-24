@@ -197,7 +197,7 @@ drop table if exists social_announce;
 create table social_announce(
     id bigint not null auto_increment,
     social_id bigint not null,
-    publish_author_id bigint not null,
+    admin_member_id bigint not null,
     title varchar(30) not null,
     content text not null,
     publish_time datetime not null default now(),
@@ -209,7 +209,7 @@ drop table if exists social_activity;
 create table social_activity(
     id bigint not null auto_increment,
     social_id bigint not null,
-    honer_author_id bigint not null,
+    admin_member_id bigint not null,
     name varchar(30) not null unique,
     description varchar(256) not null,
     start_time datetime not null,

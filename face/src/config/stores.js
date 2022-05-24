@@ -34,7 +34,8 @@ const loadUser = defineStore('userData', {
             userName: NO_LOGIN_ACCESS,
             email: NO_LOGIN_ACCESS,
             authorId: NO_LOGIN_ACCESS,
-            socialId: NO_LOGIN_ACCESS
+            socialId: NO_LOGIN_ACCESS,
+            memberId: NO_LOGIN_ACCESS,
         }
     },
     actions: {
@@ -47,6 +48,7 @@ const loadUser = defineStore('userData', {
             this.userName = data.userName;
             this.authorId = data.authorId;
             this.socialId = data.socialId;
+            this.memberId = data.memberId;
         },
         unset() {
             this.userId = NO_LOGIN_ACCESS;
@@ -54,6 +56,7 @@ const loadUser = defineStore('userData', {
             this.userName = NO_LOGIN_ACCESS;
             this.authorId = NO_LOGIN_ACCESS;
             this.socialId = NO_LOGIN_ACCESS;
+            this.memberId = NO_LOGIN_ACCESS;
         },
     }
 });

@@ -12,10 +12,7 @@ import com.albert.godworld.arm.resource.service.author.AuthorService;
 import com.albert.godworld.arm.resource.service.social.SocialInfoService;
 import com.albert.godworld.arm.resource.service.social.SocialMemberService;
 import com.albert.godworld.arm.resource.service.user.UGroupService;
-import com.albert.godworld.arm.resource.vo.social.SocialInfoVo;
-import com.albert.godworld.arm.resource.vo.social.SocialNewActVo;
-import com.albert.godworld.arm.resource.vo.social.SocialNewAnnVo;
-import com.albert.godworld.arm.resource.vo.social.SocialReVo;
+import com.albert.godworld.arm.resource.vo.social.*;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -106,6 +103,7 @@ public class SocialInfoServiceSPI extends ServiceImpl<SocialInfoMapper, SocialIn
         member.setType(SocialMemberType.MASTER);
         memberService.save(member);
 
+        uGroupService.addToUser(info.getUserId(), UGroups.SOCIAL.getCode());
         uGroupService.addToUser(info.getUserId(), UGroups.SOCIAL_ADMIN.getCode());
         return RV.success(social);
     }

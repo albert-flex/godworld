@@ -9,7 +9,7 @@ public class SocialAnnounce {
 
     private Long id;
     private Long socialId;
-    private Long publishAuthorId;
+    private Long adminMemberId;
     private String title;
     private String content;
     private Date publishTime;

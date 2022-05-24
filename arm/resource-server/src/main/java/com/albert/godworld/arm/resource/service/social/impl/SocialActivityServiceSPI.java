@@ -1,6 +1,7 @@
 package com.albert.godworld.arm.resource.service.social.impl;
 
 import com.albert.godworld.arm.resource.domain.social.SocialActivity;
+import com.albert.godworld.arm.resource.dto.ActivityDTO;
 import com.albert.godworld.arm.resource.mapper.social.SocialActivityMapper;
 import com.albert.godworld.arm.resource.service.social.SocialActivityService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -14,6 +15,19 @@ public class SocialActivityServiceSPI extends ServiceImpl<SocialActivityMapper, 
         implements SocialActivityService {
 
     @Override
+    public boolean post(ActivityDTO activityDTO) {
+        SocialActivity activity=new SocialActivity();
+        activity.setSocialId(activity.getSocialId());
+        activity.setDescription(activity.getDescription());
+        activity.setName(activity.getName());
+        activity.setAdminMemberId(activity.getAdminMemberId());
+        activity.setStartTime(activity.getStartTime());
+        activity.setEndTime(activity.getEndTime());
+
+        return super.save(activity);
+    }
+
+    @Override
     public Page<SocialActivity> ofSocial(Page<SocialActivity> page, Long socialId, Boolean on) {
         LambdaQueryWrapper<SocialActivity> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(SocialActivity::getSocialId, socialId);
@@ -24,9 +38,9 @@ public class SocialActivityServiceSPI extends ServiceImpl<SocialActivityMapper, 
     }
 
     @Override
-    public Page<SocialActivity> ofHoner(Page<SocialActivity> page, Long honerId) {
+    public Page<SocialActivity> ofHoner(Page<SocialActivity> page, Long adminMemberId) {
         LambdaQueryWrapper<SocialActivity> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(SocialActivity::getHonerAuthorId, honerId);
+        queryWrapper.eq(SocialActivity::getAdminMemberId, adminMemberId);
         return super.page(page, queryWrapper);
     }
 

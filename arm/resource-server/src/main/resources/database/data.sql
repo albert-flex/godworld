@@ -161,7 +161,7 @@ insert into social_member(id,social_id,author_id,member_name,type) values
 (5,1,5,'EE','ADMIN');
 
 delete from social_activity;
-insert into social_activity(id,social_id,honer_author_id,name,description,start_time,end_time) values
+insert into social_activity(id,social_id,admin_member_id,name,description,start_time,end_time) values
 (1,1,1,"2020文集","逆转季节---",'2020-06-09 21:21:22','2020-09-09 21:21:22'),
 (2,1,1,"2022文集","泛白天空---",'2022-06-09 21:21:22','2022-09-09 21:21:22');
 
@@ -174,6 +174,14 @@ insert into social_activity_book(id,social_id,activity_id,book_id) values
 (6,1,2,2);
 
 delete from social_announce;
-insert into social_announce(id,social_id,publish_author_id,title,content) values
+insert into social_announce(id,social_id,admin_member_id,title,content) values
 (1,1,1,"关于2022文集...","关于2022年的文集，有消息说..."),
 (2,1,1,"关于2020文集...","关于2020年的文集，有消息说...");
+
+delete from social_request;
+insert into social_request(id,social_id,author_id,type,message,content) values
+(1,1,2,1,"[夏文纯一]想 加入社团 [玄沧阁]",""),
+(2,1,3,2,"[夏文悠二]想 退出社团 [玄沧阁]",""),
+(3,1,4,4,"[夏文纯一]想 退出活动 [2022文集],[《火之异能者》]","activityId:11;bookId:291"),
+(4,1,3,6,"[夏文纯一]想 退出管理员 [玄沧阁]",""),
+(5,1,6,3,"[夏文纯一]想 参加活动 [2022文集],[《无界法魂》]","activityId:101;bookId:101");

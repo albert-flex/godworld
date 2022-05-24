@@ -3,6 +3,7 @@ package com.albert.godworld.arm.resource.service.user.impl;
 import com.albert.godworld.arm.resource.domain.user.Permission;
 import com.albert.godworld.arm.resource.domain.user.UGroups;
 import com.albert.godworld.arm.resource.domain.user.User;
+import com.albert.godworld.arm.resource.dto.UserDTO;
 import com.albert.godworld.arm.resource.mapper.user.UserMapper;
 import com.albert.godworld.arm.resource.service.user.PermissionService;
 import com.albert.godworld.arm.resource.service.user.UGroupService;
@@ -31,6 +32,11 @@ public class UserServiceSPI extends ServiceImpl<UserMapper, User>
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.like(User::getUsername, name);
         return super.page(page, queryWrapper);
+    }
+
+    @Override
+    public UserDTO loadById(Long userId) {
+        return super.baseMapper.loadById(userId);
     }
 
     @Override

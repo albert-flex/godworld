@@ -59,6 +59,7 @@ public class SocialInfoController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('SOCIAL_ADMIN_PER')")
     public Boolean update(@RequestBody SocialInfo socialInfo){
         return socialInfoService.updateById(socialInfo);
     }

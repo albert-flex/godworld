@@ -10,11 +10,7 @@ public class UserDTO {
     private String email;
     private Long authorId;
     private Long socialId;
-
-    private UserDTO(){
-
-    }
-
+    private Long memberId;
     public static UserDTO create(User user){
         UserDTO userDTO=new UserDTO();
         userDTO.setUserId(user.getId()+"");

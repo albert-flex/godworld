@@ -18,6 +18,8 @@ const activity_list=UrlPatch("social_activity_book/activities_info_with_book/:1"
 const members=UrlPatch("social/member/page/member/:1/:2");
 //注册社团
 const register=UrlPatch("social");
+//修改社团信息
+const modify_social=UrlPatch("social");
 //发布社团活动
 const add_act=UrlPatch("social_activity");
 //发布社团公告
@@ -154,7 +156,7 @@ function PageRequest(socialId,page,successCall){
     RequestGet(URLConcat(request_list,[socialId],page),'GET',successCall);
 }
 
-function confirmRequest(adminMemId,requestId,successCall){
+function confirmRequest(token,requestId,adminMemId,successCall){
     let api = request_ok;
     let myHeader = new Headers();
     myHeader.append('Authorization', 'bearer ' + token);
@@ -167,7 +169,7 @@ function confirmRequest(adminMemId,requestId,successCall){
         .catch(error => alert(error));
 }
 
-function refuseRequest(adminMemId,requestId,successCall){
+function refuseRequest(token,requestId,adminMemId,successCall){
     let api = request_refuse;
     let myHeader = new Headers();
     myHeader.append('Authorization', 'bearer ' + token);
@@ -180,6 +182,21 @@ function refuseRequest(adminMemId,requestId,successCall){
         .catch(error => alert(error));
 }
 
+
+function EditSocial(token,social,successCall){
+    let api = modify_social;
+    let myHeader = new Headers();
+    myHeader.append('Content-Type', 'application/json');
+    myHeader.append('Authorization', 'bearer ' + token);
+    fetch(api, {
+        method: "PUT",
+        headers: myHeader,
+        body: JSON.stringify(social),
+        mode: "cors"
+    }).then(res => res.json())
+        .then(data => successCall(data))
+        .catch(error => alert(error));
+}
 export {
     QueryByName,
     FetchMembers,
@@ -196,5 +213,6 @@ export {
     removeAnn,
     PageRequest,
     confirmRequest,
-    refuseRequest
+    refuseRequest,
+    EditSocial
 }

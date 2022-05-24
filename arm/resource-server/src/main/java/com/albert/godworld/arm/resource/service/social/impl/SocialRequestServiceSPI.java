@@ -6,7 +6,7 @@ import com.albert.godworld.arm.resource.domain.social.SocialRequest;
 import com.albert.godworld.arm.resource.domain.user.User;
 import com.albert.godworld.arm.resource.service.author.AuthorService;
 import com.albert.godworld.arm.resource.service.social.SocialMemberService;
-import com.albert.godworld.arm.resource.service.social.request.SocialRequestHandlerFactory;
+import com.albert.godworld.arm.resource.service.social.SocialRequestHandlerFactory;
 import com.albert.godworld.arm.resource.mapper.social.SocialRequestMapper;
 import com.albert.godworld.arm.resource.service.social.SocialRequestService;
 import com.albert.godworld.arm.resource.util.PrincipalConvert;

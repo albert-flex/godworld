@@ -108,16 +108,7 @@ public class UserController {
         if (principal == null) return null;
 
         User user = convert.convert(principal);
-        UserDTO response=UserDTO.create(user);
-        Long authorId = authorService.getAuthorIdByUserId(user.getId());
-        if (authorId != null) {
-            response.setAuthorId(authorId);
-            SocialInfo info = socialInfoService.getByAuthor(authorId);
-            if (info != null) {
-                response.setSocialId(info.getId());
-            }
-        }
-        return response;
+        return userService.loadById(user.getId());
     }
 
     @PostMapping("/register")

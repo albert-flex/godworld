@@ -12,10 +12,9 @@ import org.apache.ibatis.annotations.Select;
 public interface SocialRequestMapper extends BaseMapper<SocialRequest> {
 
     @Select("select sr.id,sr.author_id,sr.social_id,sr.message,sr.content,\n" +
-            "sr.create_time,sr.type,ai.name as author_name,sr.handled,\n" +
-            "sr.handle_member_id,sr.confirm\n" +
+            "sr.create_time,sr.type,ai.name as author_name\n" +
             "from social_request sr\n" +
             "left join author_info ai on ai.id=sr.author_id\n" +
-            "where sr.social_id=#{socialId}")
+            "where sr.social_id=#{socialId} and sr.handled=false")
     Page<SocialRequestVo> getBySocialId(Page<SocialRequestVo> page, @Param("socialId") Long socialId);
 }

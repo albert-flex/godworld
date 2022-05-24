@@ -1,22 +1,19 @@
 package com.albert.godworld.arm.resource.controller.social;
 
 import com.albert.godworld.arm.resource.domain.social.SocialActivity;
+import com.albert.godworld.arm.resource.dto.ActivityDTO;
 import com.albert.godworld.arm.resource.service.social.SocialActivityService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/social_activity")
+@AllArgsConstructor
 public class SocialActivityController {
 
     private final SocialActivityService socialActivityService;
-
-    @Autowired
-    public SocialActivityController(SocialActivityService socialActivityService) {
-        this.socialActivityService = socialActivityService;
-    }
 
     @GetMapping("/page/all")
     public Page<SocialActivity> all(Page<SocialActivity> page) {
@@ -41,12 +38,12 @@ public class SocialActivityController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('SOCIAL_ADMIN_PER')")
-    public SocialActivity create(@RequestBody SocialActivity activity){
-        socialActivityService.save(activity);
-        return activity;
+    public Boolean create(@RequestBody ActivityDTO activity){
+        return socialActivityService.post(activity);
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('SOCIAL_ADMIN_PER')")
     public Boolean update(@RequestBody SocialActivity activity){
         return socialActivityService.updateById(activity);
     }
@@ -58,7 +55,8 @@ public class SocialActivityController {
     }
 
     @PutMapping("/off/{id}")
+    @PreAuthorize("hasAuthority('SOCIAL_ADMIN_PER')")
     public Boolean off(@PathVariable("id") Long id){
-        return socialActivityService.actOn(id);
+        return socialActivityService.actOff(id);
     }
 }

@@ -12,6 +12,7 @@ public enum RVError {
     AUTHOR_USER_NOT_SAME(201,"使用的用户与提交的作者不是同一个账号"),
     AUTHOR_ALREADY_BIND(202,"账号已绑定了作者信息"),
     AUTHOR_NAME_UNAVAILABLE(203,"作者名字已存在"),
+    AUTHOR_NOT_FOUND(204,"无法找到作者"),
 
     UNKNOWN_ERROR(10001,"未知错误"),
     DATABASE_ERROR(10002,"数据库操作失败"),
@@ -20,6 +21,8 @@ public enum RVError {
     SOCIAL_ALREADY_HAS(302,"已经加入了社团"),
     SOCIAL_NAME_NOT_AVAIL(303,"社团名字已占用"),
     SOCIAL_REQUEST_HANDLE_FAIL(304,"社团请求处理失败"),
+    SOCIAL_MEMBER_ALREADY_HAS(305,"已经是社团成员"),
+    SOCIAL_REQUEST_HANDLER_NOT_FOUND(306,"未支持的社团请求"),
 
     BOOK_MODIFY_FAIL(401,"书籍编辑失败"),
     BOOK_VOLUME_NOT_FOUND(402,"卷目找不到"),

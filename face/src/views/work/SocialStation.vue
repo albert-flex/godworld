@@ -12,15 +12,17 @@
           <h2>社团: {{ socialInfo.name }}</h2>
           <h2>
             负责人:
-            <a-avatar src="https://joeschmoe.io/api/v1/random" />{{socialInfo.masterName}}
+            <a-avatar src="https://joeschmoe.io/api/v1/random" />{{
+              socialInfo.masterName
+            }}
           </h2>
-          <h2>最新活动: 《{{socialInfo.newestAct}}》</h2>
-          <h2>最新公告: 《{{socialInfo.newestAnnounce}}》</h2>
+          <h2>最新活动: 《{{ socialInfo.newestAct }}》</h2>
+          <h2>最新公告: 《{{ socialInfo.newestAnnounce }}》</h2>
         </div>
       </div>
       <div>
         <h2>社团简介:</h2>
-        <p>{{socialInfo.moto}}</p>
+        <p>{{ socialInfo.moto }}</p>
       </div>
       <div>
         <h2 style="">社团组成:</h2>
@@ -99,14 +101,16 @@
                   <a-skeleton :title="false" :loading="!!item.loading" active>
                     <a-list-item-meta :description="item.title">
                       <template #title>
-                        <a href="https://www.antdv.com/">{{ item.authorName }}</a>
+                        <a href="https://www.antdv.com/">{{
+                          item.authorName
+                        }}</a>
                       </template>
                       <template #avatar>
                         <a-avatar>A</a-avatar>
                       </template>
                     </a-list-item-meta>
                   </a-skeleton>
-                  {{item.content}}
+                  {{ item.content }}
                 </a-list-item>
               </template>
             </a-list>
@@ -123,21 +127,21 @@
                 <a-list-item>
                   <div>
                     <div>
-                      <h2>
-                        标题 《{{ item.name }}》
-                      </h2>
+                      <h2>标题 《{{ item.name }}》</h2>
                       <div style="display: flex">
                         <a-image
                           style="width: 150px"
                           :src="'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png?${random}'"
                         />
                         <p style="margin-left: 1em; text-indent: 2em">
-                          {{item.description}}</p>
+                          {{ item.description }}
+                        </p>
                       </div>
                       <div style="margin: 10px">
                         <a-space>
                           <a-button type="primary">开启</a-button>
                           <a-button type="danger">结束</a-button>
+                          <a-button type="danger">删除</a-button>
                         </a-space>
                       </div>
                       <h2 style="margin: 10px">参与作品</h2>
@@ -162,7 +166,7 @@
                                   src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
                                 />
                               </a-card>
-                              {{item.name}}
+                              {{ item.name }}
                             </a-list-item>
                           </template>
                         </a-list>
@@ -189,11 +193,8 @@
           <a-form-item label="标题">
             <a-input v-model:value="editAnn.title" placeholder="输入标题" />
           </a-form-item>
-          <a-form-item label="简介">
-            <a-textarea
-              v-model:value="editAnn.description"
-              :rows="8"
-            ></a-textarea>
+          <a-form-item label="内容">
+            <a-textarea v-model:value="editAnn.content" :rows="8"></a-textarea>
           </a-form-item>
         </a-form>
       </a-modal>
@@ -202,7 +203,7 @@
         title="修改社团资料"
         ok-text="确认"
         cancel-text="取消"
-        @ok="hideModal"
+        @ok="EditSocialV0"
       >
         <a-form
           :label-col="labelCol"
@@ -217,7 +218,7 @@
           </a-form-item>
           <a-form-item label="简介">
             <a-textarea
-              v-model:value="editSocialInfo.description"
+              v-model:value="editSocialInfo.moto"
               :rows="8"
             ></a-textarea>
           </a-form-item>
@@ -232,13 +233,6 @@
                 upload
               </a-button>
             </a-upload>
-          </a-form-item>
-          <a-form-item label="代表活动">
-            <a-select
-              v-model:value="editSocialInfo.present"
-              :options="presentAct"
-            >
-            </a-select>
           </a-form-item>
         </a-form>
       </a-modal>
@@ -256,8 +250,8 @@
           <template #renderItem="{ item }">
             <a-list-item>
               <template #actions>
-                <a-button type="primary">接受</a-button>
-                <a-button type="primary">拒绝</a-button>
+                <a-button type="primary" @click="ok(item)">接受</a-button>
+                <a-button type="primary" @click="no(item)">拒绝</a-button>
               </template>
               <a-skeleton
                 avatar
@@ -267,7 +261,7 @@
               >
                 <a-list-item-meta :description="item.message">
                   <template #title>
-                    <a href="https://www.antdv.com/">{{ item.author }}</a>
+                    <a href="https://www.antdv.com/">{{ item.authorName }}</a>
                   </template>
                   <template #avatar>
                     <a-avatar>A</a-avatar>
@@ -280,15 +274,12 @@
       </div>
       <div class="newAct">
         <h2>新活动</h2>
-        <a-form :label-col="labelCol" :label-wrap="wrapperCol" :model="newAct">
+        <a-form :label-col="labelCol" :label-wrap="wrapperCol" :model="newAct" @finish="postAct">
           <a-form-item label="标题">
-            <a-input v-model:value="newAct.title" placeholder="输入标题" />
+            <a-input v-model:value="newAct.name" placeholder="输入标题" />
           </a-form-item>
           <a-form-item label="开始-结束日期">
             <a-range-picker v-model:value="newAct.range" />
-          </a-form-item>
-          <a-form-item label="自动开始">
-            <a-switch v-model:checked="newAct.autoStart" />
           </a-form-item>
           <a-form-item label="简介图片">
             <a-upload
@@ -303,7 +294,7 @@
             </a-upload>
           </a-form-item>
           <a-form-item label="简介">
-            <a-textarea :rows="10"></a-textarea>
+            <a-textarea :rows="10" v-model:value="newAct.description"></a-textarea>
           </a-form-item>
           <a-form-item :wrapper-col="{ span: 14, offset: 10 }">
             <a-button type="primary">发布</a-button>
@@ -312,12 +303,12 @@
       </div>
       <div class="newAnn">
         <h2>新公告</h2>
-        <a-form :label-col="labelCol" :label-wrap="wrapperCol">
+        <a-form :label-col="labelCol" :label-wrap="wrapperCol" @finish="postAnn">
           <a-form-item label="标题">
             <a-input v-model:value="newAnn.title" placeholder="输入标题" />
           </a-form-item>
           <a-form-item label="内容">
-            <a-textarea :rows="10"></a-textarea>
+            <a-textarea :rows="10" v-model:value="newAnn.content"></a-textarea>
           </a-form-item>
           <a-form-item :wrapper-col="{ span: 14, offset: 10 }">
             <a-button type="primary">发布</a-button>
@@ -343,6 +334,7 @@ import {
   confirmRequest,
   refuseRequest,
   PageRequest,
+  EditSocial,
 } from "../../ports/social.js";
 import { loadAccess, loadUser } from "../../config/stores.js";
 import { ref } from "@vue/reactivity";
@@ -438,6 +430,7 @@ const newAct = ref({
 });
 
 const newAnn = ref({
+  sociaId: "",
   publishAuthorId: "",
   title: "",
   content: "",
@@ -452,9 +445,8 @@ const editAnn = ref({
 
 const editSocialInfo = ref({
   id: "101",
-  name: "玄沧阁",
-  master: "夏文纯一",
-  present: "2020文集-逆转季节",
+  title: "玄沧阁",
+  content:""
 });
 
 const editAnnVisible = ref(false);
@@ -475,17 +467,28 @@ function postAct() {
     if (data.success) {
       alert("成功");
     } else {
-      alert("失败");
+      alert("失败:" + data.error);
     }
   });
 }
 
-function QueryMember(){
-  FetchMembers(socialInfo.value.id,2,{size:1000,current:1},(data)=>{
-    admins.value=data.records;
+function EditSocialV0(){
+  const access = loadAccess();
+  EditSocial(access.access_token,editSocialInfo.value,(data)=>{
+    if (data) {
+      alert("成功");
+    } else {
+      alert("失败:" + data.error);
+    }
   });
-  FetchMembers(socialInfo.value.id,3,{size:1000,current:1},(data)=>{
-    members.value=data.records;
+}
+
+function QueryMember() {
+  FetchMembers(socialInfo.value.id, 2, { size: 1000, current: 1 }, (data) => {
+    admins.value = data.records;
+  });
+  FetchMembers(socialInfo.value.id, 3, { size: 1000, current: 1 }, (data) => {
+    members.value = data.records;
   });
 }
 
@@ -495,7 +498,7 @@ function postAnn() {
     if (data.success) {
       alert("成功");
     } else {
-      alert("失败");
+      alert("失败:" + data.error);
     }
   });
 }
@@ -506,7 +509,7 @@ function modifyAnn() {
     if (data.success) {
       alert("成功");
     } else {
-      alert("失败");
+      alert("失败:" + data.error);
     }
   });
 }
@@ -517,7 +520,7 @@ function deleteAct(id) {
     if (data.success) {
       alert("成功");
     } else {
-      alert("失败");
+      alert("失败:" + data.error);
     }
   });
 }
@@ -528,7 +531,7 @@ function deleteAnn(id) {
     if (data.success) {
       alert("成功");
     } else {
-      alert("失败");
+      alert("失败:" + data.error);
     }
   });
 }
@@ -558,7 +561,7 @@ function QueryAct() {
     },
     (data) => {
       acts.value = [];
-      for(let key in data){
+      for (let key in data) {
         acts.value.push(data[key]);
       }
     }
@@ -591,6 +594,30 @@ function RequestPage() {
       fishit(requestPagi, data);
     }
   );
+}
+
+function ok(item) {
+  const user = loadUser();
+  const access=loadAccess();
+  confirmRequest(access.access_token, item.id,user.memberId, (data) => {
+    if (data.success) {
+      alert("成功");
+    } else {
+      alert("失败:" + data.error);
+    }
+  });
+}
+
+function no(item) {
+  const user = loadUser();
+  const access=loadAccess();
+  refuseRequest(access.access_token, item.id,user.memberId, (data) => {
+    if (data.success) {
+      alert("成功");
+    } else {
+      alert("失败:" + data.error);
+    }
+  });
 }
 
 function Init() {
