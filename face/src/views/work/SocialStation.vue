@@ -96,7 +96,9 @@
                     <a-button type="primary" @click="openEditAnn(item)"
                       >编辑</a-button
                     >
-                    <a-button type="danger" @click="deleteAnn(item.id)">删除</a-button>
+                    <a-button type="danger" @click="deleteAnn(item.id)"
+                      >删除</a-button
+                    >
                   </template>
                   <a-skeleton :title="false" :loading="!!item.loading" active>
                     <a-list-item-meta :description="item.title">
@@ -139,9 +141,15 @@
                       </div>
                       <div style="margin: 10px">
                         <a-space>
-                          <a-button type="primary">开启</a-button>
-                          <a-button type="danger">结束</a-button>
-                          <a-button type="danger">删除</a-button>
+                          <a-button type="primary" @click="on(item.id)"
+                            >开启</a-button
+                          >
+                          <a-button type="danger" @click="off(item.id)"
+                            >结束</a-button
+                          >
+                          <a-button type="danger" @click="deleteAct(item.id)"
+                            >删除</a-button
+                          >
                         </a-space>
                       </div>
                       <h2 style="margin: 10px">参与作品</h2>
@@ -196,7 +204,6 @@
           <a-form-item label="内容">
             <a-textarea v-model:value="editAnn.content" :rows="8"></a-textarea>
           </a-form-item>
-
         </a-form>
       </a-modal>
       <a-modal
@@ -275,7 +282,12 @@
       </div>
       <div class="newAct">
         <h2>新活动</h2>
-        <a-form :label-col="labelCol" :label-wrap="wrapperCol" :model="newAct" @finish="postAct">
+        <a-form
+          :label-col="labelCol"
+          :label-wrap="wrapperCol"
+          :model="newAct"
+          @finish="postAct"
+        >
           <a-form-item label="标题">
             <a-input v-model:value="newAct.name" placeholder="输入标题" />
           </a-form-item>
@@ -295,7 +307,10 @@
             </a-upload>
           </a-form-item>
           <a-form-item label="简介">
-            <a-textarea :rows="10" v-model:value="newAct.description"></a-textarea>
+            <a-textarea
+              :rows="10"
+              v-model:value="newAct.description"
+            ></a-textarea>
           </a-form-item>
           <a-form-item :wrapper-col="{ span: 14, offset: 10 }">
             <a-button type="primary" htmlType="submit">发布</a-button>
@@ -304,7 +319,12 @@
       </div>
       <div class="newAnn">
         <h2>新公告</h2>
-        <a-form :model="newAnn" :label-col="labelCol" :label-wrap="wrapperCol" @finish="postAnn">
+        <a-form
+          :model="newAnn"
+          :label-col="labelCol"
+          :label-wrap="wrapperCol"
+          @finish="postAnn"
+        >
           <a-form-item label="标题">
             <a-input v-model:value="newAnn.title" placeholder="输入标题" />
           </a-form-item>
@@ -336,6 +356,8 @@ import {
   refuseRequest,
   PageRequest,
   EditSocial,
+  OffAct,
+  OnAct,
 } from "../../ports/social.js";
 import { loadAccess, loadUser } from "../../config/stores.js";
 import { ref } from "@vue/reactivity";
@@ -447,7 +469,7 @@ const editAnn = ref({
 const editSocialInfo = ref({
   id: "101",
   title: "玄沧阁",
-  content:""
+  content: "",
 });
 
 const editAnnVisible = ref(false);
@@ -473,9 +495,9 @@ function postAct() {
   });
 }
 
-function EditSocialV0(){
+function EditSocialV0() {
   const access = loadAccess();
-  EditSocial(access.access_token,editSocialInfo.value,(data)=>{
+  EditSocial(access.access_token, editSocialInfo.value, (data) => {
     if (data) {
       alert("成功");
     } else {
@@ -495,11 +517,11 @@ function QueryMember() {
 
 function postAnn() {
   const access = loadAccess();
-  const user=loadUser();
-  newAnn.value.socialId=user.socialId;
-  newAnn.value.adminMemberId=user.memberId; 
+  const user = loadUser();
+  newAnn.value.socialId = user.socialId;
+  newAnn.value.adminMemberId = user.memberId;
   addAnn(access.access_token, newAnn.value, (data) => {
-    if (data.id!=null) {
+    if (data.id != null) {
       alert("成功");
     } else {
       alert("失败:" + data.error);
@@ -602,8 +624,8 @@ function RequestPage() {
 
 function ok(item) {
   const user = loadUser();
-  const access=loadAccess();
-  confirmRequest(access.access_token, item.id,user.memberId, (data) => {
+  const access = loadAccess();
+  confirmRequest(access.access_token, item.id, user.memberId, (data) => {
     if (data.success) {
       alert("成功");
     } else {
@@ -612,10 +634,24 @@ function ok(item) {
   });
 }
 
+function on(id) {
+  const access = loadAccess();
+  OnAct(access.access_token, id, (data) => {
+    alert("结果:" + data);
+  });
+}
+
+function off(id) {
+  const access = loadAccess();
+  OffAct(access.access_token, id, (data) => {
+    alert("结果:" + data);
+  });
+}
+
 function no(item) {
   const user = loadUser();
-  const access=loadAccess();
-  refuseRequest(access.access_token, item.id,user.memberId, (data) => {
+  const access = loadAccess();
+  refuseRequest(access.access_token, item.id, user.memberId, (data) => {
     if (data.success) {
       alert("成功");
     } else {

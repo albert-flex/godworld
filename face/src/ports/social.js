@@ -36,6 +36,11 @@ const request_list=UrlPatch("social_request/page/:1");
 const request_ok=UrlPatch("social_request/confirm/:1/:2");
 //拒绝请求
 const request_refuse=UrlPatch("social_request/refuse/:1/:2");
+//开启活动
+const on_activity=UrlPatch("social_activity/on/:1");
+//关闭活动
+const off_activity=UrlPatch("social_activity/off/:1");
+
 
 function QueryByName(name,page,successCall){
     RequestGet(URLConcat(query_by_name,[name],page),'GET',successCall);
@@ -197,6 +202,34 @@ function EditSocial(token,social,successCall){
         .then(data => successCall(data))
         .catch(error => alert(error));
 }
+
+function OnAct(token,id,successCall){
+    let api = on_activity;
+    let myHeader = new Headers();
+    myHeader.append('Authorization', 'bearer ' + token);
+    fetch(URLConcat(api,[id]), {
+        method: "PUT",
+        headers: myHeader,
+        mode: "cors"
+    }).then(res => res.json())
+        .then(data => successCall(data))
+        .catch(error => alert(error));
+}
+
+
+function OffAct(token,id,successCall){
+    let api = on_activity;
+    let myHeader = new Headers();
+    myHeader.append('Authorization', 'bearer ' + token);
+    fetch(URLConcat(api,[id]), {
+        method: "PUT",
+        headers: myHeader,
+        mode: "cors"
+    }).then(res => res.json())
+        .then(data => successCall(data))
+        .catch(error => alert(error));
+}
+
 export {
     QueryByName,
     FetchMembers,
@@ -214,5 +247,7 @@ export {
     PageRequest,
     confirmRequest,
     refuseRequest,
-    EditSocial
+    EditSocial,
+    OffAct,
+    OnAct
 }
