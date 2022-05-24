@@ -96,7 +96,7 @@
                     <a-button type="primary" @click="openEditAnn(item)"
                       >编辑</a-button
                     >
-                    <a-button type="danger">删除</a-button>
+                    <a-button type="danger" @click="deleteAnn(item.id)">删除</a-button>
                   </template>
                   <a-skeleton :title="false" :loading="!!item.loading" active>
                     <a-list-item-meta :description="item.title">
@@ -187,7 +187,7 @@
         title="修改公告"
         ok-text="确认"
         cancel-text="取消"
-        @ok="hideModal"
+        @ok="modifyAnn"
       >
         <a-form :label-col="labelCol" :label-wrap="wrapperCol" :model="editAnn">
           <a-form-item label="标题">
@@ -196,6 +196,7 @@
           <a-form-item label="内容">
             <a-textarea v-model:value="editAnn.content" :rows="8"></a-textarea>
           </a-form-item>
+
         </a-form>
       </a-modal>
       <a-modal
@@ -297,13 +298,13 @@
             <a-textarea :rows="10" v-model:value="newAct.description"></a-textarea>
           </a-form-item>
           <a-form-item :wrapper-col="{ span: 14, offset: 10 }">
-            <a-button type="primary">发布</a-button>
+            <a-button type="primary" htmlType="submit">发布</a-button>
           </a-form-item>
         </a-form>
       </div>
       <div class="newAnn">
         <h2>新公告</h2>
-        <a-form :label-col="labelCol" :label-wrap="wrapperCol" @finish="postAnn">
+        <a-form :model="newAnn" :label-col="labelCol" :label-wrap="wrapperCol" @finish="postAnn">
           <a-form-item label="标题">
             <a-input v-model:value="newAnn.title" placeholder="输入标题" />
           </a-form-item>
@@ -311,7 +312,7 @@
             <a-textarea :rows="10" v-model:value="newAnn.content"></a-textarea>
           </a-form-item>
           <a-form-item :wrapper-col="{ span: 14, offset: 10 }">
-            <a-button type="primary">发布</a-button>
+            <a-button type="primary" htmlType="submit">发布</a-button>
           </a-form-item>
         </a-form>
       </div>
@@ -494,8 +495,11 @@ function QueryMember() {
 
 function postAnn() {
   const access = loadAccess();
+  const user=loadUser();
+  newAnn.value.socialId=user.socialId;
+  newAnn.value.adminMemberId=user.memberId; 
   addAnn(access.access_token, newAnn.value, (data) => {
-    if (data.success) {
+    if (data.id!=null) {
       alert("成功");
     } else {
       alert("失败:" + data.error);
@@ -506,7 +510,7 @@ function postAnn() {
 function modifyAnn() {
   const access = loadAccess();
   editAnnounce(access.access_token, editAnn.value, (data) => {
-    if (data.success) {
+    if (data) {
       alert("成功");
     } else {
       alert("失败:" + data.error);
