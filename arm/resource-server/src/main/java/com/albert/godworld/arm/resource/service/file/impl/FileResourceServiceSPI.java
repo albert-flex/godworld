@@ -9,18 +9,19 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class FileResourceServiceSPI extends ServiceImpl<FileResourceMapper, FileResource>
-    implements FileResourceService {
+        implements FileResourceService {
 
     @Override
     public FileResource getByLibAndOwnId(String lib, Long ownId) {
-        return super.baseMapper.getByLibAndOwnOne(lib,ownId);
+        FileResource resource = super.baseMapper.getByLibAndOwnOne(lib, ownId);
+            return resource;
     }
 
     @Override
     public void clearResource(String lib, Long ownId) {
-        LambdaQueryWrapper<FileResource> queryWrapper=new LambdaQueryWrapper<>();
-        queryWrapper.eq(FileResource::getLib,lib);
-        queryWrapper.eq(FileResource::getOwnId,ownId);
+        LambdaQueryWrapper<FileResource> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(FileResource::getLib, lib);
+        queryWrapper.eq(FileResource::getOwnId, ownId);
         super.remove(queryWrapper);
     }
 }

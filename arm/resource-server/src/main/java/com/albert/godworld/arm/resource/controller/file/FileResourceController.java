@@ -9,7 +9,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Objects;
 
+@RestController
+@RequestMapping("/file")
 public class FileResourceController {
 
     private final FileResourceService fileResourceService;
@@ -54,7 +59,7 @@ public class FileResourceController {
         resource.setLib(lib);
         resource.setOwnId(ownId);
 
-        fileResourceService.clearResource(lib,ownId);
+        fileResourceService.clearResource(lib, ownId);
         fileResourceService.save(resource);
         file.transferTo(new File(dir.getAbsoluteFile() + File.separator + resource.getId() + "." + format));
         return resource.getId();
@@ -62,31 +67,65 @@ public class FileResourceController {
 
     @GetMapping("/download2")
     public void download2(@RequestParam("lib") String lib,
-                          @RequestParam("ownId") Long ownId,HttpServletResponse response){
-        FileResource fileResource=fileResourceService.getByLibAndOwnId(lib,ownId);
-        if(fileResource==null)return;
-
-        _down(fileResource.getId(),response);
+                          @RequestParam("ownId") Long ownId, HttpServletResponse response) {
+        FileResource fileResource = fileResourceService.getByLibAndOwnId(lib, ownId);
+        _down(fileResource, response);
     }
 
     @GetMapping("/{id}")
     public void download(
             @PathVariable("id") Long id, HttpServletResponse response) {
 
-        _down(id, response);
+        _down(fileResourceService.getById(id), response);
     }
 
-    private void _down(Long id, HttpServletResponse response) {
-        FileResource resource = fileResourceService.getById(id);
-        if (resource == null) return;
+    private void defaultP(HttpServletResponse response) {
+        BufferedInputStream fis = null;
+        OutputStream os = null;
+        try {
+            response.setCharacterEncoding("UTF-8");
+            fis = new BufferedInputStream(Objects.requireNonNull(FileResourceController.class.getResourceAsStream("/file/1.png")));
+            byte[] buffer = new byte[fis.available()];
+            fis.read(buffer);
+            fis.close();
+            response.reset();
+            os = new BufferedOutputStream(response.getOutputStream());
+            String f = "png";
+            response.setContentType("image/png");
+            response.setHeader("Content-Disposition", "attachment;filename=default.png");
+            os.write(buffer);
+            os.flush();
+            os.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                if (null != fis) {
+                    fis.close();
+                }
+                if (null != os) {
+                    os.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    private void _down(FileResource resource, HttpServletResponse response) {
+        if (resource == null) {
+            defaultP(response);
+            return;
+        };
 
         BufferedInputStream fis = null;
         OutputStream os = null;
         try {
-            String path = "." + this.prefix + File.separator + id + "." + resource.getFormat();
+            String path = "." + this.prefix + File.separator + resource.getId() + "." + resource.getFormat();
             String fileName = resource.getName();
             response.setCharacterEncoding("UTF-8");
-            fis = new BufferedInputStream(new FileInputStream(path));
+            fis = new BufferedInputStream(Files.newInputStream(Paths.get(path)));
             byte[] buffer = new byte[fis.available()];
             fis.read(buffer);
             fis.close();
@@ -99,7 +138,7 @@ public class FileResourceController {
                     || f.equals("gif")
                     || f.equals("bmp");
             if (isPicture) {
-                response.setContentType("image/"+f);
+                response.setContentType("image/" + f);
             } else {
                 response.setContentType("application/octet-stream");
             }

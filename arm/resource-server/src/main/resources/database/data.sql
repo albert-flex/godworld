@@ -190,3 +190,7 @@ insert into social_request(id,social_id,author_id,type,message,content) values
 (3,1,4,4,"[夏文纯一]想 退出活动 [2022文集],[《火之异能者》]","1;1"),
 (4,1,3,6,"[夏文纯一]想 退出管理员 [玄沧阁]",""),
 (5,1,6,3,"[夏文纯一]想 参加活动 [2022文集],[《无界法魂》]","1;1");
+
+delete from file_resource;
+insert into file_resource(id,name,format,lib,own_id) values
+(1,'default','png','default',1);
