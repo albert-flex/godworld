@@ -24,6 +24,9 @@
         <h2>社团简介:</h2>
         <p>{{ socialInfo.moto }}</p>
       </div>
+            <a-button type="primary" @click="openEditSocialInfo"
+        >修改社团资料</a-button
+      >
       <div>
         <h2 style="">社团组成:</h2>
         <h3>
@@ -47,9 +50,6 @@
                   style="background-color: #87d068"
                 >
                 </a-avatar>
-              </a-tooltip>
-              <a-tooltip title="添加管理员" placement="top">
-                <a-avatar>+</a-avatar>
               </a-tooltip>
             </a-space>
           </a-avatar-group>
@@ -104,7 +104,7 @@
                     <a-list-item-meta :description="item.title">
                       <template #title>
                         <a href="https://www.antdv.com/">{{
-                          item.authorName
+                          item.memberName
                         }}</a>
                       </template>
                       <template #avatar>
@@ -187,9 +187,6 @@
           </a-tab-pane>
         </a-tabs>
       </div>
-      <a-button type="primary" @click="openEditSocialInfo"
-        >Open Edit Act Modal</a-button
-      >
       <a-modal
         v-model:visible="editAnnVisible"
         title="修改公告"
@@ -361,6 +358,7 @@ import {
 } from "../../ports/social.js";
 import { loadAccess, loadUser } from "../../config/stores.js";
 import { ref } from "@vue/reactivity";
+import { QuerySocialPage } from "../../ports/author.js";
 
 const labelCol = { span: 8 };
 const wrapperCol = { span: 10 };
@@ -401,7 +399,7 @@ const actPagi = ref({
     actPagi.value.current = page;
     QueryAct();
   },
-  pageSize: 2,
+  pageSize: 100,
   current: 1,
   total: 1,
 });
@@ -486,11 +484,18 @@ function openEditSocialInfo() {
 
 function postAct() {
   const access = loadAccess();
+  const user=loadUser();
+  newAct.value.socialId=user.socialId;
+  newAct.value.adminMemberId=user.memberId;
+  let arr=newAct.value.range;
+  newAct.value.startTime=arr[0];
+  newAct.value.endTime=arr[1];
   addAct(access.access_token, newAct.value, (data) => {
-    if (data.success) {
+    if (data) {
       alert("成功");
+      QueryAct();
     } else {
-      alert("失败:" + data.error);
+      alert("失败");
     }
   });
 }
@@ -500,6 +505,7 @@ function EditSocialV0() {
   EditSocial(access.access_token, editSocialInfo.value, (data) => {
     if (data) {
       alert("成功");
+      getSocial();
     } else {
       alert("失败:" + data.error);
     }
@@ -523,8 +529,9 @@ function postAnn() {
   addAnn(access.access_token, newAnn.value, (data) => {
     if (data.id != null) {
       alert("成功");
+      QueryAnn();
     } else {
-      alert("失败:" + data.error);
+      alert("失败");
     }
   });
 }
@@ -534,6 +541,7 @@ function modifyAnn() {
   editAnnounce(access.access_token, editAnn.value, (data) => {
     if (data) {
       alert("成功");
+      QueryAnn();
     } else {
       alert("失败:" + data.error);
     }
@@ -543,10 +551,11 @@ function modifyAnn() {
 function deleteAct(id) {
   const access = loadAccess();
   removeAct(access.access_token, id, (data) => {
-    if (data.success) {
+    if (data) {
       alert("成功");
+      QueryAct();
     } else {
-      alert("失败:" + data.error);
+      alert("失败");
     }
   });
 }
@@ -554,10 +563,11 @@ function deleteAct(id) {
 function deleteAnn(id) {
   const access = loadAccess();
   removeAnn(access.access_token, id, (data) => {
-    if (data.success) {
+    if (data) {
       alert("成功");
+      QueryAnn();
     } else {
-      alert("失败:" + data.error);
+      alert("失败");
     }
   });
 }
@@ -628,6 +638,7 @@ function ok(item) {
   confirmRequest(access.access_token, item.id, user.memberId, (data) => {
     if (data.success) {
       alert("成功");
+      RequestPage();
     } else {
       alert("失败:" + data.error);
     }
@@ -654,6 +665,7 @@ function no(item) {
   refuseRequest(access.access_token, item.id, user.memberId, (data) => {
     if (data.success) {
       alert("成功");
+      RequestPage();
     } else {
       alert("失败:" + data.error);
     }

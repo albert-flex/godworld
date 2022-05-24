@@ -17,6 +17,7 @@ public class SocialActivityBookVo {
     private Date updateTime;
     private String description;
     private String activityDesc;
+    private Boolean actOn;
     public String[] getTags() {
         if (tags == null && tagWords != null && !tagWords.isEmpty()) {
             this.tags = tagWords.split(",");

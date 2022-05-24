@@ -54,9 +54,8 @@ public class FileResourceController {
         resource.setLib(lib);
         resource.setOwnId(ownId);
 
-        if (!fileResourceService.save(resource)) {
-            return -1L;
-        }
+        fileResourceService.clearResource(lib,ownId);
+        fileResourceService.save(resource);
         file.transferTo(new File(dir.getAbsoluteFile() + File.separator + resource.getId() + "." + format));
         return resource.getId();
     }

@@ -165,7 +165,7 @@ function confirmRequest(token,requestId,adminMemId,successCall){
     let api = request_ok;
     let myHeader = new Headers();
     myHeader.append('Authorization', 'bearer ' + token);
-    fetch(URLConcat(api,[adminMemId,requestId]), {
+    fetch(URLConcat(api,[requestId,adminMemId]), {
         method: "PUT",
         headers: myHeader,
         mode: "cors"
@@ -178,7 +178,7 @@ function refuseRequest(token,requestId,adminMemId,successCall){
     let api = request_refuse;
     let myHeader = new Headers();
     myHeader.append('Authorization', 'bearer ' + token);
-    fetch(URLConcat(api,[adminMemId,requestId]), {
+    fetch(URLConcat(api,[requestId,adminMemId]), {
         method: "PUT",
         headers: myHeader,
         mode: "cors"

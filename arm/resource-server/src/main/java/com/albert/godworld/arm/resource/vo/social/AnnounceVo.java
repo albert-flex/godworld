@@ -9,7 +9,7 @@ public class AnnounceVo {
 
     private Long id;
     private Long authorId;
-    private String authorName;
+    private String memberName;
     private String title;
     private String content;
     private Date publishTime;

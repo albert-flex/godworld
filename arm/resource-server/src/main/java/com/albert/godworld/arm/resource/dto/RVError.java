@@ -2,6 +2,7 @@ package com.albert.godworld.arm.resource.dto;
 
 public enum RVError {
 
+    NONE(0,"未设置错误信息"),
     EMAIL_NOT_AVAIL(101,"邮箱地址已被占用"),
     CAPTCHA_NOT_CORRECT(102,"验证码不正确"),
     USERNAME_NOT_AVAIL(103,"用户名已存在"),
@@ -30,6 +31,7 @@ public enum RVError {
     SOCIAL_NOT_NORMAL(311,"不是社团普通成员"),
     SOCIAL_IS_NORMAL(312,"是普通社员"),
     SOCIAL_CHANGE_TYPE_ERROR(313,"社员切换类型出错"),
+    SOCIAL_REQUEST_NOT_FOUND(314,"社团请求未找到"),
 
     BOOK_MODIFY_FAIL(401,"书籍编辑失败"),
     BOOK_VOLUME_NOT_FOUND(402,"卷目找不到"),

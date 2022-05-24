@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface SocialAnnounceMapper extends BaseMapper<SocialAnnounce> {
 
-    @Select("select sa.id,sa.title,ai.id as author_id,ai.name as author_name,sa.content,sa.publish_time\n" +
+    @Select("select sa.id,sa.title,ai.id as author_id,sm.member_name,sa.content,sa.publish_time\n" +
             "from social_announce sa\n" +
             "join social_info si on si.id=sa.social_id\n" +
             "left join social_member sm on sa.admin_member_id=sm.id and sa.social_id=si.id\n" +

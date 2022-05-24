@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Scope(value = "request",proxyMode = ScopedProxyMode.INTERFACES)
 public class RequestCallImpl implements RequestCall {
 
-    private RVError er;
+    private RVError er=RVError.NONE;
 
     @Override
     public RVError error() {

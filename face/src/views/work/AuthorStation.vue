@@ -13,10 +13,38 @@
           <h2>官方邮箱: {{ authorInfo.email }}</h2>
         </div>
       </div>
-      <a-space>
-        <a-button type="primary" @click="openAuthorEdit">修改信息</a-button>
-        <a-button type="primary" @click="toSocial">社团工作台</a-button>
-      </a-space>
+      <div>
+        <a-button
+          style="margin: 5px; padding: 5px"
+          type="primary"
+          @click="openAuthorEdit"
+          >修改信息</a-button
+        >
+        <a-button
+          style="margin: 5px; padding: 5px"
+          type="primary"
+          @click="toSocial"
+          >社团工作台</a-button
+        >
+        <a-button style="margin: 5px; padding: 5px" type="primary"
+          >申请加入社团</a-button
+        >
+        <a-button style="margin: 5px; padding: 5px" type="primary"
+          >申请退出社团</a-button
+        >
+        <a-button style="margin: 5px; padding: 5px" type="primary"
+          >申请社团管理员</a-button
+        >
+        <a-button style="margin: 5px; padding: 5px" type="primary"
+          >申请退出社团管理员</a-button
+        >
+        <a-button style="margin: 5px; padding: 5px" type="primary"
+          >申请加入活动</a-button
+        >
+        <a-button style="margin: 5px; padding: 5px" type="primary"
+          >申请退出活动</a-button
+        >
+      </div>
       <div>
         <h2>签名:</h2>
         <p>{{ authorInfo.moto }}</p>
@@ -384,6 +412,66 @@
         </a-form-item>
       </a-form>
     </a-drawer>
+
+    <a-drawer v-model:visible="requestInSocialVisi"
+      class="custom-class"
+      style="color: red"
+      title="申请加入社团"
+      placement="right"
+      >
+      <a-form
+        :model="requestInSocial"
+        :label-col="labelCol"
+        :wrapper-col="wrapperCol"
+        @finish="changeProfile"
+      >
+        <a-form-item label="社团名称">
+          <a-input v-model:value="requestInSocial.name"></a-input>
+        </a-form-item>
+        <a-form-item :wrapper-col="{ offset: 10, span: 20 }">
+          <a-button type="primary" html-type="submit">加入</a-button>
+        </a-form-item>
+      </a-form>
+    </a-drawer>
+
+<a-drawer v-model:visible="requestInSocialActVisi"
+      class="custom-class"
+      style="color: red"
+      title="申请加入活动"
+      placement="right"
+      >
+      <a-form
+        :model="requestInSocialAct"
+        :label-col="labelCol"
+        :wrapper-col="wrapperCol"
+        @finish="changeProfile"
+      >
+        <a-form-item label="活动">
+          <a-select v-model:value="requestInSocialAct.activityId" style="width: 120px">
+            <a-select-option
+              v-for="item in socialActivity"
+              :key="item.id"
+              :value="item.id"
+              >{{ item.value }}</a-select-option
+            >
+          </a-select>
+        </a-form-item>
+        <a-form-item label="书籍">
+          <a-select v-model:value="requestInSocialAct.bookId" style="width: 120px">
+            <a-select-option
+              v-for="item in socialActivity"
+              :key="item.id"
+              :value="item.id"
+              >{{ item.value }}</a-select-option
+            >
+          </a-select>
+        </a-form-item>
+        <a-form-item :wrapper-col="{ offset: 10, span: 20 }">
+          <a-button type="primary" html-type="submit">加入</a-button>
+        </a-form-item>
+      </a-form>
+    </a-drawer>
+
   </div>
 </template>
 <script setup>

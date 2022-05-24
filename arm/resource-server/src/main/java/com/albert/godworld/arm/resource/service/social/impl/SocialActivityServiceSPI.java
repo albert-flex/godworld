@@ -17,12 +17,12 @@ public class SocialActivityServiceSPI extends ServiceImpl<SocialActivityMapper, 
     @Override
     public boolean post(ActivityDTO activityDTO) {
         SocialActivity activity=new SocialActivity();
-        activity.setSocialId(activity.getSocialId());
-        activity.setDescription(activity.getDescription());
-        activity.setName(activity.getName());
-        activity.setAdminMemberId(activity.getAdminMemberId());
-        activity.setStartTime(activity.getStartTime());
-        activity.setEndTime(activity.getEndTime());
+        activity.setSocialId(activityDTO.getSocialId());
+        activity.setDescription(activityDTO.getDescription());
+        activity.setName(activityDTO.getName());
+        activity.setAdminMemberId(activityDTO.getAdminMemberId());
+        activity.setStartTime(activityDTO.getStartTime());
+        activity.setEndTime(activityDTO.getEndTime());
 
         return super.save(activity);
     }

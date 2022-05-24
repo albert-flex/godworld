@@ -6,4 +6,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface FileResourceService extends IService<FileResource> {
 
     FileResource getByLibAndOwnId(String lib,Long ownId);
+    void clearResource(String lib,Long ownId);
 }

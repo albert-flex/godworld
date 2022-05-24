@@ -45,11 +45,16 @@ insert into user_group(id,user_id,group_id) values
 (7,3,2),
 (8,3,3),
 (9,3,4),
-(10,4,1),
-(11,4,2),
-(12,4,3),
-(13,4,4),
-(14,4,5);
+(10,3,5),
+(11,4,1),
+(12,4,2),
+(13,4,3),
+(14,4,4),
+(15,4,5),
+(16,5,2),
+(17,5,3),
+(18,5,4),
+(19,5,5);
 
 /**
  * Author
@@ -57,9 +62,9 @@ insert into user_group(id,user_id,group_id) values
 delete from author_info;
 insert author_info(id,name,user_id,email,moto,present_book_id) values
 (1,"夏文纯一",1,"natsufumij@yeah.net","恭喜你，尤克，从今后你就是A级冒险者了",1),
-(2,"阿尔伯特",3,"albert_flex@yeah.net","恭喜你，尤克，从今后你就是A级冒险者了",7),
-(3,'夏文悠二',4,"youji@yeah.net","夏文悠二的问题箱，请多指教.",3),
-(4,'夏文狂三',5,"kurumi@yeah.net","夏文狂三的帝帝刻，请多指教.",4),
+(2,"阿尔伯特",2,"albert_flex@yeah.net","恭喜你，尤克，从今后你就是A级冒险者了",7),
+(3,'夏文悠二',3,"youji@yeah.net","夏文悠二的问题箱，请多指教.",3),
+(4,'夏文狂三',4,"kurumi@yeah.net","夏文狂三的帝帝刻，请多指教.",4),
 (5,'夏文四郎',5,"sirou@yeah.net","夏文四郎的指纹，请多指教.",0);
 
 /**
@@ -182,6 +187,6 @@ delete from social_request;
 insert into social_request(id,social_id,author_id,type,message,content) values
 (1,1,2,1,"[夏文纯一]想 加入社团 [玄沧阁]",""),
 (2,1,3,2,"[夏文悠二]想 退出社团 [玄沧阁]",""),
-(3,1,4,4,"[夏文纯一]想 退出活动 [2022文集],[《火之异能者》]","activityId:11;bookId:291"),
+(3,1,4,4,"[夏文纯一]想 退出活动 [2022文集],[《火之异能者》]","1;1"),
 (4,1,3,6,"[夏文纯一]想 退出管理员 [玄沧阁]",""),
-(5,1,6,3,"[夏文纯一]想 参加活动 [2022文集],[《无界法魂》]","activityId:101;bookId:101");
+(5,1,6,3,"[夏文纯一]想 参加活动 [2022文集],[《无界法魂》]","1;1");

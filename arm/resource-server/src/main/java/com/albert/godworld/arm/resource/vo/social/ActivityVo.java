@@ -24,6 +24,7 @@ public class ActivityVo {
     private Long id;
     private String name;
     private String description;
+    private Boolean on;
     private List<BookV> books=new ArrayList<>();
 
     private ActivityVo(){}
@@ -39,6 +40,7 @@ public class ActivityVo {
             }else{
                 ActivityVo av=new ActivityVo();
                 av.id=v.getActivityId();
+                av.on=v.getActOn();
                 av.name=v.getActivityName();
                 av.description=v.getActivityDesc();
                 av.books.add(new BookV(v.getBookId(),v.getBookName(),v.getAuthorId(),v.getAuthorName(),v.getDescription()));

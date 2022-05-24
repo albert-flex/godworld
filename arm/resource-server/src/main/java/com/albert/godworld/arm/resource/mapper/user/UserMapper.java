@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Select;
 public interface UserMapper extends BaseMapper<User> {
 
     @Select("select ur.id as user_id,ur.username as user_name,\n" +
-            "ai.id as author_id,ai.email,sm.id as social_id,sm.id as member_id\n" +
+            "ai.id as author_id,ai.email,sm.social_id,sm.id as member_id\n" +
             "from user ur\n" +
             "left join author_info ai on ai.user_id=ur.id\n" +
             "left join social_member sm on sm.author_id=ai.id\n" +
