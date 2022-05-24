@@ -11,6 +11,4 @@ public interface SocialRequestService extends IService<SocialRequest> {
 
     boolean isSocialAdmin(Long adminMemId, Principal principal);
     Page<SocialRequestVo> page(Page<SocialRequestVo> page, Long socialId);
-    boolean requestConfirm(Long requestId,Long adminMemberId);
-    boolean requestRefuse(Long requestId,Long adminMemberId);
 }

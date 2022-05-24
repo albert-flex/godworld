@@ -59,4 +59,11 @@ public class SocialActivityController {
     public Boolean off(@PathVariable("id") Long id){
         return socialActivityService.actOff(id);
     }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('SOCIAL_ADMIN_PER')")
+    public Boolean delete(@PathVariable("id") Long id){
+        return socialActivityService.removeById(id);
+    }
+
 }

@@ -5,6 +5,7 @@ import com.albert.godworld.arm.resource.dto.RV;
 import com.albert.godworld.arm.resource.dto.RVError;
 import com.albert.godworld.arm.resource.service.author.AuthorService;
 import com.albert.godworld.arm.resource.service.other.RequestCall;
+import com.albert.godworld.arm.resource.service.social.SocialRequestHandlerFactory;
 import com.albert.godworld.arm.resource.service.social.SocialRequestService;
 import com.albert.godworld.arm.resource.util.PrincipalConvert;
 import com.albert.godworld.arm.resource.vo.social.SocialRequestVo;
@@ -22,8 +23,7 @@ import java.security.Principal;
 public class SocialRequestController {
 
     private final SocialRequestService socialRequestService;
-    private final AuthorService authorService;
-    private final PrincipalConvert principalConvert;
+    private final SocialRequestHandlerFactory factory;
     private final RequestCall requestCall;
 
     @GetMapping("/page/{socialId}")
@@ -37,7 +37,7 @@ public class SocialRequestController {
         boolean result=socialRequestService.isSocialAdmin(adminMemId,principal);
         if(!result)return requestCall.error().to();
 
-        result = socialRequestService.requestConfirm(requestId, adminMemId);
+        result = factory.requestConfirm(requestId, adminMemId);
         if (result) {
             return RV.success();
         } else {
@@ -51,7 +51,7 @@ public class SocialRequestController {
         boolean result=socialRequestService.isSocialAdmin(adminMemId,principal);
         if(!result)return requestCall.error().to();
 
-        result = socialRequestService.requestRefuse(requestId, adminMemId);
+        result = factory.requestRefuse(requestId, adminMemId);
         if (result) {
             return RV.success();
         } else {

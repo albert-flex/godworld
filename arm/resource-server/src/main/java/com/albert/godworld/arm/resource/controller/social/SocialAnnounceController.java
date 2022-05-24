@@ -22,19 +22,25 @@ public class SocialAnnounceController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('SOCIAL_ADMIN_PER')")
-    public SocialAnnounce create(@RequestBody SocialAnnounce announce, Principal principal){
+    public SocialAnnounce create(@RequestBody SocialAnnounce announce, Principal principal) {
         socialAnnounceService.save(announce);
         return announce;
     }
 
     @PutMapping
     @PreAuthorize("hasAuthority('SOCIAL_ADMIN_PER')")
-    public Boolean update(@RequestBody SocialAnnounce announce){
+    public Boolean update(@RequestBody SocialAnnounce announce) {
         return socialAnnounceService.updateById(announce);
     }
 
     @GetMapping("/page/social/{socialId}")
-    public Page<AnnounceVo> ofSocial(@PathVariable("socialId") Long socialId, Page<AnnounceVo> page){
-        return socialAnnounceService.ofSocial(page,socialId);
+    public Page<AnnounceVo> ofSocial(@PathVariable("socialId") Long socialId, Page<AnnounceVo> page) {
+        return socialAnnounceService.ofSocial(page, socialId);
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('SOCIAL_ADMIN_PER')")
+    public Boolean delete(@PathVariable("id") Long id){
+        return socialAnnounceService.removeById(id);
     }
 }

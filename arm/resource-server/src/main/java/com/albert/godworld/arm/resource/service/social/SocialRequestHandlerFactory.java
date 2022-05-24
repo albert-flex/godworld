@@ -26,7 +26,7 @@ public class SocialRequestHandlerFactory {
         return optional.orElse(null);
     }
 
-    public boolean confirm(SocialRequest request, Long adminMemberId) {
+    protected boolean confirm(SocialRequest request, Long adminMemberId) {
         RequestHandler handler = find(SocialRequestType.parse(request.getType()));
         if (handler == null) {
             requestCall.setError(RVError.SOCIAL_REQUEST_HANDLER_NOT_FOUND);
@@ -56,7 +56,7 @@ public class SocialRequestHandlerFactory {
         return socialRequestService.update(updateWrapper);
     }
 
-    public boolean refuse(SocialRequest request, Long adminMemberId) {
+    protected boolean refuse(SocialRequest request, Long adminMemberId) {
         if (socialMemberService.isMasterOrAdminByMember(adminMemberId)) {
             boolean result = handle(request, adminMemberId, Boolean.TRUE, Boolean.FALSE);
             if (result) {
@@ -69,5 +69,19 @@ public class SocialRequestHandlerFactory {
             requestCall.setError(RVError.SOCIAL_NOT_ADMIN);
             return false;
         }
+    }
+
+    public boolean requestConfirm(Long requestId, Long adminMemberId) {
+        SocialRequest request=socialRequestService.getById(requestId);
+        if(request==null)return false;
+
+        return confirm(request,adminMemberId);
+    }
+
+    public boolean requestRefuse(Long requestId, Long adminMemberId) {
+        SocialRequest request=socialRequestService.getById(requestId);
+        if(request==null)return false;
+
+        return refuse(request,adminMemberId);
     }
 }

@@ -23,7 +23,6 @@ import java.security.Principal;
 @AllArgsConstructor
 public class SocialRequestServiceSPI extends ServiceImpl<SocialRequestMapper,SocialRequest> implements SocialRequestService {
 
-    private final SocialRequestHandlerFactory factory;
     private final PrincipalConvert convert;
     private final AuthorService authorService;
     private final SocialMemberService socialMemberService;
@@ -50,19 +49,5 @@ public class SocialRequestServiceSPI extends ServiceImpl<SocialRequestMapper,Soc
         return super.baseMapper.getBySocialId(page,socialId);
     }
 
-    @Override
-    public boolean requestConfirm(Long requestId, Long adminMemberId) {
-        SocialRequest request=super.getById(requestId);
-        if(request==null)return false;
 
-        return factory.confirm(request,adminMemberId);
-    }
-
-    @Override
-    public boolean requestRefuse(Long requestId, Long adminMemberId) {
-        SocialRequest request=super.getById(requestId);
-        if(request==null)return false;
-
-        return factory.refuse(request,adminMemberId);
-    }
 }
