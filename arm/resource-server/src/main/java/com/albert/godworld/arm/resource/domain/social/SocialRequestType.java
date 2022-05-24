@@ -10,8 +10,6 @@ public enum SocialRequestType {
 
     SET_ADMIN(5,"成为管理员"),
     QUIT_ADMIN(6,"退出管理员"),
-
-    BANG(7,"解散社团"),
     ;
     final int cde;
     final private String description;

@@ -106,6 +106,72 @@ public class SocialMemberServiceSPI extends ServiceImpl<SocialMemberMapper, Soci
     }
 
     @Override
+    public boolean isMember(Long authorId) {
+        LambdaQueryWrapper<SocialMember> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SocialMember::getAuthorId, authorId).last("limit 1");
+
+        return super.getOne(queryWrapper) != null;
+    }
+
+    @Override
+    public Long memberIdOfAuthor(Long authorId) {
+        LambdaQueryWrapper<SocialMember> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SocialMember::getAuthorId, authorId).last("limit 1");
+
+        SocialMember member=super.getOne(queryWrapper);
+        if(member==null)return null;
+
+        return member.getId();
+    }
+
+    @Override
+    public boolean isNormal(Long authorId) {
+        LambdaQueryWrapper<SocialMember> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SocialMember::getAuthorId, authorId).last("limit 1");
+
+        SocialMember member = super.getOne(queryWrapper);
+        return member.getType() == SocialMemberType.NORMAL;
+    }
+
+    @Override
+    public  boolean isAdmin(Long authorId){
+        LambdaQueryWrapper<SocialMember> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.eq(SocialMember::getAuthorId,authorId).last("limit 1");
+        SocialMember member=super.getOne(queryWrapper);
+        if(member==null)return false;
+
+        return member.getType()==SocialMemberType.ADMIN;
+    }
+
+    @Override
+    public boolean isMasterOrAdmin(Long authorId) {
+        LambdaQueryWrapper<SocialMember> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.eq(SocialMember::getAuthorId,authorId).last("limit 1");
+        SocialMember member=super.getOne(queryWrapper);
+        if(member==null)return false;
+
+        return member.getType()!=SocialMemberType.NORMAL;
+    }
+
+    @Override
+    public boolean isMaster(Long authorId) {
+        LambdaQueryWrapper<SocialMember> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.eq(SocialMember::getAuthorId,authorId).last("limit 1");
+        SocialMember member=super.getOne(queryWrapper);
+        if(member==null)return false;
+
+        return member.getType()==SocialMemberType.MASTER;
+    }
+
+    @Override
+    public boolean isMasterOrAdminByMember(Long memberId) {
+        SocialMember member=super.getById(memberId);
+        if(member==null)return false;
+
+        return member.getType()!=SocialMemberType.NORMAL;
+    }
+
+    @Override
     public Page<SocialMember> memberOfType(Page<SocialMember> page, Long socialId, SocialMemberType type) {
         LambdaQueryWrapper<SocialMember> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(SocialMember::getSocialId, socialId);

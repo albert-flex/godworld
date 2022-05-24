@@ -23,6 +23,13 @@ public enum RVError {
     SOCIAL_REQUEST_HANDLE_FAIL(304,"社团请求处理失败"),
     SOCIAL_MEMBER_ALREADY_HAS(305,"已经是社团成员"),
     SOCIAL_REQUEST_HANDLER_NOT_FOUND(306,"未支持的社团请求"),
+    SOCIAL_MEMBER_NOT_HAS(307,"不是社团成员"),
+    SOCIAL_MEMBER_IS_MASTER(308,"该社员是负责人"),
+    SOCIAL_REQUEST_FORMAT_ERROR(309,"社团请求格式错误"),
+    SOCIAL_NOT_ADMIN(310,"不是社团管理员"),
+    SOCIAL_NOT_NORMAL(311,"不是社团普通成员"),
+    SOCIAL_IS_NORMAL(312,"是普通社员"),
+    SOCIAL_CHANGE_TYPE_ERROR(313,"社员切换类型出错"),
 
     BOOK_MODIFY_FAIL(401,"书籍编辑失败"),
     BOOK_VOLUME_NOT_FOUND(402,"卷目找不到"),

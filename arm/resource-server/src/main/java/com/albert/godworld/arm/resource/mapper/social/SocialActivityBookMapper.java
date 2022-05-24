@@ -37,4 +37,11 @@ public interface SocialActivityBookMapper extends BaseMapper<SocialActivityBook>
             "group by sab.id order by sa.id,\n" +
             "sa.start_time desc")
     List<SocialActivityBookVo> activityBookOfSocial(@Param("socialId") Long socialId);
+
+    @Select(bookPre +
+            "where sa.id=#{activityId}\n" +
+            "and ai.id=#{authorId}\n" +
+            "group by sab.id order by sa.id\n" +
+            "sa.start_time desc")
+    Page<SocialActivityBookVo> onActivityBookOfAuthor(@Param("activityId") Long activityId,@Param("authorId") Long authorId);
 }

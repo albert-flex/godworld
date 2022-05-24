@@ -55,11 +55,6 @@ public class SocialActivityBookServiceSPI extends ServiceImpl<SocialActivityBook
     }
 
     @Override
-    public Page<BookVo> activityBookOfAuthor(Page<BookVo> page, Long activityId, Long authorId) {
-        return null;
-    }
-
-    @Override
     public Map<String, List<SocialActivityBookVo>> activityBooksOfAuthor(Long authorId) {
         List<SocialActivityBookVo> list=super.baseMapper.activityBookOfAuthor(authorId);
         if(list==null||list.isEmpty())return new HashMap<>();

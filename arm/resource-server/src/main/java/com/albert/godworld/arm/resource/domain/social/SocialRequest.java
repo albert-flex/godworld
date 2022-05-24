@@ -14,7 +14,8 @@ import java.util.Date;
  * </pre>
  * content则为请求的具体内容,以';'作为分割的一列属性键值<br/>
  * 比如:<pre>
- *     bookId: 1001; activityId: 1001
+ *     bookId; activityId
+ *     1001;299
  * </pre>
  */
 @Data

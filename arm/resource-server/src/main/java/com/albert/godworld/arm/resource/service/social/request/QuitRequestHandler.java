@@ -1,12 +1,10 @@
 package com.albert.godworld.arm.resource.service.social.request;
 
-import com.albert.godworld.arm.resource.domain.author.AuthorInfo;
 import com.albert.godworld.arm.resource.domain.social.SocialMember;
 import com.albert.godworld.arm.resource.domain.social.SocialMemberType;
 import com.albert.godworld.arm.resource.domain.social.SocialRequest;
 import com.albert.godworld.arm.resource.domain.social.SocialRequestType;
 import com.albert.godworld.arm.resource.dto.RVError;
-import com.albert.godworld.arm.resource.service.author.AuthorService;
 import com.albert.godworld.arm.resource.service.other.RequestCall;
 import com.albert.godworld.arm.resource.service.social.RequestHandler;
 import com.albert.godworld.arm.resource.service.social.SocialMemberService;
@@ -16,47 +14,37 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class AddRequestHandler implements RequestHandler {
+public class QuitRequestHandler implements RequestHandler {
 
     private final SocialMemberService socialMemberService;
-    private final AuthorService authorService;
     private final RequestCall requestCall;
 
     @Override
     public SocialRequestType type() {
-        return SocialRequestType.ADD_TO_SOCIAL;
+        return SocialRequestType.QUIT_SOCIAL;
     }
 
-    /**
-     * 先查看是否是成员，如果不是，则可以加入.
-     *
-     */
     @Override
     public boolean okHandle(SocialRequest request, Long adminMemberId) {
         LambdaQueryWrapper<SocialMember> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(SocialMember::getAuthorId, request.getAuthorId()).last("limit 1");
+
         SocialMember member = socialMemberService.getOne(queryWrapper);
-
-        if (member != null) {
-            requestCall.setError(RVError.SOCIAL_ALREADY_HAS);
+        if (member == null) {
+            requestCall.setError(RVError.SOCIAL_MEMBER_ALREADY_HAS);
             return false;
         }
 
-        AuthorInfo authorInfo = authorService.getById(request.getAuthorId());
-        if (authorInfo == null) {
-            requestCall.setError(RVError.AUTHOR_NOT_FOUND);
+        if (member.getType() == SocialMemberType.MASTER) {
+            requestCall.setError(RVError.SOCIAL_MEMBER_IS_MASTER);
             return false;
+        } else {
+            if (!socialMemberService.removeById(member.getId())) {
+                requestCall.setError(RVError.DATABASE_ERROR);
+                return false;
+            } else {
+                return true;
+            }
         }
-
-        member = new SocialMember();
-        member.setType(SocialMemberType.NORMAL);
-        member.setAuthorId(request.getAuthorId());
-        member.setSocialId(request.getSocialId());
-        member.setMemberName(authorInfo.getName());
-        if (!socialMemberService.save(member)) {
-            requestCall.setError(RVError.DATABASE_ERROR);
-            return false;
-        }
-        return true;
     }
 }

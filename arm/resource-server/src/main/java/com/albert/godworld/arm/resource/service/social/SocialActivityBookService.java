@@ -14,7 +14,6 @@ import java.util.Map;
 public interface SocialActivityBookService extends IService<SocialActivityBook> {
 
     Page<BookInfo> bookOf(Page<BookInfo> page, Long activityId);
-    Page<BookVo> activityBookOfAuthor(Page<BookVo> page,Long activityId,Long authorId);
     Map<String, List<SocialActivityBookVo>> activityBooksOfAuthor(Long authorId);
     Map<String, ActivityVo> activityBookOfSocial(Long socialId);
     boolean addBook(Long bookId,Long activityId);

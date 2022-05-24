@@ -7,5 +7,4 @@ public interface RequestHandler {
 
     SocialRequestType type();
     boolean okHandle(SocialRequest request,Long adminMemberId);
-    boolean refuseHandle(SocialRequest request,Long adminMemberId);
 }

@@ -15,5 +15,13 @@ public interface SocialMemberService extends IService<SocialMember> {
     boolean changeName(Long memberId,String newMemberName);
     boolean in(Long authorId,Long socialId,String name);
     boolean out(Long authorId);
+    boolean isMember(Long authorId);
+    Long memberIdOfAuthor(Long authorId);
+    boolean isNormal(Long authorId);
+    boolean isAdmin(Long authorId);
+    boolean isMasterOrAdmin(Long authorId);
+
+    boolean isMaster(Long authorId);
+    boolean isMasterOrAdminByMember(Long memberId);
     Page<SocialMember> memberOfType(Page<SocialMember> page,Long socialId, SocialMemberType type);
 }
