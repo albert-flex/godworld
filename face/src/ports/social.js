@@ -40,6 +40,10 @@ const request_refuse=UrlPatch("social_request/refuse/:1/:2");
 const on_activity=UrlPatch("social_activity/on/:1");
 //关闭活动
 const off_activity=UrlPatch("social_activity/off/:1");
+//发送申请
+const send_request=UrlPatch("social_request");
+//查询活动分页
+const activity_page=UrlPatch("social_activity/page/social/:1");
 
 
 function QueryByName(name,page,successCall){
@@ -218,7 +222,7 @@ function OnAct(token,id,successCall){
 
 
 function OffAct(token,id,successCall){
-    let api = on_activity;
+    let api = off_activity;
     let myHeader = new Headers();
     myHeader.append('Authorization', 'bearer ' + token);
     fetch(URLConcat(api,[id]), {
@@ -228,6 +232,25 @@ function OffAct(token,id,successCall){
     }).then(res => res.json())
         .then(data => successCall(data))
         .catch(error => alert(error));
+}
+
+function sendRequest(token,request,successCall){
+    let api = send_request;
+    let myHeader = new Headers();
+    myHeader.append('Content-Type', 'application/json');
+    myHeader.append('Authorization', 'bearer ' + token);
+    fetch(api, {
+        method: "POST",
+        headers: myHeader,
+        body: JSON.stringify(request),
+        mode: "cors"
+    }).then(res => res.json())
+        .then(data => successCall(data))
+        .catch(error => alert(error));
+}
+
+function FetchActivityPage(socialId,page,successCall){
+    RequestGet(URLConcat(activity_page,[socialId],page),'GET',successCall);
 }
 
 export {
@@ -249,5 +272,7 @@ export {
     refuseRequest,
     EditSocial,
     OffAct,
-    OnAct
+    OnAct,
+    sendRequest,
+    FetchActivityPage
 }

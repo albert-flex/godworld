@@ -114,4 +114,14 @@ public class SocialActivityBookServiceSPI extends ServiceImpl<SocialActivityBook
         queryWrapper.eq(SocialActivityBook::getBookId,bookId);
         return super.remove(queryWrapper);
     }
+
+    @Override
+    public List<BookInfo> bookOfAuthorOnActivity(Long authorId, Long activityId) {
+        return super.baseMapper.bookOfAuthorOnActivity(authorId,activityId);
+    }
+
+    @Override
+    public List<BookInfo> bookOfAuthorNotInActivity(Long authorId, Long activityId) {
+        return super.baseMapper.bookOfAuthorNotInActivity(authorId,activityId);
+    }
 }

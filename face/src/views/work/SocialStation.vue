@@ -138,6 +138,9 @@
                         <p style="margin-left: 1em; text-indent: 2em">
                           {{ item.description }}
                         </p>
+                        <p  style="margin-left: 1em; text-indent: 2em">
+                          是否开启: {{ item.actOn?"开启":"未开启" }}
+                        </p>
                       </div>
                       <div style="margin: 10px">
                         <a-space>

@@ -1,5 +1,6 @@
 package com.albert.godworld.arm.resource.controller.social;
 
+import com.albert.godworld.arm.resource.domain.social.SocialRequest;
 import com.albert.godworld.arm.resource.domain.user.User;
 import com.albert.godworld.arm.resource.dto.RV;
 import com.albert.godworld.arm.resource.dto.RVError;
@@ -25,6 +26,13 @@ public class SocialRequestController {
     private final SocialRequestService socialRequestService;
     private final SocialRequestHandlerFactory factory;
     private final RequestCall requestCall;
+
+    @PostMapping
+    @PreAuthorize("hasAuthority('AUTHOR_PER')")
+    public SocialRequest post(SocialRequest request){
+        socialRequestService.save(request);
+        return request;
+    }
 
     @GetMapping("/page/{socialId}")
     public Page<SocialRequestVo> pageOf(@PathVariable("socialId") Long socialId, Page<SocialRequestVo> page) {

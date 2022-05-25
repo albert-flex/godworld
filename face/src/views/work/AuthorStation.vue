@@ -26,22 +26,22 @@
           @click="toSocial"
           >社团工作台</a-button
         >
-        <a-button style="margin: 5px; padding: 5px" type="primary"
+        <a-button @click="showInSocialView" :disabled="hasSocial" style="margin: 5px; padding: 5px" type="primary"
           >申请加入社团</a-button
         >
-        <a-button style="margin: 5px; padding: 5px" type="primary"
+        <a-button @click="postOutSocial" :disabled="!hasSocial" style="margin: 5px; padding: 5px" type="primary"
           >申请退出社团</a-button
         >
-        <a-button style="margin: 5px; padding: 5px" type="primary"
+        <a-button @click="requestSetAdmin" :disabled="!hasSocial" style="margin: 5px; padding: 5px" type="primary"
           >申请社团管理员</a-button
         >
-        <a-button style="margin: 5px; padding: 5px" type="primary"
+        <a-button @click="requestOutAdmin" :disabled="!hasSocial" style="margin: 5px; padding: 5px" type="primary"
           >申请退出社团管理员</a-button
         >
-        <a-button style="margin: 5px; padding: 5px" type="primary"
+        <a-button @click="showActInSocialView" :disabled="!hasSocial" style="margin: 5px; padding: 5px" type="primary"
           >申请加入活动</a-button
         >
-        <a-button style="margin: 5px; padding: 5px" type="primary"
+        <a-button @click="showActOutSocialView" :disabled="!hasSocial" style="margin: 5px; padding: 5px" type="primary"
           >申请退出活动</a-button
         >
       </div>
@@ -413,20 +413,21 @@
       </a-form>
     </a-drawer>
 
-    <a-drawer v-model:visible="requestInSocialVisi"
+    <a-drawer
+      v-model:visible="requestInSocialVisi"
       class="custom-class"
       style="color: red"
       title="申请加入社团"
       placement="right"
-      >
+    >
       <a-form
         :model="requestInSocial"
         :label-col="labelCol"
         :wrapper-col="wrapperCol"
-        @finish="changeProfile"
+        @finish="postInSocial"
       >
         <a-form-item label="社团名称">
-          <a-input v-model:value="requestInSocial.name"></a-input>
+          <a-input v-model:value="requestInSocial"></a-input>
         </a-form-item>
         <a-form-item :wrapper-col="{ offset: 10, span: 20 }">
           <a-button type="primary" html-type="submit">加入</a-button>
@@ -434,20 +435,25 @@
       </a-form>
     </a-drawer>
 
-<a-drawer v-model:visible="requestInSocialActVisi"
+    <a-drawer
+      v-model:visible="requestInSocialActVisi"
       class="custom-class"
       style="color: red"
       title="申请加入活动"
       placement="right"
-      >
+    >
       <a-form
         :model="requestInSocialAct"
         :label-col="labelCol"
         :wrapper-col="wrapperCol"
-        @finish="changeProfile"
+        @finish="requestInSocialActDo"
       >
         <a-form-item label="活动">
-          <a-select v-model:value="requestInSocialAct.activityId" style="width: 120px">
+          <a-select
+            v-model:value="requestInSocialAct.activityId"
+            style="width: 120px"
+            @change="ActInChange"
+          >
             <a-select-option
               v-for="item in socialActivity"
               :key="item.id"
@@ -457,7 +463,10 @@
           </a-select>
         </a-form-item>
         <a-form-item label="书籍">
-          <a-select v-model:value="requestInSocialAct.bookId" style="width: 120px">
+          <a-select
+            v-model:value="requestInSocialAct.bookId"
+            style="width: 120px"
+          >
             <a-select-option
               v-for="item in socialActivity"
               :key="item.id"
@@ -471,7 +480,51 @@
         </a-form-item>
       </a-form>
     </a-drawer>
-
+    <a-drawer
+      v-model:visible="requestOutSocialActVisi"
+      class="custom-class"
+      style="color: red"
+      title="申请移除活动"
+      placement="right"
+    >
+      <a-form
+        :model="requestOutSocialAct"
+        :label-col="labelCol"
+        :wrapper-col="wrapperCol"
+        @finish="requestOutSocialActDo"
+      >
+        <a-form-item label="活动">
+          <a-select
+            v-model:value="requestOutSocialAct.activityId"
+            style="width: 120px"
+            @change="ActOutChange"
+          >
+            <a-select-option
+              v-for="item in socialActivity"
+              :key="item.id"
+              :value="item.id"
+              >{{ item.value }}</a-select-option
+            >
+          </a-select>
+        </a-form-item>
+        <a-form-item label="书籍">
+          <a-select
+            v-model:value="requestOutSocialAct.bookId"
+            style="width: 120px"
+          >
+            <a-select-option
+              v-for="item in socialActivity"
+              :key="item.id"
+              :value="item.id"
+              >{{ item.value }}</a-select-option
+            >
+          </a-select>
+        </a-form-item>
+        <a-form-item :wrapper-col="{ offset: 10, span: 20 }">
+          <a-button type="primary" html-type="submit">加入</a-button>
+        </a-form-item>
+      </a-form>
+    </a-drawer>
   </div>
 </template>
 <script setup>
@@ -496,7 +549,11 @@ import {
   listVolume,
   removeChapter,
   removeVolume,
+  FetchBookInActivity,
+  FetchBookNotInActivity,
 } from "../../ports/book.js";
+import { FetchActivityPage } from "../../ports/social.js";
+import { sendRequest, QueryByName } from "../../ports/social.js";
 import { ref } from "@vue/reactivity";
 import { useRoute, useRouter } from "vue-router";
 
@@ -577,6 +634,27 @@ const booksPagi = ref({
   total: 1,
 });
 
+const hasSocial=ref(false);
+const requestInSocial = ref("");
+const requestInSocialVisi = ref(false);
+const requestInSocialAct = ref({
+  activityId: "",
+  activityName: "",
+  bookId: "",
+  bookName: "",
+});
+const requestInSocialActVisi = ref(false);
+const requestOutSocialAct = ref({
+  activityId: "",
+  activityName: "",
+  bookId: "",
+  bookName: "",
+});
+const requestOutSocialActVisi = ref(false);
+const activityInSocial = ref([]);
+const activityBook = ref([]);
+const notActivityBook = ref([]);
+
 function fetchA() {
   const access = loadAccess();
   if (!access.logined()) {
@@ -590,6 +668,10 @@ function fetchA() {
     alert("非作者，请先成为作者");
     router.push({ name: "authorNew" });
     return;
+  }
+
+  if(user.socialId!=null){
+    hasSocial.value=true;
   }
 
   FetchAuthor(user.authorId, (data) => {
@@ -754,6 +836,28 @@ function showEditVolume() {
   editVolumeVisi.value = true;
 }
 
+function showInSocialView(){
+  requestInSocialVisi.value=true;
+}
+
+function showActInSocialView(){
+  QueryActivityInSocial();
+  requestInSocialActVisi.value=true;
+}
+
+function ActInChange(id){
+  QueryBookInActivity(id);
+}
+
+function ActOutChange(id){
+  QueryBookNotInActivity(id);
+}
+
+function showActOutSocialView(){
+  QueryActivityInSocial();
+  requestOutSocialActVisi.value=true;
+}
+
 function postVolume() {
   const access = loadAccess();
   newVolume.value.bookId = editBookInfo.value.id;
@@ -857,7 +961,117 @@ function changeV(newV) {
   pageChapter();
 }
 
+function QueryActivityInSocial() {
+  const user = loadUser();
+  FetchActivityPage(user.socialId, { size: 100, current: 1 }, (data) => {
+    activityInSocial.value = data.records;
+  });
+}
+
+function QueryBookInActivity(id) {
+  const user = loadUser();
+  FetchBookInActivity(user.authorId, id, (data) => {
+    activityBook.value = data.records;
+  });
+}
+
+function QueryBookNotInActivity(id) {
+  const user = loadUser();
+  FetchBookNotInActivity(user.authorId, id, (data) => {
+    notActivityBook.value = data.records;
+  });
+}
+
+function postInSocial() {
+  const user = loadUser();
+  let request = {
+    socialId: "",
+    authorId: "",
+    type: "",
+    message: "",
+    content: "",
+  };
+
+  //先查找社团
+  QueryByName(requestInSocial.value, { size: 1, current: 1 }, (data) => {
+    if (data.total < 1) {
+      alert("查不到此社团，请重新输入社团名称");
+    } else {
+      _sendRe(socialId, 1, "加入社团[" + data.records[0].name + "]", "");
+    }
+  });
+}
+
+function postOutSocial() {
+  _sendRe2(2, "想要退出社团", "");
+}
+
+function _sendRe2(type, message, content) {
+  const user = loadUser();
+  _sendRe(user.socialId, type, message, content);
+}
+
+function _sendRe(socialId, type, message, content) {
+  const user = loadUser();
+  let request = {
+    socialId: socialId,
+    authorId: user.authorId,
+    type: type,
+    message: "[" + user.userName + "]" + message,
+    content: content,
+  };
+
+  const access = loadAccess();
+  sendRequest(access.access_token, request, (da) => {
+    if (da.id != null) {
+      alert("申请成功");
+    } else {
+      alert("申请失败");
+    }
+  });
+}
+
+function requestInSocialActDo() {
+  const content =
+    requestInSocialAct.value.activityId + ";" + requestInSocialAct.value.bookId;
+  _sendRe2(
+    3,
+    "加入社团活动[" +
+      requestInSocialAct.value.activityName +
+      "],以此书[" +
+      requestInSocialAct.value.bookName +
+      "]",
+    content
+  );
+}
+
+function requestOutSocialActDo() {
+  const content =
+    requestOutSocialAct.value.activityId +
+    ";" +
+    requestOutSocialAct.value.bookId;
+  _sendRe2(
+    4,
+    "退出社团活动[" +
+      requestOutSocialAct.value.activityName +
+      "],以此书[" +
+      requestOutSocialAct.value.bookName +
+      "]",
+    content
+  );
+}
+
+function requestSetAdmin() {
+  _sendRe2(5, "成为管理员", "");
+}
+
+function requestOutAdmin() {
+  _sendRe2(6, "退出管理员");
+}
+
 function Init() {
+
+
   fetchA();
   QueryBooks();
   fetchTags();

@@ -1,5 +1,6 @@
 package com.albert.godworld.arm.resource.mapper.social;
 
+import com.albert.godworld.arm.resource.domain.book.BookInfo;
 import com.albert.godworld.arm.resource.domain.social.SocialActivityBook;
 import com.albert.godworld.arm.resource.vo.book.BookVo;
 import com.albert.godworld.arm.resource.vo.book.SocialActivityBookVo;
@@ -43,4 +44,21 @@ public interface SocialActivityBookMapper extends BaseMapper<SocialActivityBook>
             "group by sab.id order by\n" +
             "sa.start_time desc")
     Page<SocialActivityBookVo> onActivityBookOfAuthor(@Param("activityId") Long activityId,@Param("authorId") Long authorId);
+
+    @Select("select bi1.id,bi1.name,bi1.description\n" +
+            "from book_info bi1\n" +
+            "join social_activity_book sab on sab.book_id=bi1.id\n" +
+            "join social_activity sa on sa.id=sab.activity_id \n" +
+            "where sa.id=#{activityId} and bi1.author_id=#{authorId}")
+    List<BookInfo> bookOfAuthorOnActivity(@Param("authorId") Long authorId,@Param("activityId")Long activityId);
+
+    @Select("select bi.id,bi.name\n" +
+            "from book_info bi\n" +
+            "where bi.id not in (\n" +
+            "select bi1.id\n" +
+            "from book_info bi1\n" +
+            "join social_activity_book sab on sab.book_id=bi1.id\n" +
+            "join social_activity sa on sa.id=sab.activity_id \n" +
+            "where sa.id=#{activityId} and bi1.author_id=#{authorId}) and bi.author_id=#{authorId}\n")
+    List<BookInfo> bookOfAuthorNotInActivity(@Param("authorId") Long authorId,@Param("activityId")Long activityId);
 }

@@ -55,6 +55,11 @@ const modify_chapter = UrlPatch("book_chapter/modify");
 const list_chapter_in_volume = UrlPatch("book_chapter/page/volume/:1");
 //删除章节
 const remove_chapter = UrlPatch("book_chapter/:1");
+//作者中未参加此活动的书籍
+const author_book_has_in_act=UrlPatch("social_activity_book/book_in_activity/:1/:2");
+//作者中已参加此活动的书籍
+const author_book_has_not_in_act=UrlPatch("social_activity_book/book_not_in_activity/:1/:2");
+
 
 /**
  * 
@@ -435,6 +440,14 @@ function removeChapter(token,chapterId, successCall) {
         .catch(e => alert(e));
 }
 
+function FetchBookNotInActivity(authorId,activityId,successCall){
+    RequestGet(URLConcat(author_book_has_not_in_act,[activityId,authorId]),'GET',successCall);
+}
+
+function FetchBookInActivity(authorId,activityId,successCall){
+    RequestGet(URLConcat(author_book_has_in_act,[activityId,authorId]),'GET',successCall);
+}
+
 export {
     NewestBooksPort,
     AllBoardBooks,
@@ -462,5 +475,7 @@ export {
     listChapter,
     listVolume,
     removeChapter,
-    removeVolume
+    removeVolume,
+    FetchBookInActivity,
+    FetchBookNotInActivity
 }
