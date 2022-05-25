@@ -108,8 +108,9 @@
             mode="multiple"
             style="width: 100%"
             placeholder="Please select"
-            :options="options"
-          ></a-select>
+          >
+            <a-select-option v-for="item in options" :key="item.id" :value="item.id">{{item.value}}</a-select-option>
+          </a-select>
         </a-form-item>
         <a-form-item label="简介">
           <a-textarea
@@ -257,7 +258,6 @@
         <a-form-item label="上一章节">
           <a-select
             v-model:value="newChapter.prevChapterId"
-            :options="prevChapterLists"
           >
             <a-select-option
               v-for="item in chapters"
@@ -706,8 +706,8 @@ function bookSelect(id) {
     editBookInfo.value.id = data.id;
     editBookInfo.value.authorId = data.authorId;
     editBookInfo.value.name = data.name;
+    editBookInfo.value.tags=getTags(data.tags);
     editBookInfo.value.boardName = data.boardName;
-    editBookInfo.value.tags = data.tags;
     editBookInfo.value.description = data.description;
     editBookInfo.value.isPresent = data.isPresent;
     listVolumes();
@@ -715,6 +715,22 @@ function bookSelect(id) {
   FetchVolumesOnBook(id, (data) => {
     catalog.value = data;
   });
+}
+
+function getT(name){
+  for(let i=0;i<options.value.length;++i){
+    if(options.value[i].value==name){
+      return options.value[i].id;
+    }
+  }
+}
+
+function getTags(namedTags){
+  let arr=[];
+  for(let i=0;i<namedTags.length;++i){
+    arr.push(getT(namedTags[i]));
+  }
+  return arr;
 }
 
 function fetchTags() {
