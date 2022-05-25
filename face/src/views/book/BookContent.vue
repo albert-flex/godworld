@@ -125,7 +125,7 @@
           <a-comment>
             <template #avatar>
               <a-avatar
-                src="https://joeschmoe.io/api/v1/random"
+                :src="FetchImage()"
                 alt="Han Solo"
               />
             </template>
@@ -160,6 +160,8 @@ import {
   FetchVolumesOnBook,
   PostComment,
 } from "../../ports/book.js";
+import {FetchImage,LIB_BOOK_IMAGE} from "../../ports/file.js";
+
 dayjs.extend(relativeTime);
 
 const route = useRoute();

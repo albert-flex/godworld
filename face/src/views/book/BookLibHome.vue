@@ -122,7 +122,7 @@
                     <img
                       width="272"
                       alt="logo"
-                      src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+                      :src="FetchImage(LIB_BOOK_IMAGE,item.id)"
                     />
                   </template>
                   <a-list-item-meta
@@ -159,6 +159,7 @@ import {
   MessageOutlined,
 } from "@ant-design/icons-vue";
 import {useRouter} from "vue-router";
+import {FetchImage} from "../../ports/file.js";
 
 const router=useRouter();
 
