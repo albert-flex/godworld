@@ -159,7 +159,7 @@ import {
   MessageOutlined,
 } from "@ant-design/icons-vue";
 import {useRouter} from "vue-router";
-import {FetchImage} from "../../ports/file.js";
+import {FetchImage,LIB_BOOK_IMAGE} from "../../ports/file.js";
 
 const router=useRouter();
 

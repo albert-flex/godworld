@@ -5,16 +5,16 @@
         <a-image
           :width="200"
           :height="200"
-          :src="'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png?${random}'"
+          :src="FetchImage(LIB_SOCIAL_AVATOR, socialInfo.id)"
           fallback="data:image/png;base64,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"
         />
         <div>
           <h2>社团: {{ socialInfo.name }}</h2>
           <h2>
             负责人:
-            <a-avatar src="https://joeschmoe.io/api/v1/random" />{{
-              socialInfo.masterName
-            }}
+            <a-avatar
+              :src="FetchImage(LIB_AUTHOR_AVATOR, socialInfo.masterId)"
+            />{{ socialInfo.masterName }}
           </h2>
           <h2>最新活动: 《{{ socialInfo.newestAct }}》</h2>
           <h2>最新公告: 《{{ socialInfo.newestAnnounce }}》</h2>
@@ -24,7 +24,7 @@
         <h2>社团简介:</h2>
         <p>{{ socialInfo.moto }}</p>
       </div>
-            <a-button type="primary" @click="openEditSocialInfo"
+      <a-button type="primary" @click="openEditSocialInfo"
         >修改社团资料</a-button
       >
       <div>
@@ -46,7 +46,7 @@
                 placement="top"
               >
                 <a-avatar
-                  src="https://joeschmoe.io/api/v1/random"
+                  :src="FetchImage(LIB_AUTHOR_AVATOR, item.authorId)"
                   style="background-color: #87d068"
                 >
                 </a-avatar>
@@ -72,7 +72,7 @@
                 placement="top"
               >
                 <a-avatar
-                  src="https://joeschmoe.io/api/v1/random"
+                  :src="FetchImage(LIB_AUTHOR_AVATOR, item.authorId)"
                   style="background-color: #87d068"
                 >
                 </a-avatar> </a-tooltip
@@ -108,7 +108,8 @@
                         }}</a>
                       </template>
                       <template #avatar>
-                        <a-avatar>A</a-avatar>
+                        <a-avatar
+                        ></a-avatar>
                       </template>
                     </a-list-item-meta>
                   </a-skeleton>
@@ -133,13 +134,13 @@
                       <div style="display: flex">
                         <a-image
                           style="width: 150px"
-                          :src="'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png?${random}'"
+                  :src="FetchImage(LIB_ACTIVITY_AVATOR,item.id)"
                         />
                         <p style="margin-left: 1em; text-indent: 2em">
                           {{ item.description }}
                         </p>
-                        <p  style="margin-left: 1em; text-indent: 2em">
-                          是否开启: {{ item.actOn?"开启":"未开启" }}
+                        <p style="margin-left: 1em; text-indent: 2em">
+                          是否开启: {{ item.actOn ? "开启" : "未开启" }}
                         </p>
                       </div>
                       <div style="margin: 10px">
@@ -174,7 +175,7 @@
                             <a-list-item>
                               <a-card>
                                 <a-image
-                                  src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                                  :src="FetchImage(LIB_BOOK_IMAGE,item.id)"
                                 />
                               </a-card>
                               {{ item.name }}
@@ -362,6 +363,13 @@ import {
 import { loadAccess, loadUser } from "../../config/stores.js";
 import { ref } from "@vue/reactivity";
 import { QuerySocialPage } from "../../ports/author.js";
+import {
+  FetchImage,
+  LIB_BOOK_IMAGE,
+  LIB_USER_AVATOR,
+  LIB_SOCIAL_AVATOR,
+  LIB_ACTIVITY_AVATOR
+} from "../../ports/file.js";
 
 const labelCol = { span: 8 };
 const wrapperCol = { span: 10 };
@@ -487,12 +495,12 @@ function openEditSocialInfo() {
 
 function postAct() {
   const access = loadAccess();
-  const user=loadUser();
-  newAct.value.socialId=user.socialId;
-  newAct.value.adminMemberId=user.memberId;
-  let arr=newAct.value.range;
-  newAct.value.startTime=arr[0];
-  newAct.value.endTime=arr[1];
+  const user = loadUser();
+  newAct.value.socialId = user.socialId;
+  newAct.value.adminMemberId = user.memberId;
+  let arr = newAct.value.range;
+  newAct.value.startTime = arr[0];
+  newAct.value.endTime = arr[1];
   addAct(access.access_token, newAct.value, (data) => {
     if (data) {
       alert("成功");

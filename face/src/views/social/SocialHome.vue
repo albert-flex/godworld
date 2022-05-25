@@ -26,7 +26,7 @@
                 <img
                   width="272"
                   alt="logo"
-                  src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+                  :src="FetchImage(LIB_SOCIAL_AVATOR, item.id)"
                 />
               </template>
               <a-list-item-meta :description="'负责人 ' + item.masterName">
@@ -49,7 +49,7 @@
               <img
                 width="272"
                 alt="logo"
-                src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+                :src="FetchImage(LIB_SOCIAL_AVATOR, item.id)"
               />
             </template>
             <a-list-item-meta :description="item.actName">
@@ -69,7 +69,7 @@
               <img
                 width="272"
                 alt="logo"
-                src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+                :src="FetchImage(LIB_SOCIAL_AVATOR, item.id)"
               />
             </template>
             <a-list-item-meta :description="item.announceName">
@@ -89,6 +89,11 @@
 import { ref } from "@vue/reactivity";
 import { FetchNewAct, FetchNewAnn, QueryByName } from "../../ports/social.js";
 import { useRouter } from "vue-router";
+import {
+  FetchImage,
+  LIB_SOCIAL_AVATOR,
+} from "../../ports/file.js";
+
 const labelCol = { style: { width: "150px" } };
 const wrapperCol = { span: 14 };
 

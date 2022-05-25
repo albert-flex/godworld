@@ -45,7 +45,7 @@
                 <a @click="toAuthor(item.id)">{{ item.authorName }}</a>
               </template>
               <template #avatar
-                ><a-avatar src="https://joeschmoe.io/api/v1/random"
+                ><a-avatar :src="FetchImage(LIB_AUTHOR_AVATOR,item.id)"
               /></template>
             </a-list-item-meta>
           </a-list-item>
@@ -64,7 +64,7 @@
                 <a @click="toAuthor(item.id)">{{ item.name }}</a>
               </template>
               <template #avatar
-                ><a-avatar src="https://joeschmoe.io/api/v1/random"
+                ><a-avatar :src="FetchImage(LIB_AUTHOR_AVATOR,item.id)"
               /></template>
             </a-list-item-meta>
           </a-list-item>
@@ -108,6 +108,8 @@ import {
   QuerySocialPage,
 } from "../../ports/author.js";
 import { useRouter } from "vue-router";
+import {FetchImage,LIB_BOOK_IMAGE,LIB_USER_AVATOR,LIB_AUTHOR_AVATOR} from "../../ports/file.js";
+
 
 const labelCol = { style: { width: "150px" } };
 const wrapperCol = { span: 14 };

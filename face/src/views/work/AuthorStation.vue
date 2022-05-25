@@ -4,7 +4,7 @@
       <div style="display: flex">
         <a-image
           :width="150"
-          :src="'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png?${random}'"
+          :src="FetchImage(LIB_AUTHOR_AVATOR,authorId)"
         />
         <div class="info">
           <h2>作者: {{ authorInfo.authorName }}</h2>
@@ -63,7 +63,7 @@
                 <img
                   width="150"
                   alt="logo"
-                  src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+                  :src="FetchImage(LIB_BOOK_IMAGE,item.id)"
                 />
               </template>
               <a-list-item-meta
@@ -394,7 +394,7 @@
         @finish="changeProfile"
       >
         <a-form-item label="头像">
-          <a-avatar shape="square" :size="64">
+          <a-avatar shape="square" :avator="FetchImage(LIB_AUTHOR_AVATOR,authorInfo.id)" :size="64">
             <template #icon><UserOutlined /></template>
           </a-avatar>
         </a-form-item>
@@ -556,6 +556,7 @@ import { FetchActivityPage } from "../../ports/social.js";
 import { sendRequest, QueryByName } from "../../ports/social.js";
 import { ref } from "@vue/reactivity";
 import { useRoute, useRouter } from "vue-router";
+import {FetchImage,LIB_BOOK_IMAGE,LIB_AUTHOR_AVATOR} from "../../ports/file.js";
 
 const route = useRoute();
 const router = useRouter();
@@ -1109,4 +1110,3 @@ Init();
   font-size: 1.3em;
   margin-left: 1em;
 }
-</style>

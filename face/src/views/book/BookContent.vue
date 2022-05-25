@@ -57,7 +57,7 @@
           <a-image
             :width="200"
             :height="200"
-            src="https://joeschmoe.io/api/v1/random"
+            :src="FetchImage(LIB_BOOK_IMAGE,bookId)"
           />
           <div>
             <h3 style="margin: 10px">作者: {{ bookInfo.author }}</h3>
@@ -106,7 +106,7 @@
               <a-list-item>
                 <a-comment
                   :author="item.userName"
-                  avatar="https://joeschmoe.io/api/v1/random"
+                  :avatar="FetchImage(LIB_USER_AVATOR,item.userId)"
                 >
                   <template #content>
                     <p>
@@ -160,7 +160,7 @@ import {
   FetchVolumesOnBook,
   PostComment,
 } from "../../ports/book.js";
-import {FetchImage,LIB_BOOK_IMAGE} from "../../ports/file.js";
+import {FetchImage,LIB_BOOK_IMAGE,LIB_USER_AVATOR} from "../../ports/file.js";
 
 dayjs.extend(relativeTime);
 
