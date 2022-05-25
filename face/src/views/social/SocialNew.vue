@@ -74,10 +74,10 @@ function Register() {
   }
 
   formData.value.masterId = user.authorId;
-  RegitserSocial(access.access_token,formData.value,(data)=>{
-    if(!data.success){
-        alert(data.error);
-    }else{
+  RegitserSocial(access.access_token, formData.value, (data) => {
+    if (!data.success) {
+      alert(data.error);
+    } else {
       alert("创建成功!");
     }
   });

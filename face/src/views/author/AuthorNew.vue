@@ -55,19 +55,19 @@ function Register() {
     alert("未登录，将前往登录页");
     router.push({ name: "login" });
   }
-  RegisterAuthor(access.access_token,formData.value,(data)=>{
-    if(!data.success){
+  RegisterAuthor(access.access_token, formData.value, (data) => {
+    if (!data.success) {
       alert(data.error);
-    }else{
+    } else {
       alert("注册作者成功!");
     }
   });
 }
 
-function sendCaptcha(){
-  sendCaptchaPort(formData.value.email,(d)=>{
+function sendCaptcha() {
+  sendCaptchaPort(formData.value.email, (d) => {
     alert("验证码发送成功!");
-  })
+  });
 }
 </script>
 

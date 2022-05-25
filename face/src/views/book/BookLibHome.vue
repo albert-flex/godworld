@@ -122,14 +122,16 @@
                     <img
                       width="272"
                       alt="logo"
-                      :src="FetchImage(LIB_BOOK_IMAGE,item.id)"
+                      :src="FetchImage(LIB_BOOK_IMAGE, item.id)"
                     />
                   </template>
                   <a-list-item-meta
                     :description="item.updateTime + ' ' + item.author"
                   >
                     <template #title>
-                      <a-button type="link" @click="toBook(item.id)">{{item.name}}</a-button>
+                      <a-button type="link" @click="toBook(item.id)">{{
+                        item.name
+                      }}</a-button>
                     </template>
                   </a-list-item-meta>
                   {{ item.content }}
@@ -158,10 +160,10 @@ import {
   LikeOutlined,
   MessageOutlined,
 } from "@ant-design/icons-vue";
-import {useRouter} from "vue-router";
-import {FetchImage,LIB_BOOK_IMAGE} from "../../ports/file.js";
+import { useRouter } from "vue-router";
+import { FetchImage, LIB_BOOK_IMAGE } from "../../ports/file.js";
 
-const router=useRouter();
+const router = useRouter();
 
 const updateList = ref([]);
 NewestBooksPort((data) => {
@@ -196,7 +198,7 @@ function onSearch() {
 const boardList = ref([]);
 FetchBoardList((data) => {
   boardList.value = data;
-  formData.value.board=data[0].name;
+  formData.value.board = data[0].name;
 });
 
 const tagList = ref([]);
@@ -208,7 +210,7 @@ FetchTagList((data) => {
       value: data[i].name,
     });
   }
-  formData.value.tags=[];
+  formData.value.tags = [];
   formData.value.tags.push(data[0].name);
 });
 

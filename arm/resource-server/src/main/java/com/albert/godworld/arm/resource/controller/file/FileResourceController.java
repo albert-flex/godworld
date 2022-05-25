@@ -92,7 +92,7 @@ public class FileResourceController {
             os = new BufferedOutputStream(response.getOutputStream());
             String f = "png";
             response.setContentType("image/png");
-            response.setHeader("Content-Disposition", "attachment;filename=default.png");
+            response.setHeader("Content-Disposition", "attachment;filename=1.png");
             os.write(buffer);
             os.flush();
             os.close();

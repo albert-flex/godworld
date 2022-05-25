@@ -8,7 +8,7 @@ const LIB_SOCIAL_AVATOR="social-picture";
 const LIB_ACTIVITY_AVATOR="activity-pictu";
 
 function FetchImage(lib, ownId) {
-    return URLConcat("file/download2", [], { lib: lib, ownId: ownId });
+    return URLConcat(UrlPatch("file/download2"), [], { lib: lib, ownId: ownId });
 }
 
 function setFile(lib,ownId,file,successCall){

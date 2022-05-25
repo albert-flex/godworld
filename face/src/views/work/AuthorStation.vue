@@ -4,7 +4,7 @@
       <div style="display: flex">
         <a-image
           :width="150"
-          :src="FetchImage(LIB_AUTHOR_AVATOR,authorId)"
+          :src="FetchImage(LIB_AUTHOR_AVATOR,authorInfo.id)"
         />
         <div class="info">
           <h2>作者: {{ authorInfo.authorName }}</h2>
@@ -1110,3 +1110,5 @@ Init();
   font-size: 1.3em;
   margin-left: 1em;
 }
+
+</style>

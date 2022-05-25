@@ -47,7 +47,7 @@
           <a-list-item key="item.id">
             <template #extra>
               <img
-                width="272"
+                width="200"
                 alt="logo"
                 :src="FetchImage(LIB_SOCIAL_AVATOR, item.id)"
               />
@@ -67,7 +67,7 @@
           <a-list-item key="item.id">
             <template #extra>
               <img
-                width="272"
+                width="200"
                 alt="logo"
                 :src="FetchImage(LIB_SOCIAL_AVATOR, item.id)"
               />
@@ -89,10 +89,7 @@
 import { ref } from "@vue/reactivity";
 import { FetchNewAct, FetchNewAnn, QueryByName } from "../../ports/social.js";
 import { useRouter } from "vue-router";
-import {
-  FetchImage,
-  LIB_SOCIAL_AVATOR,
-} from "../../ports/file.js";
+import { FetchImage, LIB_SOCIAL_AVATOR } from "../../ports/file.js";
 
 const labelCol = { style: { width: "150px" } };
 const wrapperCol = { span: 14 };

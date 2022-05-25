@@ -57,7 +57,7 @@
           <a-image
             :width="200"
             :height="200"
-            :src="FetchImage(LIB_BOOK_IMAGE,bookId)"
+            :src="FetchImage(LIB_BOOK_IMAGE, bookId)"
           />
           <div>
             <h3 style="margin: 10px">作者: {{ bookInfo.author }}</h3>
@@ -88,7 +88,12 @@
             v-for="item in catalog"
             :key="item.id"
           >
-            <a-button type="ghost" @click="toChapter(it.id)" v-for="it in item.chapters" :key="it.id">
+            <a-button
+              type="ghost"
+              @click="toChapter(it.id)"
+              v-for="it in item.chapters"
+              :key="it.id"
+            >
               {{ it.title }}
             </a-button>
           </a-collapse-panel>
@@ -106,7 +111,7 @@
               <a-list-item>
                 <a-comment
                   :author="item.userName"
-                  :avatar="FetchImage(LIB_USER_AVATOR,item.userId)"
+                  :avatar="FetchImage(LIB_USER_AVATOR, item.userId)"
                 >
                   <template #content>
                     <p>
@@ -124,10 +129,7 @@
           </a-list>
           <a-comment>
             <template #avatar>
-              <a-avatar
-                :src="FetchImage()"
-                alt="Han Solo"
-              />
+              <a-avatar :src="FetchImage()" alt="Han Solo" />
             </template>
             <template #content>
               <a-form-item>
@@ -160,7 +162,11 @@ import {
   FetchVolumesOnBook,
   PostComment,
 } from "../../ports/book.js";
-import {FetchImage,LIB_BOOK_IMAGE,LIB_USER_AVATOR} from "../../ports/file.js";
+import {
+  FetchImage,
+  LIB_BOOK_IMAGE,
+  LIB_USER_AVATOR,
+} from "../../ports/file.js";
 
 dayjs.extend(relativeTime);
 
@@ -203,7 +209,7 @@ function toBook(book) {
   router.push({ name: "book", params: { id: book } });
 }
 
-function toChapter(chapter){
+function toChapter(chapter) {
   router.push({ name: "chapter", params: { id: chapter } });
 }
 
