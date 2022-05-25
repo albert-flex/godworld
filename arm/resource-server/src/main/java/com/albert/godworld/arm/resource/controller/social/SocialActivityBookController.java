@@ -34,6 +34,16 @@ public class SocialActivityBookController {
         return socialActivityBookService.activityBooksOfAuthor(authorId);
     }
 
+    @GetMapping("/book_in_activity/{activityId}/{authorId}")
+    public List<BookInfo> bookInActivity(@PathVariable("authorId") Long authorId,@PathVariable("activityId") Long activityId){
+        return socialActivityBookService.bookOfAuthorOnActivity(authorId,activityId);
+    }
+
+    @GetMapping("/book_not_in_activity/{activityId}/{authorId}")
+    public List<BookInfo> bookNotInActivity(@PathVariable("authorId") Long authorId,@PathVariable("activityId") Long activityId){
+        return socialActivityBookService.bookOfAuthorNotInActivity(authorId,activityId);
+    }
+
     @GetMapping("/activities_info_with_book/{socialId}")
     public Map<String, ActivityVo> activityBooksOfSocial(@PathVariable("socialId")Long socialId){
         return socialActivityBookService.activityBookOfSocial(socialId);
