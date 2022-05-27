@@ -974,7 +974,7 @@ function deleteChapter() {
 
 function changeV(newV) {
   console.log("new Volume:" + newV);
-  volumeSelect = newV;
+  volumeSelect.value = newV;
   pageChapter();
 }
 

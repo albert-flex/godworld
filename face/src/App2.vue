@@ -26,7 +26,9 @@
       </div>
     </a-layout-content>
     <a-layout-footer :style="{ textAlign: 'center' }">
-      ©2022 Albert Flex
+      <p>©2022 Albert Flex</p>
+      <a href="https://beian.miit.gov.cn"></a>
+      <p>yY91rGGN1g42422E</p>
     </a-layout-footer>
   </a-layout>
 </template>

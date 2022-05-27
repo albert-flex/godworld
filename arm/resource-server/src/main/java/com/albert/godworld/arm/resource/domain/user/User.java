@@ -25,6 +25,10 @@ public class User implements UserDetails {
     private Date createTime;
     private Date lastLoginTime;
 
+    public Long getId() {
+        return id;
+    }
+
     @TableField(exist = false)
     private List<Permission> allPermission;
 
